@@ -1,0 +1,46 @@
+import { Icon } from '@iconify/react';
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { PageTemplate, HeadingTemplate } from '../storybook-components';
+
+<Meta title="Getting Started/BCC V2 Integration" />
+
+<Unstyled>
+  <PageTemplate>
+  <HeadingTemplate>Customizing SDS Component Styling</HeadingTemplate>
+
+    > While the `sds-ui` package does provide a large set of pre-styled components for Best Case Cloud (BCC V2), when itegrating with the V1 application,
+    you will need to create a global stylesheet to handle CSS specificity issues.
+
+    ## Overriding Styles
+
+    ### Styling Conflicts and Specificity with V1 Integration
+
+    When using SDS components in your React modules you'll most likely encounter CSS specificity issues in V1.
+    To resolve these conflicts follow these steps:
+
+    1. Create a new file in the `src` folder of your project called `globalStyles.css.ts`
+    2. Use the Vanilla Extract CSS `globalStyle` function to create a new global CSS class with the properties that you want to override.
+
+    ### Example:
+
+    To change the background color of a button, you can create a new global CSS class like this:
+
+    ```ts
+    // globalStyles.css.ts
+
+    globalStyle('button', {
+      backgroundColor: 'blue',
+      color: 'white',
+      padding: '10px 20px',
+      borderRadius: '5px',
+      border: 'none',
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: 'darkblue',
+      },
+    });
+    ```
+
+</PageTemplate>
+
+</Unstyled>

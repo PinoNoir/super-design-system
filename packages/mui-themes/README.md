@@ -1,6 +1,6 @@
-# Stretto - MUI Themes
+# MUI Themes
 
-This is a simple MUI CSS theme configuration to generate themes for MUI components used in Stretto applications
+This is a simple MUI CSS theme configuration to generate themes for MUI components used in applications
 
 ## Running the project
 

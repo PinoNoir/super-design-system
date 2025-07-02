@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Avatar, Button, AIstars } from '@stretto/cds-ui';
+import { Avatar, Button, AIstars } from 'sds-ui';
 import { Copy, Download, ThumbsUp, ThumbsDown, User, FileText } from 'lucide-react';
 import clsx from 'clsx';
 import styles from './styles/message-item.module.css';

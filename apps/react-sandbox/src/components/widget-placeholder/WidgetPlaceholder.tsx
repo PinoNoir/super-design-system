@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@stretto/cds-ui';
+import { Card } from 'sds-ui';
 import styles from './WidgetPlaceholder.module.css';
 
 type WidgetPlaceholderProps = {

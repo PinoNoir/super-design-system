@@ -46,9 +46,9 @@
         "vite"
       ],
       "packages": [
-        "@stretto/apps/gen-ai",
-        "@stretto/apps/react-sandbox",
-        "@stretto/cds-ui"
+        "apps/gen-ai",
+        "apps/react-sandbox",
+        "sds-ui"
       ]
     }
   ]

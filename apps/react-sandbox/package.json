@@ -1,5 +1,5 @@
 {
-  "name": "@stretto/react-sandbox",
+  "name": "react-sandbox",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -33,9 +33,9 @@
     "@iconify/react": "^5.2.1",
     "@mui/material": "^6.4.11",
     "@react-spring/web": "^9.7.5",
-    "@stretto/cds-styles": "workspace:^",
-    "@stretto/cds-ui": "workspace:^",
-    "@stretto/mui-themes": "workspace:^",
+    "sds-styles": "workspace:^",
+    "sds-ui": "workspace:^",
+    "mui-themes": "workspace:^",
     "@tanstack/react-query": "^5.66.7",
     "@tanstack/react-router": "^1.87.7",
     "@tanstack/router-devtools": "^1.87.7",

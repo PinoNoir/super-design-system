@@ -1,0 +1,52 @@
+import { Icon } from '@iconify/react';
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { PageTemplate, HeadingTemplate } from '../storybook-components';
+
+<Meta title="Getting Started/Theming" />
+
+<Unstyled>
+<PageTemplate>
+<HeadingTemplate>Theming React Applications</HeadingTemplate>
+
+> The CDS UI library provides a theming system that allows you to customize the look and feel of your application. It's based on CSS variables and designed to be easy to use and flexible.
+
+## Basic Setup
+
+Currently the CDS UI Library provides light and dark themes for CORE, BCC, and TSC applications. You can use the `ThemeProvider` component to apply a theme to your application.
+
+```jsx
+import { ThemeProvider } from 'sds-ui';
+
+const App = () => (
+  <ThemeProvider defaultTheme="bcc-light">
+    <div>
+      <h1>Hello, world!</h1>
+    </div>
+  </ThemeProvider>
+);
+```
+
+## Advanced Setup
+
+To create a theme switcher so users can switch between themes, you can use the `useTheme` hook to get the current theme and the `setTheme` function to change the theme.
+Themes are typesafe and can be one of the following values: `bcc-light`, `bcc-dark`, `tsc-light`, `tsc-dark` and `tsc-legacy`.
+
+```jsx
+import { ThemeProvider, useTheme } from 'sds-ui';
+
+const App = () => {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <div>
+        <h1>Hello, world!</h1>
+        <button onClick={() => setTheme(theme === 'bcc-light' ? 'bcc-dark' : 'bcc-light')}>Toggle Theme</button>
+      </div>
+    </ThemeProvider>
+  );
+};
+```
+
+</PageTemplate>
+</Unstyled>

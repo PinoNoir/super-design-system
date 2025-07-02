@@ -4,7 +4,7 @@ Note: this document and process is still being fleshed out, we will continue to 
 
 ---
 
-This is an **official library** of shared UI components for Stretto developers and used for internal app development.
+This is an **official library** of shared UI components for developers and used for internal app development.
 
 This library is open-sourced, and we encourage everyone to use and contribute into it.
 
@@ -15,13 +15,13 @@ This library is open-sourced, and we encourage everyone to use and contribute in
 3. Install dependencies with `pnpm install` command
 4. Sync from upstream if needed
 5. Each workspace in the `packages` folder contains its own respective project, please refer to the README file for an overview.
-6. Run Storybook environment in the cds-ui workspace locally with `pnpm dev` command.
+6. Run Storybook environment in the sds-ui workspace locally with `pnpm dev` command.
 7. Make sure all components behave as expected by running all Jest tests locally with `pnpm test`.
 8. If there are changes in some of the library snapshot tests, make sure all changes are intentional. If they are, update them with `pnpm test:update`.
 9. Publish your branch
 10. Commit to your local changes using [Semantic Commit Messages](https://seesparkbox.com/foundry/semantic_commit_messages)
 11. Create a PR with title based using [Semantic Commit Messages](https://seesparkbox.com/foundry/semantic_commit_messages)
-    For example: `CDS-56553: add new TextArea component`
+    For example: `SDS-56553: add new TextArea component`
 12. Go over the [checklist](/.github/PULL_REQUEST_TEMPLATE.md) in the PR and make sure that all checks are passed
 13. Wait for the Design and Code review
 14. Enjoy your change after merge!

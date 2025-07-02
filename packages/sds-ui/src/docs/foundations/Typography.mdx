@@ -1,0 +1,129 @@
+import { Meta, Typeset, Unstyled } from '@storybook/addon-docs/blocks';
+import { Icon } from '@iconify/react';
+import { PageTemplate, HeadingTemplate } from '../storybook-components';
+
+<Meta title="Foundations/Typography" />
+
+<Unstyled>
+<PageTemplate>
+<HeadingTemplate>Typography</HeadingTemplate>
+
+> All digital products use `Roboto` as the primary font.
+
+> CDS text styles are split into 2 separate categories: Headings & Body along with several utility classes for color, sizing, weight, and line-height.
+
+## Installation
+
+We recommend using the `@fontsource/roboto` package from [fontsource.org <Icon icon="mdi:open-in-new"/>](https://fontsource.org/fonts/roboto" 'title'). This allows you to self-host the fonts and use them in your project easily.
+
+1. Install `Roboto` by running the following command:
+
+```
+npm install @fontsource/roboto
+```
+
+2. Import the fonts into your main entry file:
+
+```jsx
+// index.ts
+
+import '@fontsource/roboto'; // Defaults to weight 400
+import '@fontsource/roboto/400.css'; // Specify weight
+import '@fontsource/roboto/400-italic.css'; // Specify weight and style
+```
+
+3. Reference the font in your CSS stylesheet.
+
+```jsx
+// index.css
+
+body {
+  font-family: 'Roboto';
+}
+```
+
+## Typography Tokens
+
+Read more about using CSS custom properties [here <Icon icon="mdi:open-in-new"/>](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties" 'title').
+
+```css
+--font-line-height-headings: 2;
+--font-line-height-body: 1.5;
+--font-line-height-condensed: 1.25;
+--font-weight-bold: 700;
+--font-weight-medium: 500;
+--font-weight-regular: 400;
+--font-weight-light: 300;
+--font-size-xs: 0.625rem;
+--font-size-sm: 0.75rem;
+--font-size-label: 0.875rem;
+--font-size-body: 0.875rem;
+--font-size-h6: 0.75rem;
+--font-size-h5: 0.875rem;
+--font-size-h4: 1rem;
+--font-size-h3: 1.125rem;
+--font-size-h2: 1.5625rem;
+--font-size-h1: 2rem;
+--font-family-code: 'source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+--font-family-headings: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+--font-family-body: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+--font-family-base: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+```
+
+### Headings
+
+<Typeset
+  fontSizes={['2rem', '1.75rem', '1.5rem', '1.25rem', '1rem', '.875rem']}
+  fontWeight={300}
+  fontFamily='"Roboto", "Helvetica Neue", Helvetica, Arial'
+/>
+
+### Body
+
+<Typeset fontSizes={['.875rem']} fontWeight={400} fontFamily='"Roboto", "Helvetica Neue", Helvetica, Arial' />
+
+## Typography Tokens
+
+**Font Family**
+
+```css
+var(--font-family-code: 'source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace);
+var(--font-family-headings: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif);
+var(--font-family-body: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif);
+var(--font-family-base: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif);
+```
+
+**Font Weight**
+
+```css
+var(--font-weight-bold: 700);
+var(--font-weight-medium: 500);
+var(--font-weight-regular: 400);
+var(--font-weight-light: 300);
+```
+
+**Font Size**
+
+```css
+var(--font-size-xs: 0.625rem);
+var(--font-size-sm: 0.75rem);
+var(--font-size-label: 0.875rem);
+var(--font-size-body: 0.875rem);
+var(--font-size-h6: 0.75rem);
+var(--font-size-h5: 0.875rem);
+var(--font-size-h4: 1rem);
+var(--font-size-h3: 1.125rem);
+var(--font-size-h2: 1.5625rem);
+var(--font-size-h1: 2rem);
+```
+
+**Line Height**
+
+```css
+var(--font-line-height-headings: 2);
+var(--font-line-height-body: 1.5);
+var(--font-line-height-condensed: 1.25);
+```
+
+</PageTemplate>
+</Unstyled>

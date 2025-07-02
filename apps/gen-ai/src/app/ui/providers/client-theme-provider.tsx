@@ -1,6 +1,6 @@
 'use client';
 
-import { ThemeProvider, type ThemeTypes } from '@stretto/cds-ui';
+import { ThemeProvider, type ThemeTypes } from 'sds-ui';
 import { useEffect, useState } from 'react';
 
 function ClientThemeProvider({

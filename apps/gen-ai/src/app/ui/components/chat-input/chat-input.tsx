@@ -1,5 +1,5 @@
 import { FormEvent, useRef, useState, useEffect } from 'react';
-import { Box, Button, TextArea, Text, IconButton } from '@stretto/cds-ui';
+import { Box, Button, TextArea, Text, IconButton } from 'sds-ui';
 import { Paperclip, Send } from 'lucide-react';
 import styles from './styles/chat-input.module.css';
 

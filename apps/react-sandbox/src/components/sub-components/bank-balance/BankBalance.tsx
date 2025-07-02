@@ -1,4 +1,4 @@
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@stretto/cds-ui';
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from 'sds-ui';
 
 interface BankBalanceProps {
   data: [];

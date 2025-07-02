@@ -18,11 +18,11 @@
     "noImplicitAny": false,
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "@stretto/apps/*": ["apps/react-sandbox/src/*"],
-      "@stretto/packages/mui-themes/*": ["mui-themes/src/*"],
-      "@stretto/packages/cds-ui/*": ["cds-ui/src/*"],
-      "@stretto/packages/cds-tokens/*": ["cds-tokens/src/*"],
-      "@stretto/packages/cds-styles/*": ["cds-styles/src/*"]
+      "apps/*": ["apps/react-sandbox/src/*"],
+      "packages/mui-themes/*": ["mui-themes/src/*"],
+      "packages/sds-ui/*": ["sds-ui/src/*"],
+      "packages/sds-tokens/*": ["sds-tokens/src/*"],
+      "packages/sds-styles/*": ["sds-styles/src/*"]
     }
   }
 }

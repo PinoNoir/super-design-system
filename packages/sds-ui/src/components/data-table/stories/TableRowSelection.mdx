@@ -1,0 +1,842 @@
+import { Controls, Description, Meta, Story, Title, Canvas } from '@storybook/addon-docs/blocks';
+import * as TableRowSelctionStories from './TableRowSelection.stories';
+
+<Meta of={TableRowSelctionStories} />
+
+<Title />
+
+<Description />
+
+## Quick Start
+
+```tsx
+import { Table, useRowSelection } from 'sds-ui';
+
+const MyComponent = () => {
+  const data = [
+    { id: '1', name: 'John Doe', age: 30 },
+    { id: '2', name: 'Jane Smith', age: 25 },
+  ];
+
+  // Use row selection hook for selection state
+  const tableState = useRowSelection({ multipleSelect: true });
+
+  const columns = [
+    {
+      key: 'name', // Must match data property name for sorting
+      header: 'Name',
+      width: 120,
+      isSortable: true,
+      render: (data: TableRowData) => data.name, // Must use the render prop to display the data
+    },
+    {
+      key: 'age', // Must match data property name for sorting
+      header: 'Age',
+      width: 120,
+      isSortable: true,
+      render: (data: TableRowData) => data.age, // Must use the render prop to display the data
+    },
+  ];
+
+  return (
+    <Table
+      data={data}
+      columns={columns}
+      selectedRowIds={tableState.selectedRowIds}
+      onSelectionChange={tableState.handleSelectionChange}
+      getIsRowSelected={tableState.isRowSelected}
+    />
+  );
+};
+```
+
+# Table Row Selection Implementation Guide
+
+## Advanced Features and Patterns
+
+### Conditional Row Selection
+
+Sometimes you need to control which rows can be selected based on business logic:
+
+```typescript
+const ConditionalSelectionTable = () => {
+  const data = userData: UserData[];
+
+  const tableState = useRowSelection<UserData>({
+    multipleSelect: true
+  });
+
+  // Custom selection handler with conditional logic
+  const handleConditionalSelection = (
+    rowId: string,
+    rowData: UserData,
+    newSelectionState: boolean,
+    context: SelectionContext
+  ) => {
+    // Prevent selection of admin users
+    if (rowData.role === 'Admin' && newSelectionState) {
+      console.warn('Admin users cannot be selected for bulk operations');
+      return;
+    }
+
+    // Limit selection to 5 rows maximum
+    if (newSelectionState && tableState.getSelectedCount() >= 5) {
+      console.warn('Maximum 5 rows can be selected');
+      return;
+    }
+
+    // Allow selection
+    tableState.handleSelectionChange(rowId, rowData, newSelectionState, context);
+  };
+
+  return (
+    <Table
+      data={data}
+      columns={columns}
+      selectedRowIds={tableState.selectedRowIds}
+      onSelectionChange={handleConditionalSelection}
+      getIsRowSelected={tableState.isRowSelected}
+    />
+  );
+};
+```
+
+### Selection with Async Validation
+
+For scenarios requiring server-side validation before selection:
+
+```typescript
+const AsyncValidationTable = () => {
+  const [data, setData] = useState<UserData[]>(userData);
+  const [isValidating, setIsValidating] = useState<string[]>([]);
+
+  const tableState = useRowSelection<UserData>({
+    multipleSelect: true
+  });
+
+  const validateSelectionAsync = async (rowId: string, rowData: UserData): Promise<boolean> => {
+    try {
+      const response = await fetch(`/api/validate-selection/${rowId}`);
+      return response.ok;
+    } catch (error) {
+      console.error('Validation failed:', error);
+      return false;
+    }
+  };
+
+  const handleAsyncSelection = async (
+    rowId: string,
+    rowData: UserData,
+    newSelectionState: boolean,
+    context: SelectionContext
+  ) => {
+    if (newSelectionState) {
+      setIsValidating(prev => [...prev, rowId]);
+
+      const isValid = await validateSelectionAsync(rowId, rowData);
+
+      setIsValidating(prev => prev.filter(id => id !== rowId));
+
+      if (!isValid) {
+        console.warn('Selection not allowed for this row');
+        return;
+      }
+    }
+
+    tableState.handleSelectionChange(rowId, rowData, newSelectionState, context);
+  };
+
+  return (
+    <Table
+      data={data}
+      columns={columns}
+      selectedRowIds={tableState.selectedRowIds}
+      onSelectionChange={handleAsyncSelection}
+      getIsRowSelected={tableState.isRowSelected}
+      enableSelectAll={true} // Enable select all functionality
+      loadingRowIds={isValidating} // Show loading state for validating rows
+    />
+  );
+};
+```
+
+### Persistent Selection Across Pagination
+
+Maintain selection state when navigating between pages:
+
+```typescript
+const PaginatedSelectionTable = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allData] = useState<UserData[]>(largeDataSet);
+  const pageSize = 10;
+
+  // Use persistent selection that works across pages
+  const tableState = useRowSelection<UserData>({
+    multipleSelect: true,
+    // Store all selected IDs, not just current page
+  });
+
+  const currentPageData = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return allData.slice(startIndex, startIndex + pageSize);
+  }, [allData, currentPage, pageSize]);
+
+  // Get selection count across all pages
+  const getTotalSelectedCount = () => {
+    return tableState.selectedRowIds.length;
+  };
+
+  // Get selected rows across all pages
+  const getAllSelectedRows = () => {
+    return allData.filter(row => tableState.selectedRowIds.includes(row.id));
+  };
+
+  const handleSelectAllCurrentPage = (shouldSelectAll: boolean, data: UserData[]) => {
+    tableState.handleSelectAll(shouldSelectAll, data);
+  };
+
+  const handleSelectAllPages = () => {
+    const allSelectableIds = allData.filter(row => !row.disabled);
+    tableState.selectAllRows(allSelectableIds);
+  };
+
+  return (
+    <div>
+      <div className="selection-summary">
+        <span>
+          Selected: {getTotalSelectedCount()} of {allData.length} total rows
+        </span>
+        <button onClick={() => tableState.clearSelection()}>
+          Clear All Selections
+        </button>
+      </div>
+
+      <Table
+        data={currentPageData}
+        columns={columns}
+        selectedRowIds={tableState.selectedRowIds}
+        onSelectionChange={tableState.handleSelectionChange}
+        getIsRowSelected={tableState.isRowSelected}
+        enableSelectAll={true}
+        isAllSelected={tableState.isAllSelected(currentPageData)}
+        onSelectAll={handleSelectAllCurrentPage}
+      />
+
+      <div className="bulk-actions">
+        <button onClick={handleSelectAllPages}>
+          Select All {allData.length} Rows
+        </button>
+        <button
+          onClick={() => console.log('Selected rows:', getAllSelectedRows())}
+          disabled={getTotalSelectedCount() === 0}
+        >
+          Process All Selected ({getTotalSelectedCount()})
+        </button>
+      </div>
+
+      {/* Pagination controls */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(allData.length / pageSize)}
+        onPageChange={setCurrentPage}
+      />
+    </div>
+  );
+};
+```
+
+### Selection with Grouping/Categories
+
+Handle selection within grouped data:
+
+```typescript
+interface GroupedData {
+  category: string;
+  items: UserData[];
+}
+
+const GroupedSelectionTable = () => {
+  const [groupedData] = useState<GroupedData[]>([
+    {
+      category: 'Administrators',
+      items: [
+        { id: '1', name: 'John Admin', email: 'john@example.com', role: 'Admin' },
+        { id: '2', name: 'Jane Admin', email: 'jane@example.com', role: 'Admin' },
+      ]
+    },
+    {
+      category: 'Users',
+      items: [
+        { id: '3', name: 'Bob User', email: 'bob@example.com', role: 'User' },
+        { id: '4', name: 'Alice User', email: 'alice@example.com', role: 'User' },
+      ]
+    }
+  ]);
+
+  const tableState = useRowSelection<UserData>({
+    multipleSelect: true
+  });
+
+  // Get all items flattened for table display
+  const allItems = useMemo(() =>
+    groupedData.flatMap(group => group.items),
+    [groupedData]
+  );
+
+  // Selection helpers for groups
+  const selectGroup = (category: string) => {
+    const group = groupedData.find(g => g.category === category);
+    if (group) {
+      const groupItems = group.items.filter(item => !item.disabled);
+      tableState.selectAllRows(groupItems);
+    }
+  };
+
+  const deselectGroup = (category: string) => {
+    const group = groupedData.find(g => g.category === category);
+    if (group) {
+      tableState.deselectAllRows();
+    }
+  };
+
+  const isGroupFullySelected = (category: string): boolean => {
+    const group = groupedData.find(g => g.category === category);
+    if (!group) return false;
+
+    const selectableItems = group.items.filter(item => !item.disabled);
+    return tableState.isAllSelected(selectableItems);
+  };
+
+  const isGroupPartiallySelected = (category: string): boolean => {
+    const group = groupedData.find(g => g.category === category);
+    if (!group) return false;
+
+    const selectedInGroup = group.items.filter(item =>
+      tableState.isRowSelected(item.id)
+    ).length;
+
+    return selectedInGroup > 0 && selectedInGroup < group.items.length;
+  };
+
+  return (
+    <div>
+      {/* Group selection controls */}
+      <div className="group-controls">
+        {groupedData.map(group => (
+          <div key={group.category} className="group-control">
+            <span>{group.category}</span>
+            <button
+              onClick={() => {
+                if (isGroupFullySelected(group.category)) {
+                  deselectGroup(group.category);
+                } else {
+                  selectGroup(group.category);
+                }
+              }}
+              className={`
+                ${isGroupFullySelected(group.category) ? 'selected' : ''}
+                ${isGroupPartiallySelected(group.category) ? 'partial' : ''}
+              `}
+            >
+              {isGroupFullySelected(group.category)
+                ? 'Deselect All'
+                : `Select All (${group.items.length})`
+              }
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <Table
+        data={allItems}
+        columns={columns}
+        selectedRowIds={tableState.selectedRowIds}
+        onSelectionChange={tableState.handleSelectionChange}
+        getIsRowSelected={tableState.isRowSelected}
+        enableSelectAll={true}
+      />
+    </div>
+  );
+};
+```
+
+## Selection State Management Patterns
+
+### Using Context for Global Selection State
+
+For complex applications, manage selection state globally:
+
+```typescript
+// SelectionContext.tsx
+interface SelectionContextType {
+  selectedItems: Record<string, UserData>;
+  selectItem: (item: UserData) => void;
+  deselectItem: (itemId: string) => void;
+  clearSelection: () => void;
+  getSelectedCount: () => number;
+}
+
+const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
+
+export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [selectedItems, setSelectedItems] = useState<Record<string, UserData>>({});
+
+  const selectItem = (item: UserData) => {
+    setSelectedItems(prev => ({ ...prev, [item.id]: item }));
+  };
+
+  const deselectItem = (itemId: string) => {
+    setSelectedItems(prev => {
+      const { [itemId]: removed, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const clearSelection = () => {
+    setSelectedItems({});
+  };
+
+  const getSelectedCount = () => Object.keys(selectedItems).length;
+
+  return (
+    <SelectionContext.Provider value={{
+      selectedItems,
+      selectItem,
+      deselectItem,
+      clearSelection,
+      getSelectedCount
+    }}>
+      {children}
+    </SelectionContext.Provider>
+  );
+};
+
+// Usage in table component
+const GlobalSelectionTable = () => {
+  const selectionContext = useContext(SelectionContext);
+  const [data] = useState<UserData[]>(userData);
+
+  const tableState = useRowSelection<UserData>({
+    multipleSelect: true,
+    onSelectionChange: (rowId, rowData, newSelectionState, context) => {
+      // Sync with global context
+      if (newSelectionState) {
+        selectionContext.selectItem(rowData);
+      } else {
+        selectionContext.deselectItem(rowId);
+      }
+    }
+  });
+
+  return (
+    <Table
+      data={data}
+      columns={columns}
+      selectedRowIds={tableState.selectedRowIds}
+      onSelectionChange={tableState.handleSelectionChange}
+      getIsRowSelected={tableState.isRowSelected}
+      enableSelectAll={true}
+    />
+  );
+};
+```
+
+### Selection with URL State Persistence
+
+Persist selection in URL for bookmarking/sharing:
+
+```typescript
+const URLPersistedSelectionTable = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [data] = useState<UserData[]>(userData);
+
+  // Initialize selection from URL
+  const initialSelectedIds = useMemo(() => {
+    const selected = searchParams.get('selected');
+    return selected ? selected.split(',') : [];
+  }, [searchParams]);
+
+  const tableState = useRowSelection<UserData>({
+    multipleSelect: true,
+    initialSelectedIds,
+    onSelectionChange: (rowId, rowData, newSelectionState, context) => {
+      // Update URL when selection changes
+      const newParams = new URLSearchParams(searchParams);
+      const currentSelected = tableState.selectedRowIds;
+
+      if (currentSelected.length > 0) {
+        newParams.set('selected', currentSelected.join(','));
+      } else {
+        newParams.delete('selected');
+      }
+      setSearchParams(newParams, { replace: true });
+    }
+  });
+
+  return (
+    <Table
+      data={data}
+      columns={columns}
+      selectedRowIds={tableState.selectedRowIds}
+      onSelectionChange={tableState.handleSelectionChange}
+      getIsRowSelected={tableState.isRowSelected}
+      enableSelectAll={true}
+    />
+  );
+};
+```
+
+## Accessibility and Keyboard Navigation
+
+### Keyboard Selection Support
+
+Enhance accessibility with keyboard navigation:
+
+```typescript
+const AccessibleSelectionTable = () => {
+  const [data] = useState<UserData[]>(userData);
+  const [focusedRowIndex, setFocusedRowIndex] = useState(0);
+
+  const tableState = useRowSelection<UserData>({
+    multipleSelect: true
+  });
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    switch (event.key) {
+      case 'ArrowUp':
+        event.preventDefault();
+        setFocusedRowIndex(prev => Math.max(0, prev - 1));
+        break;
+
+      case 'ArrowDown':
+        event.preventDefault();
+        setFocusedRowIndex(prev => Math.min(data.length - 1, prev + 1));
+        break;
+
+      case ' ': // Spacebar
+        event.preventDefault();
+        const focusedRow = data[focusedRowIndex];
+        if (focusedRow && !focusedRow.disabled) {
+          const isSelected = tableState.isRowSelected(focusedRow.id);
+          tableState.handleSelectionChange(
+            focusedRow.id,
+            focusedRow,
+            !isSelected,
+            { source: 'keyboard' }
+          );
+        }
+        break;
+
+      case 'a':
+        if (event.ctrlKey || event.metaKey) {
+          event.preventDefault();
+          if (tableState.isAllSelected(data)) {
+            tableState.clearSelection();
+          } else {
+            tableState.selectAllRows(data);
+          }
+        }
+        break;
+
+      case 'Escape':
+        tableState.clearSelection();
+        break;
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [focusedRowIndex, data]);
+
+  return (
+    <div
+      tabIndex={0}
+      className="accessible-table-container"
+      aria-label="Users table with keyboard navigation"
+    >
+      <Table
+        data={data}
+        columns={columns}
+        selectedRowIds={tableState.selectedRowIds}
+        onSelectionChange={tableState.handleSelectionChange}
+        getIsRowSelected={tableState.isRowSelected}
+        enableSelectAll={true}
+        focusedRowIndex={focusedRowIndex}
+        onRowFocus={setFocusedRowIndex}
+        // Accessibility props
+        aria-multiselectable={true}
+        aria-rowcount={data.length}
+      />
+
+      <div className="keyboard-help" aria-live="polite">
+        Use arrow keys to navigate, spacebar to select, Ctrl+A to select all, Escape to clear
+      </div>
+    </div>
+  );
+};
+```
+
+## Performance Optimization
+
+### Virtualized Table with Selection
+
+Handle large datasets efficiently:
+
+```typescript
+const VirtualizedSelectionTable = () => {
+  const [largeDataSet] = useState<UserData[]>(generateLargeDataSet(10000));
+
+  const tableState = useRowSelection<UserData>({
+    multipleSelect: true
+  });
+
+  // Memoize selected rows calculation for performance
+  const selectedRowsCount = useMemo(() =>
+    tableState.getSelectedCount(),
+    [tableState.selectedRowIds]
+  );
+
+  // Debounce selection changes for better performance
+  const debouncedSelectionChange = useMemo(
+    () => debounce((rowId: string, rowData: UserData, newSelectionState: boolean, context: any) => {
+      // Handle selection change logic here
+      console.log('Selection changed:', rowId, newSelectionState);
+    }, 300),
+    []
+  );
+
+  const handleSelectionChange = useCallback((rowId: string, rowData: UserData, newSelectionState: boolean, context: any) => {
+    tableState.handleSelectionChange(rowId, rowData, newSelectionState, context);
+    debouncedSelectionChange(rowId, rowData, newSelectionState, context);
+  }, [tableState.handleSelectionChange, debouncedSelectionChange]);
+
+  return (
+    <div>
+      <div className="performance-stats">
+        Total rows: {largeDataSet.length.toLocaleString()} |
+        Selected: {selectedRowsCount.toLocaleString()}
+      </div>
+
+      <VirtualizedTable
+        data={largeDataSet}
+        columns={columns}
+        selectedRowIds={tableState.selectedRowIds}
+        onSelectionChange={handleSelectionChange}
+        getIsRowSelected={tableState.isRowSelected}
+        enableSelectAll={true}
+        // Virtualization props
+        height={400}
+        rowHeight={50}
+        overscan={5}
+      />
+    </div>
+  );
+};
+```
+
+## Testing Row Selection
+
+### Unit Test Examples
+
+```typescript
+// __tests__/RowSelection.test.tsx
+import { renderHook, act } from '@testing-library/react';
+import { useRowSelection } from 'sds-ui';
+
+describe('useRowSelection', () => {
+  const mockData = [
+    { id: '1', name: 'John', disabled: false },
+    { id: '2', name: 'Jane', disabled: false },
+    { id: '3', name: 'Bob', disabled: true },
+  ];
+
+  it('should handle single row selection', () => {
+    const { result } = renderHook(() => useRowSelection({ multipleSelect: false }));
+
+    act(() => {
+      result.current.handleSelectionChange('1', mockData[0], true, { source: 'click' });
+    });
+
+    expect(result.current.selectedRowIds).toEqual(['1']);
+    expect(result.current.isRowSelected('1')).toBe(true);
+  });
+
+  it('should handle multiple row selection', () => {
+    const { result } = renderHook(() => useRowSelection({ multipleSelect: true }));
+
+    act(() => {
+      result.current.selectAllRows([mockData[0], mockData[1]]);
+    });
+
+    expect(result.current.selectedRowIds).toEqual(['1', '2']);
+    expect(result.current.getSelectedCount()).toBe(2);
+  });
+
+  it('should handle select all functionality', () => {
+    const { result } = renderHook(() => useRowSelection({ multipleSelect: true }));
+
+    act(() => {
+      result.current.selectAllRows(mockData.filter((row) => !row.disabled));
+    });
+
+    expect(result.current.selectedRowIds).toEqual(['1', '2']);
+    expect(result.current.isAllSelected(mockData.filter((row) => !row.disabled))).toBe(true);
+  });
+});
+```
+
+### Integration Test Examples
+
+```typescript
+// __tests__/TableWithSelection.test.tsx
+import { render, screen, fireEvent } from '@testing-library/react';
+import { TableWithSelection } from '../TableWithSelection';
+
+describe('Table with Row Selection', () => {
+  const mockData = [
+    { id: '1', name: 'John Doe', email: 'john@example.com' },
+    { id: '2', name: 'Jane Smith', email: 'jane@example.com' },
+  ];
+
+  it('should select rows when checkboxes are clicked', () => {
+    render(<TableWithSelection data={mockData} />);
+
+    const firstCheckbox = screen.getByRole('checkbox', { name: /select row 1/i });
+    fireEvent.click(firstCheckbox);
+
+    expect(firstCheckbox).toBeChecked();
+  });
+
+  it('should select all rows when select all is clicked', () => {
+    render(<TableWithSelection data={mockData} />);
+
+    const selectAllCheckbox = screen.getByRole('checkbox', { name: /select all/i });
+    fireEvent.click(selectAllCheckbox);
+
+    const rowCheckboxes = screen.getAllByRole('checkbox', { name: /select row/i });
+    rowCheckboxes.forEach(checkbox => {
+      expect(checkbox).toBeChecked();
+    });
+  });
+
+  it('should handle bulk actions on selected rows', () => {
+    const onBulkAction = jest.fn();
+    render(<TableWithSelection data={mockData} onBulkAction={onBulkAction} />);
+
+    // Select rows
+    const firstCheckbox = screen.getByRole('checkbox', { name: /select row 1/i });
+    fireEvent.click(firstCheckbox);
+
+    // Trigger bulk action
+    const deleteButton = screen.getByRole('button', { name: /delete selected/i });
+    fireEvent.click(deleteButton);
+
+    expect(onBulkAction).toHaveBeenCalledWith('delete', [mockData[0]]);
+  });
+});
+```
+
+## Troubleshooting Guide
+
+### Common Issues and Solutions
+
+**Issue**: Selection state is not persisting across re-renders
+**Solution**: Ensure you're not recreating the hook instance. Move the hook to a stable location or use useMemo/useCallback appropriately.
+
+```typescript
+// ❌ Bad - Hook recreated on every render
+const BadComponent = () => {
+  const [data, setData] = useState(userData);
+  const tableState = useRowSelection({ multipleSelect: true }); // Recreated!
+
+  return <Table
+    data={data}
+    columns={columns}
+    selectedRowIds={tableState.selectedRowIds}
+    onSelectionChange={tableState.handleSelectionChange}
+    getIsRowSelected={tableState.isRowSelected}
+    enableSelectAll={true}
+  />;
+};
+
+// ✅ Good - Hook stable across renders
+const GoodComponent = () => {
+  const [data, setData] = useState(userData);
+  const tableState = useRowSelection(
+    useMemo(() => ({ multipleSelect: true }), [])
+  );
+
+  return <Table
+    data={data}
+    columns={columns}
+    selectedRowIds={tableState.selectedRowIds}
+    onSelectionChange={tableState.handleSelectionChange}
+    getIsRowSelected={tableState.isRowSelected}
+    enableSelectAll={true}
+  />;
+};
+```
+
+**Issue**: Performance degradation with large datasets
+**Solution**: Implement virtualization and optimize selection callbacks:
+
+```typescript
+const OptimizedTable = () => {
+  const tableState = useRowSelection({ multipleSelect: true });
+
+  // Memoize expensive calculations
+  const selectedCount = useMemo(() =>
+    tableState.selectedRowIds.length,
+    [tableState.selectedRowIds.length]
+  );
+
+  // Use callback to prevent unnecessary re-renders
+  const handleSelection = useCallback((rowId, rowData, newSelectionState, context) => {
+    tableState.handleSelectionChange(rowId, rowData, newSelectionState, context);
+  }, [tableState.handleSelectionChange]);
+
+  return <Table
+    onSelectionChange={handleSelection}
+    data={data}
+    columns={columns}
+    enableSelectAll={true}
+    selectedRowIds={tableState.selectedRowIds}
+    getIsRowSelected={tableState.isRowSelected}
+  />;
+};
+```
+
+**Issue**: Selection not working with filtered/sorted data
+**Solution**: Ensure your selection logic accounts for data transformations:
+
+```typescript
+const FilterableTable = () => {
+  const [allData] = useState(originalData);
+  const [filteredData, setFilteredData] = useState(originalData);
+  const tableState = useRowSelection({ multipleSelect: true });
+
+  // Clear invalid selections when data changes
+  useEffect(() => {
+    const validIds = filteredData.map(row => row.id);
+    const invalidSelections = tableState.selectedRowIds.filter(
+      id => !validIds.includes(id)
+    );
+
+    if (invalidSelections.length > 0) {
+      tableState.deselectAllRows();
+    }
+  }, [filteredData]);
+
+  return <Table
+    data={filteredData}
+    columns={columns}
+    enableSelectAll={true}
+    selectedRowIds={tableState.selectedRowIds}
+    onSelectionChange={tableState.handleSelectionChange}
+    getIsRowSelected={tableState.isRowSelected}
+  />;
+};
+```
+
+This extended documentation provides comprehensive coverage of advanced row selection patterns, performance considerations, accessibility features, and testing strategies. The examples demonstrate real-world scenarios that developers commonly encounter when implementing complex table selection functionality.

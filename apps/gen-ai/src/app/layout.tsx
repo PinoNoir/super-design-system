@@ -3,7 +3,7 @@ import { ClientThemeProvider } from '@/app/ui/providers';
 import './styles/globals.css';
 
 export const metadata: Metadata = {
-  title: 'Stretto Gen AI App',
+  title: 'Gen AI App',
   description: 'A simple chat app using Next.js and AI SDK',
 };
 

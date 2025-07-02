@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
-import { ThemeProvider } from '@stretto/cds-ui';
-import { lightTheme } from '@stretto/mui-themes';
+import { ThemeProvider } from 'sds-ui';
+import { lightTheme } from 'mui-themes';
 
 const queryClient = new QueryClient();
 

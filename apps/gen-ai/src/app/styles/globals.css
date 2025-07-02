@@ -1,4 +1,4 @@
-@import '@stretto/cds-styles/core';
-@import '@stretto/cds-styles/bcc';
-@import '@stretto/cds-styles/tsc';
-@import '@stretto/cds-ui/component-styles';
+@import 'sds-styles/core';
+@import 'sds-styles/bcc';
+@import 'sds-styles/tsc';
+@import 'sds-ui/component-styles';

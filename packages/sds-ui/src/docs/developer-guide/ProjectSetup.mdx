@@ -1,0 +1,91 @@
+import { Icon } from '@iconify/react';
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { PageTemplate, HeadingTemplate } from '../storybook-components';
+
+<Meta title="Getting Started/Project Setup" />
+
+<Unstyled>
+<PageTemplate>
+<HeadingTemplate>Setup & Installation</HeadingTemplate>
+
+## IDE Setup
+
+For a better developer experience, we recommend using the latest version of
+Microsoft Visual Studio Code. If you don&apos;t have it installed on your device, please reach out to the IT department to assist you.
+
+### Helpful VS Code Extensions
+
+If you&apos;re already using VS Code, follow these steps:
+
+1. Open VS Code and navigate to the extension marketplace.
+2. Search and install the following plugins, or follow the links below to install them directly:
+
+   - [CSS Variable Autocomplete <Icon icon="mdi:open-in-new"/>](https://marketplace.visualstudio.com/items?itemName=vunguyentuan.vscode-css-variables 'title')
+   - [Path IntelliSense <Icon icon="mdi:open-in-new"/>](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense 'title')
+   - [npm IntelliSense <Icon icon="mdi:open-in-new"/>](https://marketplace.visualstudio.com/items?itemName=christian-kohler.npm-intellisense 'title')
+
+## Project Setup
+
+All React projects should include an `.npmrc` file at the root of the project and contain the following configuration:
+
+```
+strict-ssl=false
+legacy-peer-deps=true
+```
+
+## CDS React Component Library Installation
+
+To install `sds-ui` in your project, run the following command:
+
+```
+npm install sds-ui@latest
+```
+
+Import the component from the library&apos;s root entry to use in your project:
+
+```jsx
+// App.tsx
+
+import { Button } from 'sds-ui';
+```
+
+## Importing the CDS Global Stylesheet
+
+> Applications using CDS can use a set of pre-defined
+> design tokens or CSS variables. Reference the Design Tokens
+> section to learn more.
+
+1. Install `sds-styles` in your project by running the following command:
+
+```jsx
+npm install sds-styles
+```
+
+2. Import the minified CSS file for BCC themed applications:
+
+```jsx
+// index.css NOTE: This is the stylesheet used only for BCC themed applications
+
+import 'sds-styles/bcc';
+```
+
+3. Import the minified CSS file for TSC themed applications:
+
+```jsx
+// index.css NOTE: This is the stylesheet used only for TSC themed applications
+
+import 'sds-styles/tsc';
+```
+
+4. Reference the css variable in your CSS stylesheet:
+
+```css
+/* style.css */
+.my-component {
+  color: var(--color-neutral-100);
+  background-color: var(--color-neutral-20);
+}
+```
+
+</PageTemplate>
+</Unstyled>

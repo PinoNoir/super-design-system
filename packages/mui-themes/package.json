@@ -1,13 +1,10 @@
 {
-  "name": "@stretto/mui-themes",
-  "version": "10.0.1",
-  "description": "Official Stretto MUI Themes for MUI React components",
-  "publishConfig": {
-    "registry": "https://nexus.stretto.com/repository/npm-releases/"
-  },
+  "name": "mui-themes",
+  "version": "1.0",
+  "description": "Official MUI Themes for MUI React components",
   "author": {
     "name": "Nicholas Pino",
-    "email": "nicholas.pino@stretto.com"
+    "email": "nickpino.designs@gmail.com"
   },
   "license": "MIT",
   "keywords": [

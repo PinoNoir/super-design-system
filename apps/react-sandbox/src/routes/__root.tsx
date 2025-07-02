@@ -1,6 +1,6 @@
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router';
 import React from 'react';
-import { Navbar, NavbarAlerts, NavbarMenu, DropdownItem, Flex } from '@stretto/cds-ui';
+import { Navbar, NavbarAlerts, NavbarMenu, DropdownItem, Flex } from 'sds-ui';
 import ThemeToggle from '../components/theme-toggle/ThemeToggle';
 
 const links = [

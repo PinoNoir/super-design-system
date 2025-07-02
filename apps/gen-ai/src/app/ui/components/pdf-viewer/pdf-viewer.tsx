@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Text, Loader, Button } from '@stretto/cds-ui';
+import { Text, Loader, Button } from 'sds-ui';
 import styles from './styles/pdf-viewer.module.css';
 
 type PdfData = {

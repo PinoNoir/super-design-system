@@ -3,14 +3,14 @@
   "changelog": [
     "@changesets/changelog-git",
     {
-      "repo": "https://devops.corp.stretto.com/DefaultCollection/Cadence%20Design%20System"
+      "repo": "https://github.com/PinoNoir/super-design-system"
     }
   ],
   "commit": false,
   "access": "restricted",
-  "fixed": [["@stretto/mui-themes", "@stretto/cds-ui", "@stretto/cds-styles", "@stretto/cds-tokens"]],
+  "fixed": [["mui-themes", "sds-ui", "sds-styles", "sds-tokens"]],
   "linked": [],
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@stretto/react-sandbox", "gen-ai"]
+  "ignore": ["react-sandbox", "gen-ai"]
 }

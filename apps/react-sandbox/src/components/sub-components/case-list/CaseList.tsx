@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Loader, ValidationMessage } from '@stretto/cds-ui';
+import { Box, Button, IconButton, Loader, ValidationMessage } from 'sds-ui';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { mockApi } from '../../../api/mockApi';
 import { AnimatePresence, motion } from 'framer-motion';

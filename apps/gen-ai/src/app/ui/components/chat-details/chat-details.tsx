@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Drawer, Text, TabsV2 } from '@stretto/cds-ui';
+import { Drawer, Text, TabsV2 } from 'sds-ui';
 import { FileText } from 'lucide-react';
 import styles from './styles/chat-details.module.css';
 import PdfExtraction from '../pdf-viewer';

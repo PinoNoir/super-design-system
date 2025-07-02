@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Message } from '@ai-sdk/react';
-import { Loader, IconButton } from '@stretto/cds-ui';
+import { Loader, IconButton } from 'sds-ui';
 import styles from './styles/message-list.module.css';
 import MessageItem from '../message-item';
 import { Square } from 'lucide-react';

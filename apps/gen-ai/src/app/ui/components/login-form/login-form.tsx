@@ -2,7 +2,7 @@ import React, { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { login } from '@/app/actions';
 import FormIcon from './form-icon';
-import { Button, FormBlock, FormWrapper, TextInput } from '@stretto/cds-ui';
+import { Button, FormBlock, FormWrapper, TextInput } from 'sds-ui';
 import styles from './styles/login-form.module.css';
 
 export default function LoginForm() {

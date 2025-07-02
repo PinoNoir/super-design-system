@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { Button } from '@stretto/cds-ui';
+import { Button } from 'sds-ui';
 import ChatDetails from '../chat-details';
 import { logout } from '@/app/actions';
 import {

@@ -1,4 +1,4 @@
-import { useTheme, ToggleButton } from '@stretto/cds-ui';
+import { useTheme, ToggleButton } from 'sds-ui';
 import { Sun, Moon } from 'lucide-react';
 
 const ThemeToggle = () => {

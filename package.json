@@ -1,5 +1,5 @@
 {
-  "name": "@stretto/cadence-design-system",
+  "name": "super-design-system",
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b",
@@ -9,15 +9,15 @@
   ],
   "author": {
     "name": "Nicholas Pino",
-    "email": "nicholas.pino@stretto.com"
+    "email": "nickpino.designs@gmail.com"
   },
   "type": "module",
   "license": "MIT",
   "scripts": {
     "build": "node scripts/build.js",
-    "build:ui": "pnpm --filter ./packages/cds-ui build",
-    "build:styles": "pnpm --filter ./packages/cds-styles build",
-    "build:tokens": "pnpm --filter ./packages/cds-tokens build",
+    "build:ui": "pnpm --filter ./packages/sds-ui build",
+    "build:styles": "pnpm --filter ./packages/sds-styles build",
+    "build:tokens": "pnpm --filter ./packages/sds-tokens build",
     "test": "pnpm -r test",
     "lint": "prettier --ignore-path .prettierignore --check \"**/*.{js,jsx,ts,tsx,json,css,html,md,mdx}\" && eslint \"packages/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "prettier --ignore-path .prettierignore --write \"**/*.{js,jsx,ts,tsx,json,css,html,md,mdx}\"",

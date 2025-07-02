@@ -3,7 +3,7 @@ import { BUILD_ORDER, runInWorkspace } from './utils/workspace.js';
 import { sleep } from './utils/common.js';
 
 async function buildAll() {
-  logger.title('🚀 CDS Monorepo Build Process');
+  logger.title('🚀 SDS Monorepo Build Process');
 
   const mainSpinner = await logger.start('Preparing build environment...');
   await sleep(500); // Give visual feedback
