@@ -7,17 +7,41 @@
  */
 
 const container: string;
-const titleSection: string;
+const sizeSmall: string;
+const illustration: string;
+const sizeMedium: string;
+const sizeLarge: string;
+const centered: string;
+const titleWrapper: string;
 const actionButtons: string;
+const content: string;
+const titleSection: string;
+const titleIcon: string;
 
 export {
 	container,
+	sizeSmall,
+	illustration,
+	sizeMedium,
+	sizeLarge,
+	centered,
+	titleWrapper,
+	actionButtons,
+	content,
 	titleSection,
-	actionButtons
+	titleIcon
 };
 
 export default {
 	container,
+	sizeSmall,
+	illustration,
+	sizeMedium,
+	sizeLarge,
+	centered,
+	titleWrapper,
+	actionButtons,
+	content,
 	titleSection,
-	actionButtons
+	titleIcon
 };

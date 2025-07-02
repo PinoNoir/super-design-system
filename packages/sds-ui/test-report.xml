@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/icon/__tests__/SvgIcons.test.tsx">
+    <testCase name="AIStars Icon renders without crashing" duration="27"/>
+    <testCase name="AIStars Icon passes className prop correctly" duration="3"/>
+    <testCase name="AIStars Icon passes other props correctly" duration="4"/>
+    <testCase name="AIStars Icon has correct viewBox" duration="4"/>
+    <testCase name="AIStars Icon contains at least one path or shape element" duration="4"/>
+    <testCase name="ChatPin Icon renders without crashing" duration="2"/>
+    <testCase name="ChatPin Icon passes className prop correctly" duration="10"/>
+    <testCase name="ChatPin Icon passes other props correctly" duration="2"/>
+    <testCase name="ChatPin Icon has correct viewBox" duration="2"/>
+    <testCase name="ChatPin Icon contains at least one path or shape element" duration="3"/>
+    <testCase name="ChatPinFilled Icon renders without crashing" duration="2"/>
+    <testCase name="ChatPinFilled Icon passes className prop correctly" duration="2"/>
+    <testCase name="ChatPinFilled Icon passes other props correctly" duration="2"/>
+    <testCase name="ChatPinFilled Icon has correct viewBox" duration="3"/>
+    <testCase name="ChatPinFilled Icon contains at least one path or shape element" duration="4"/>
+    <testCase name="CheckCircleIcon Icon renders without crashing" duration="2"/>
+    <testCase name="CheckCircleIcon Icon passes className prop correctly" duration="1"/>
+    <testCase name="CheckCircleIcon Icon passes other props correctly" duration="2"/>
+    <testCase name="CheckCircleIcon Icon has correct viewBox" duration="2"/>
+    <testCase name="CheckCircleIcon Icon contains at least one path or shape element" duration="2"/>
+    <testCase name="AlertIcon Icon renders without crashing" duration="4"/>
+    <testCase name="AlertIcon Icon passes className prop correctly" duration="1"/>
+    <testCase name="AlertIcon Icon passes other props correctly" duration="3"/>
+    <testCase name="AlertIcon Icon has correct viewBox" duration="4"/>
+    <testCase name="AlertIcon Icon contains at least one path or shape element" duration="4"/>
+    <testCase name="AlertCircleIcon Icon renders without crashing" duration="2"/>
+    <testCase name="AlertCircleIcon Icon passes className prop correctly" duration="1"/>
+    <testCase name="AlertCircleIcon Icon passes other props correctly" duration="1"/>
+    <testCase name="AlertCircleIcon Icon has correct viewBox" duration="2"/>
+    <testCase name="AlertCircleIcon Icon contains at least one path or shape element" duration="1"/>
+    <testCase name="CloseCircleIcon Icon renders without crashing" duration="1"/>
+    <testCase name="CloseCircleIcon Icon passes className prop correctly" duration="3"/>
+    <testCase name="CloseCircleIcon Icon passes other props correctly" duration="1"/>
+    <testCase name="CloseCircleIcon Icon has correct viewBox" duration="2"/>
+    <testCase name="CloseCircleIcon Icon contains at least one path or shape element" duration="1"/>
+    <testCase name="CheckIcon Icon renders without crashing" duration="2"/>
+    <testCase name="CheckIcon Icon passes className prop correctly" duration="3"/>
+    <testCase name="CheckIcon Icon passes other props correctly" duration="7"/>
+    <testCase name="CheckIcon Icon has correct viewBox" duration="2"/>
+    <testCase name="CheckIcon Icon contains at least one path or shape element" duration="1"/>
+    <testCase name="CloseIcon Icon renders without crashing" duration="1"/>
+    <testCase name="CloseIcon Icon passes className prop correctly" duration="3"/>
+    <testCase name="CloseIcon Icon passes other props correctly" duration="2"/>
+    <testCase name="CloseIcon Icon has correct viewBox" duration="2"/>
+    <testCase name="CloseIcon Icon contains at least one path or shape element" duration="2"/>
+    <testCase name="EmptyInboxIcon Icon renders without crashing" duration="3"/>
+    <testCase name="EmptyInboxIcon Icon passes className prop correctly" duration="2"/>
+    <testCase name="EmptyInboxIcon Icon passes other props correctly" duration="2"/>
+    <testCase name="EmptyInboxIcon Icon has correct viewBox" duration="2"/>
+    <testCase name="EmptyInboxIcon Icon contains at least one path or shape element" duration="3"/>
+    <testCase name="ErrorIcon Icon renders without crashing" duration="4"/>
+    <testCase name="ErrorIcon Icon passes className prop correctly" duration="2"/>
+    <testCase name="ErrorIcon Icon passes other props correctly" duration="2"/>
+    <testCase name="ErrorIcon Icon has correct viewBox" duration="8"/>
+    <testCase name="ErrorIcon Icon contains at least one path or shape element" duration="4"/>
+    <testCase name="NoSearchResultIcon Icon renders without crashing" duration="8"/>
+    <testCase name="NoSearchResultIcon Icon passes className prop correctly" duration="5"/>
+    <testCase name="NoSearchResultIcon Icon passes other props correctly" duration="8"/>
+    <testCase name="NoSearchResultIcon Icon has correct viewBox" duration="3"/>
+    <testCase name="NoSearchResultIcon Icon contains at least one path or shape element" duration="6"/>
+    <testCase name="SearchIcon Icon renders without crashing" duration="1"/>
+    <testCase name="SearchIcon Icon passes className prop correctly" duration="2"/>
+    <testCase name="SearchIcon Icon passes other props correctly" duration="2"/>
+    <testCase name="SearchIcon Icon has correct viewBox" duration="3"/>
+    <testCase name="SearchIcon Icon contains at least one path or shape element" duration="6"/>
+  </file>
+</testExecutions>

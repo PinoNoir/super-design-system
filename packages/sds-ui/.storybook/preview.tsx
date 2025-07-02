@@ -3,9 +3,9 @@ import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import '../__mocks__/initialize'; // MSW Config
 
 // Load Global CSS
-import 'sds-styles/bcc';
-import 'sds-styles/tsc';
-import 'sds-styles/core';
+import '../../sds-styles/lib/bcc/global.min.css';
+import '../../sds-styles/lib/tsc/global.min.css';
+import '../../sds-styles/lib/core/global.min.css';
 
 const preview: Preview = {
   decorators: [

@@ -9,5 +9,8 @@ export { default as SearchIcon } from './svg/SearchIcon';
 export { default as AIstars } from './svg/AIStars';
 export { default as ChatPin } from './svg/ChatPin';
 export { default as ChatPinFilled } from './svg/ChatPinFilled';
+export { default as EmptyInboxIcon } from './svg/EmptyInboxIcon';
+export { default as ErrorIcon } from './svg/ErrorIcon';
+export { default as NoSearchResultIcon } from './svg/NoSearchResultIcon';
 
 export type { IconProps } from './Icon';
