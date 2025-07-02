@@ -1,0 +1,153 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as FileUploaderStories from './FileUploader.stories';
+
+<Meta of={FileUploaderStories} />
+
+# File Uploader
+
+The `FileUploader` component allows users to upload files to the system from their local device. It works in conjunction with the `FileContext` to manage file upload states and processes.
+
+## Features
+
+- Drag and Drop: Users can drag files directly into the component area or use a traditional file selection dialog.
+- Multiple File Support: Allows uploading multiple files simultaneously.
+- File Type Validation: Ensures only specified file types are uploaded.
+- Upload Progress Indicator: Displays real-time progress for individual file uploads, controlled via the `useFileContext` hook.
+- Customizable File Cards: Renders file information using customizable `FileCard` components.
+
+## Usage
+
+### Step 1: Wrap your application with FileContextProvider
+
+First, wrap your top-level component or the relevant component tree with the `FileContextProvider`:
+
+```jsx
+import { FileContextProvider } from '@stretto/cds-ui';
+
+const MyApp = () => {
+  return (
+    <FileContextProvider>
+      <App />
+    </FileContextProvider>
+  );
+};
+```
+
+2. In the parent component where you use the `FileUploader` component, use the `useFileContext` hook to access the necessary callback functions to control the state of the file upload.
+
+#### Example:
+
+```jsx
+import React, { useCallback } from 'react';
+import { FileUploader, useFileContext, FileStatus } from '@stretto/cds-ui';
+
+const MyComponent = () => {
+  const {
+    addFile,
+    updateFileProgress,
+    updateFileStatus,
+    showStatusMessage,
+    retryUpload,
+    clearAllFiles,
+  } = useFileContext();
+
+  const mockOnUpload = useCallback(
+    async (file: File) => {
+      addFile(file);
+
+      try {
+        // Simulate upload process
+        for (let progress = 0; progress <= 100; progress += 10) {
+          updateFileProgress(file.name, progress);
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+
+        updateFileStatus(file.name, FileStatus.Complete, 'File uploaded successfully.');
+        showStatusMessage('success', 'File uploaded successfully!', 'check-circle');
+        clearAllFiles();
+      } catch (error) {
+        updateFileStatus(file.name, FileStatus.ValidationFailed, 'File upload failed.');
+        showStatusMessage(
+          'error',
+          'File upload failed. Please try again.',
+          'alert-rhombus',
+        );
+        throw error;
+      }
+    },
+    [addFile, updateFileProgress, updateFileStatus, showStatusMessage, clearAllFiles]
+  );
+
+  const renderFileCard = useCallback(
+    (fileWithStatus: FileWithStatus) => (
+      <FileCard
+        key={fileWithStatus.file.name}
+        fileWithStatus={fileWithStatus}
+        onRetryUpload={() => retryUpload(fileWithStatus.file)}
+        metaData="Your metadata here"
+      />
+    ),
+    [retryUpload]
+  );
+
+  return (
+    <FileUploader
+      buttonLabel="Select file"
+      helperText="Up to 5 files can be uploaded at a time, each no larger than 20MB, and the total upload size should not exceed 200MB. Only PDF format is accepted."
+      accept={['.pdf']}
+      labelDescription="or Drop Files Here"
+      disabled={false}
+      multiple={true}
+      maxFileSize={10}
+      maxFiles={5}
+      onUpload={mockOnUpload}
+      renderFileCard={renderFileCard}
+    />
+  );
+};
+```
+
+### File Upload Example
+
+<Canvas of={FileUploaderStories.FileUploadExample} />
+
+### FileUploader Props
+
+- buttonLabel: (string) Label for the file selection button.
+- helperText: (string) Helper text displayed below the uploader.
+- accept: (string[]) Array of accepted file types.
+- labelDescription: (string) Additional description for the uploader.
+- disabled: (boolean) Whether the uploader is disabled.
+- multiple: (boolean) Whether multiple file selection is allowed.
+- maxFileSize: (number) Maximum file size in MB.
+- maxFiles: (number) Maximum number of files that can be uploaded.
+- onUpload: (function) Callback function called when files are selected for upload.
+- renderFileCard: (function) Custom function to render FileCard components.
+
+<hr />
+
+# FileCard
+
+> Displays individual file information including status, progress, and actions like edit, download, and delete.
+> Used internally by the `FileUploader` component to display individual file information.
+> Can be used independently to display file information in a list or grid format.
+
+<Canvas of={FileUploaderStories.FileCardExamples} />
+
+### FileCard Props:
+
+fileWithStatus: (object) Object containing file info and status.
+onRetryUpload: (function) Callback for retrying upload.
+metaData: (string) Additional metadata for the file.
+
+#### Notes for Developers
+
+1. Ensure that you're wrapping your application or relevant component tree with FileContextProvider.
+2. Customize the mockOnUpload function to integrate with your actual file upload API.
+3. The renderFileCard function allows you to customize how each file's information is displayed.
+4. Use the functions provided by useFileContext to manage file states and show status messages.
+5. Adjust the maxFileSize, maxFiles, and accept props according to your application's requirements.
+
+- These components are complex and have a lot of moving parts. If you are using them in your application, make sure to test them thoroughly.
+- If you experience any issues or have questions, please reach out to **nicholas.pino@stretto** or message me on teams chat. I'll be happy to troubleshoot and assist you!
+- If you have any suggestions for improvements or new features, please open a Jira ticket and assign it to me (nicholas.pino), I'm always looking for ways to make our design system better!

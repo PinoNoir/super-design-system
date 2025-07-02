@@ -1,0 +1,332 @@
+/* Wrapper.module.css - With improved responsive gap handling */
+
+.wrapper {
+  display: flex;
+  box-sizing: border-box;
+}
+
+/* Direction classes */
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Columns container setup */
+.cols {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/*
+ * Improved column gap handling
+ * Uses right padding on columns and negative right margin on container
+ * This approach handles any number of columns without :nth-child selectors
+ */
+.colsWithGap {
+  margin-right: calc(-1 * var(--col-gap));
+}
+
+.colsWithGap > .column {
+  padding-right: var(--col-gap);
+  margin-bottom: var(--col-gap);
+}
+
+/* Equal width columns */
+.colEqual {
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 0%;
+}
+
+/* Auto width column */
+.colAuto {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+/* Column width classes - mobile first (default) */
+.col-1 {
+  flex: 0 0 auto;
+  width: 8.333333%;
+}
+
+.col-2 {
+  flex: 0 0 auto;
+  width: 16.666667%;
+}
+
+.col-3 {
+  flex: 0 0 auto;
+  width: 25%;
+}
+
+.col-4 {
+  flex: 0 0 auto;
+  width: 33.333333%;
+}
+
+.col-5 {
+  flex: 0 0 auto;
+  width: 41.666667%;
+}
+
+.col-6 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+
+.col-7 {
+  flex: 0 0 auto;
+  width: 58.333333%;
+}
+
+.col-8 {
+  flex: 0 0 auto;
+  width: 66.666667%;
+}
+
+.col-9 {
+  flex: 0 0 auto;
+  width: 75%;
+}
+
+.col-10 {
+  flex: 0 0 auto;
+  width: 83.333333%;
+}
+
+.col-11 {
+  flex: 0 0 auto;
+  width: 91.666667%;
+}
+
+.col-12 {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+/* Tablet breakpoint column classes (apply at min-width: 768px) */
+@media (min-width: 768px) {
+  .tablet-colEqual {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0%;
+  }
+
+  .tablet-colAuto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .tablet-col-1 {
+    flex: 0 0 auto;
+    width: 8.333333%;
+  }
+
+  .tablet-col-2 {
+    flex: 0 0 auto;
+    width: 16.666667%;
+  }
+
+  .tablet-col-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .tablet-col-4 {
+    flex: 0 0 auto;
+    width: 33.333333%;
+  }
+
+  .tablet-col-5 {
+    flex: 0 0 auto;
+    width: 41.666667%;
+  }
+
+  .tablet-col-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .tablet-col-7 {
+    flex: 0 0 auto;
+    width: 58.333333%;
+  }
+
+  .tablet-col-8 {
+    flex: 0 0 auto;
+    width: 66.666667%;
+  }
+
+  .tablet-col-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+
+  .tablet-col-10 {
+    flex: 0 0 auto;
+    width: 83.333333%;
+  }
+
+  .tablet-col-11 {
+    flex: 0 0 auto;
+    width: 91.666667%;
+  }
+
+  .tablet-col-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+/* Desktop breakpoint column classes (apply at min-width: 1024px) */
+@media (min-width: 1024px) {
+  .desktop-colEqual {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0%;
+  }
+
+  .desktop-colAuto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .desktop-col-1 {
+    flex: 0 0 auto;
+    width: 8.333333%;
+  }
+
+  .desktop-col-2 {
+    flex: 0 0 auto;
+    width: 16.666667%;
+  }
+
+  .desktop-col-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .desktop-col-4 {
+    flex: 0 0 auto;
+    width: 33.333333%;
+  }
+
+  .desktop-col-5 {
+    flex: 0 0 auto;
+    width: 41.666667%;
+  }
+
+  .desktop-col-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .desktop-col-7 {
+    flex: 0 0 auto;
+    width: 58.333333%;
+  }
+
+  .desktop-col-8 {
+    flex: 0 0 auto;
+    width: 66.666667%;
+  }
+
+  .desktop-col-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+
+  .desktop-col-10 {
+    flex: 0 0 auto;
+    width: 83.333333%;
+  }
+
+  .desktop-col-11 {
+    flex: 0 0 auto;
+    width: 91.666667%;
+  }
+
+  .desktop-col-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+/* Alignment classes */
+.align-start {
+  align-items: flex-start;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.align-stretch {
+  align-items: stretch;
+}
+
+.align-baseline {
+  align-items: baseline;
+}
+
+/* Self-alignment for columns */
+.self-start {
+  align-self: flex-start;
+}
+
+.self-center {
+  align-self: center;
+}
+
+.self-end {
+  align-self: flex-end;
+}
+
+.self-stretch {
+  align-self: stretch;
+}
+
+.self-baseline {
+  align-self: baseline;
+}
+
+/* Justify classes */
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
+/* Other utility classes */
+.wrap {
+  flex-wrap: wrap;
+}

@@ -1,0 +1,126 @@
+.tab-group-container {
+  width: 100%;
+  min-width: 600px;
+}
+
+.tab-group-container[data-orientation='vertical'] {
+  flex-direction: column;
+}
+
+.tab-group-container[data-orientation='horizontal'] {
+  flex-direction: row;
+}
+
+.tab-group {
+  width: 100%;
+  min-width: 600px;
+  overflow: hidden;
+  margin: auto;
+}
+
+.tab-headers {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.tab {
+  all: unset;
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  z-index: 1;
+  color: var(--theme-text-base);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  padding-inline: var(--space-32);
+  padding-block: var(--space-8);
+  background-color: var(--color-transparent);
+  border-bottom: var(--border-width-2) solid var(--color-transparent);
+  transition:
+    background-color 150ms ease-in-out,
+    border-color 150ms ease-in-out;
+}
+
+/* Tab interaction states */
+.tab:hover {
+  color: var(--theme-text-base);
+  background-color: var(--theme-color-foreground);
+  border-bottom: var(--border-width-2) solid var(--theme-color-primary);
+}
+
+.tab:active {
+  color: var(--theme-text-base);
+  background-color: var(--theme-color-primary);
+}
+
+.tab:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: var(--theme-color-foreground);
+}
+
+.active {
+  color: var(--theme-color-primary);
+  border-bottom: var(--border-width-2) solid var(--theme-color-primary);
+}
+
+.tab-bar {
+  width: 100%;
+}
+
+.tab-scroller {
+  display: flex;
+  max-width: 1600px;
+  overflow-y: hidden;
+}
+
+.tab-scroller-scroll {
+  overflow-x: scroll;
+}
+
+.tab-scroller-scroll-area {
+  overflow-x: scroll;
+  display: flex;
+}
+
+/* Hide scrollbar in webkit browsers */
+.tab-scroller-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-scroller-scroll-content {
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  transform: none;
+  will-change: transform;
+}
+
+.tab-scroll-arrows {
+  all: unset;
+  align-self: center;
+  float: left;
+  cursor: pointer;
+  color: var(--theme-text-base);
+  font-size: 20px;
+}
+
+.tab-list {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.tab-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-sizing: content-box;
+  height: var(--border-width-2);
+  background-color: var(--color-neutral-40);
+  z-index: 0;
+}

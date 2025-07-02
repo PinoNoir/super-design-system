@@ -1,0 +1,106 @@
+/* StorybookDocsPage.module.css */
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 3rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.content {
+  color: var(--color-neutral-10) !important;
+  font-family: var(--font-family-body) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 75%;
+}
+
+.heading {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-neutral-10);
+  margin-block-end: var(--space-8);
+}
+
+/* Content area h1 elements that are NOT the main heading */
+.content h1:not(.heading) {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-light);
+  color: var(--color-neutral-20);
+}
+
+.content h1:not(.heading),
+.content h2,
+.content h3,
+.content h4 {
+  margin-block: var(--space-16);
+}
+
+.content h2 {
+  position: relative;
+  padding-top: var(--space-16);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-light);
+  line-height: var(--font-line-height-body);
+  color: var(--color-neutral-20);
+  margin-block-end: var(--space-8);
+}
+
+.content h2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--color-neutral-60);
+}
+
+.content h3 {
+  font-weight: var(--font-weight-regular);
+  color: var(--color-teal-40);
+  margin-block-end: var(--space-8);
+}
+
+.content h4 {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-body);
+  color: var(--color-neutral-40);
+  letter-spacing: var(--space-4);
+  text-transform: uppercase;
+  margin-block-end: var(--space-8);
+}
+
+.content * ul,
+.content * ol {
+  padding-left: var(--space-24);
+  margin-block: var(--space-8);
+}
+
+.content * li {
+  font-family: var(--font-family-body);
+  position: relative;
+  padding-left: var(--space-4);
+  margin-block: var(--space-12);
+  color: var(--color-neutral-20);
+}
+
+.content * li:last-child {
+  margin-block-end: var(--space-8);
+}
+
+/* Global hr styling - applies to all hr elements */
+hr {
+  border: none;
+  border-bottom: 1px solid var(--color-neutral-60);
+  margin-block: var(--space-16);
+}

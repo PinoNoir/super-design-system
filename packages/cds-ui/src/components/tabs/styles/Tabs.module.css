@@ -1,0 +1,134 @@
+.tab-group-container {
+  min-width: -webkit-fill-available;
+}
+
+.tab-group-container[data-orientation='vertical'] {
+  flex-direction: column;
+}
+
+.tab-group-container[data-orientation='horizontal'] {
+  flex-direction: row;
+}
+
+.tab-group {
+  overflow: hidden;
+  margin: auto;
+}
+
+.tab-headers {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.tab {
+  all: unset;
+  position: relative;
+  bottom: 0;
+  display: inline-flex;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-bottom: -1px;
+  z-index: 1;
+  padding-inline: var(--space-24);
+  padding-block: var(--space-12);
+  border-bottom-color: var(--theme-color-primary);
+  color: var(--theme-text-base);
+  font-size: var(--font-size-body);
+  background-color: var(--theme-color-foreground);
+  margin-inline-end: var(--space-2);
+  transition:
+    background-color 150ms ease-in-out,
+    border-color 150ms ease-in-out;
+}
+
+/* Tab hover state */
+.tab:hover {
+  background-color: var(--theme-color-foreground);
+}
+
+/* Tab active state */
+.tab:active {
+  background-color: var(--theme-color-primary);
+  color: var(--theme-color-foreground);
+}
+
+.active-tab {
+  position: relative;
+  bottom: 0;
+  z-index: 2;
+  color: var(--theme-text-base);
+  background-color: var(--theme-color-foreground);
+  border: 1px solid var(--theme-color-primary);
+  border-bottom: 1px solid var(--theme-color-foreground);
+}
+
+.inactive-tab {
+  position: relative;
+  bottom: 0;
+  z-index: 1;
+  background-color: var(--theme-color-foreground);
+  border-top: 1px solid var(--theme-border-base);
+  border-left: 1px solid var(--theme-border-base);
+  border-right: 1px solid var(--theme-border-base);
+  border-bottom: 1px solid var(--theme-color-primary);
+}
+
+.tab-bar {
+  width: 100%;
+}
+
+.tab-scroller {
+  display: flex;
+  max-width: 1600px;
+  overflow-y: hidden;
+}
+
+.tab-scroller-scroll {
+  overflow-x: scroll;
+}
+
+.tab-scroller-scroll-area {
+  overflow-x: scroll;
+  display: flex;
+}
+
+/* Hide scrollbar in webkit browsers */
+.tab-scroller-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-scroller-scroll-content {
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  transform: none;
+  will-change: transform;
+}
+
+.tab-scroll-arrows {
+  all: unset;
+  align-self: center;
+  float: left;
+  cursor: pointer;
+  color: var(--theme-text-base);
+  font-size: 20px;
+}
+
+.tab-list {
+  border-bottom: 1px solid var(--theme-color-primary);
+}
+
+.tab-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+}
+
+.content-container {
+  width: 100%;
+  margin-block: var(--space-8);
+}

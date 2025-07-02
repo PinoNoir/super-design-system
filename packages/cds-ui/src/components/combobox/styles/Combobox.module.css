@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  z-index: 7000;
+  max-height: calc(300px - 30px);
+  min-height: var(--size-40);
+  overflow-y: auto;
+  background-color: var(--theme-select-menu-background);
+  border-radius: var(--theme-select-menu-border-radius);
+  box-shadow: var(--theme-select-menu-box-shadow);
+}

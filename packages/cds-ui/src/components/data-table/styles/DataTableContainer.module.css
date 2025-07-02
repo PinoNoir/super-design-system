@@ -1,0 +1,49 @@
+/* TableContainer.module.css */
+
+/**********************************************
+				Table Container & Content
+**********************************************/
+
+.container {
+  position: relative;
+}
+
+.containerStatic {
+  inline-size: fit-content;
+}
+
+/**********************************************
+				Table Header Styles
+**********************************************/
+
+.header {
+  padding-block-end: var(--space-16);
+}
+
+.headerTitle {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-light);
+  color: var(--theme-text-base);
+}
+
+.headerDescription {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-light);
+  color: var(--theme-text-base);
+}
+
+@media screen and (min-width: 768px) {
+  .headerDescription {
+    max-inline-size: 60ch;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .headerDescription {
+    max-inline-size: 80ch;
+  }
+}
+
+.stickyHeaderMaxWidth {
+  max-inline-size: 100%;
+}

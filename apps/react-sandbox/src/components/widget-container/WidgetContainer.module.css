@@ -1,0 +1,48 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  border-radius: var(--border-radius-4);
+  background-color: var(--theme-color-background);
+  border: 1px solid var(--theme-border-base);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 400px;
+}
+
+.widgetContainer {
+  padding: var(--space-16);
+  flex-grow: 1;
+  min-height: 200px;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Style for when an item is being dragged over this column */
+.isOver {
+  background-color: var(--theme-color-inverted);
+  box-shadow: inset 0 0 0 2px var(--theme-color-inverted);
+  border-radius: var(--border-radius-4);
+  min-height: 100%;
+}
+
+/* Empty placeholder - only shown when column has no items */
+.emptyPlaceholder {
+  color: var(--theme-text-muted);
+  background-color: var(--theme-color-inverted);
+  font-weight: var(--font-weight-medium);
+  border: 2px dashed var(--color-neutral-40);
+  border-radius: var(--border-radius-4);
+  padding: 24px 16px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+/* When dragging over an empty column */
+.isOver .emptyPlaceholder {
+  border-radius: var(--border-radius-4);
+  color: var(--color-neutral-40);
+  border-color: var(--color-neutral-40);
+  background-color: var(--theme-color-inverted);
+}

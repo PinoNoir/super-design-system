@@ -1,0 +1,114 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: 4px 16px 0 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+}
+
+.Title {
+  margin-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-neutral-20);
+  padding-bottom: var(--space-8);
+}
+
+.Summary,
+.KeyPoints,
+.Invoice {
+  background-color: var(--color-neutral-10);
+  border-radius: var(--space-8);
+  padding: var(--space-16);
+  margin-bottom: var(--space-16);
+}
+
+.KeyPointsList {
+  margin-top: var(--space-8);
+  padding-left: var(--space-16);
+  list-style-type: disc;
+  color: var(--color-neutral-80);
+}
+
+.KeyPointsList li {
+  margin-bottom: var(--space-8);
+}
+
+.InvoiceDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-12);
+  margin-top: var(--space-12);
+}
+
+.Detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.Loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  gap: var(--space-16);
+  text-align: center;
+  padding: 24px;
+}
+
+.Error {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: var(--space-16);
+  background-color: var(--color-danger-10, #fff0f0);
+  border-radius: var(--space-8);
+  margin: var(--space-16);
+}
+
+.Actions {
+  display: flex;
+  gap: var(--space-12);
+  margin-top: var(--space-8);
+}
+
+.DebugInfo {
+  margin-top: var(--space-16);
+  font-size: var(--space-12);
+  color: var(--color-neutral-80);
+  border-top: 1px solid var(--color-neutral-20);
+  padding-top: var(--space-12);
+}
+
+.DebugInfo pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  background-color: var(--color-neutral-10);
+  padding: var(--space-8);
+  border-radius: var(--border-radius-4);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.RawTextContent {
+  margin-top: var(--space-8);
+  background-color: var(--color-neutral-10);
+  padding: var(--space-12);
+  border-radius: var(--border-radius-4);
+  white-space: pre-wrap;
+}
+
+.Empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: var(--space-16);
+  color: var(--color-neutral-40);
+  background-color: var(--color-neutral-10);
+  border-radius: var(--space-8);
+  padding: var(--space-16);
+  margin: var(--space-16);
+  border: 1px dashed var(--color-neutral-20);
+}

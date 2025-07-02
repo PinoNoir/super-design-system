@@ -1,0 +1,90 @@
+{
+  "name": "@stretto/cadence-design-system",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b",
+  "workspaces": [
+    "apps/**",
+    "packages/**"
+  ],
+  "author": {
+    "name": "Nicholas Pino",
+    "email": "nicholas.pino@stretto.com"
+  },
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:ui": "pnpm --filter ./packages/cds-ui build",
+    "build:styles": "pnpm --filter ./packages/cds-styles build",
+    "build:tokens": "pnpm --filter ./packages/cds-tokens build",
+    "test": "pnpm -r test",
+    "lint": "prettier --ignore-path .prettierignore --check \"**/*.{js,jsx,ts,tsx,json,css,html,md,mdx}\" && eslint \"packages/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "prettier --ignore-path .prettierignore --write \"**/*.{js,jsx,ts,tsx,json,css,html,md,mdx}\"",
+    "format": "syncpack format -s -c ./.syncpackrc",
+    "clean": "pnpm -r clean",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish",
+    "preinstall": "only-allow pnpm",
+    "install-deps": "pnpm install --recursive",
+    "update-deps": "pnpm update -i --recursive --latest",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.27.0",
+    "@changesets/changelog-git": "^0.2.1",
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.0",
+    "@changesets/get-release-plan": "^4.0.8",
+    "@changesets/types": "^6.1.0",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.24.0",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.6",
+    "@typescript-eslint/eslint-plugin": "^8.29.1",
+    "@typescript-eslint/parser": "^8.29.1",
+    "dotenv": "^16.5.0",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jest": "^28.11.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-mdx": "^3.4.0",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "gradient-string": "^3.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
+    "nanospinner": "^1.2.2",
+    "only-allow": "^1.2.1",
+    "prettier": "^3.5.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rimraf": "^6.0.1",
+    "syncpack": "^13.0.4",
+    "typescript": "^5.8.3",
+    "yoctocolors": "^2.1.1"
+  },
+  "engines": {
+    "node": ">=22.5.1",
+    "npm": ">=9.6.7",
+    "pnpm": ">=10"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@bundled-es-modules/glob",
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "msw",
+      "style-dictionary",
+      "sharp",
+      "unrs-resolver"
+    ]
+  }
+}

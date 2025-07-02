@@ -1,0 +1,13 @@
+.formHelperTextDisabled {
+  color: var(--theme-input-disabled-text-color);
+}
+
+.formHelperText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--theme-input-helper-text-color);
+  z-index: 0;
+  inline-size: 100%;
+  margin-block-start: var(--space-4);
+  opacity: 1;
+}

@@ -1,0 +1,50 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import { Icon } from '@iconify/react';
+import * as WorkflowModalStories from './WorkflowModal.stories';
+
+<Meta of={WorkflowModalStories} />
+
+# Workflow Modal
+
+> The `WorkflowModal` is a React component designed to render a full screen modal that slides in and out of the viewport.
+
+> Provides a flexible way to display content in a modal overlay.
+
+> Useful for showing additional information, settings, or any content that should not always be visible on the page.
+
+> Utilizes `framer-motion` for animations and a custom `Portal` component for rendering the panel outside the regular DOM hierarchy.
+
+> The panel can be opened and closed programmatically by setting the `isOpen` prop to `true` or `false`.
+
+> The panel can be closed by clicking on the overlay or by pressing the `ESC` key.
+
+<Canvas of={WorkflowModalStories.Default} />
+
+## Props
+
+The component accepts the following props:
+
+- `id` (optional): A string that specifies the unique identifier for the workflow modal. Useful for accessibility purposes and for targeting the panel with CSS or JavaScript.
+- `title`: A `React.ReactNode` that represents the title of the workflow modal. This can be a string or any React component.
+- `footer` (optional): A `React.ReactNode` that will be rendered as the footer of the panel. This is useful for adding actions or additional information related to the content of the flyout.
+- `children`: A `React.ReactNode` representing the content of the workflow modal. This is the main body of the panel where your custom content will be placed.
+
+## Example
+
+```jsx
+import React, { useState } from 'react';
+import { WorkflowModal } from '@stretto/cds-ui';
+
+const MyComponent = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Open Panel</button>
+      <WorkflowModal id="my-flyout-panel" title="My Panel Title" isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <p>This is the content of my workflow modal.</p>
+      </WorkflowModal>
+    </>
+  );
+};
+```

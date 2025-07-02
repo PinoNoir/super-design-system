@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib",
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2022"],
+    "target": "ES2022",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true,
+    "moduleDetection": "force",
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "lib",
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["lib", "node_modules"]
+}

@@ -1,0 +1,64 @@
+.selectOuterWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.labelWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.label {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-input-label-text-color);
+  line-height: var(--font-line-height-condensed);
+}
+
+.requiredLabel::after {
+  content: '*';
+  color: var(--theme-input-error-text-color);
+  margin-left: 4px;
+}
+
+.select {
+  width: 100%;
+  height: var(--theme-select-trigger-height);
+  padding: 0 8px;
+  font-size: var(--font-size-body);
+  font-family: var(--font-family-body);
+  border: 1px solid var(--theme-select-trigger-border-color);
+  border-radius: var(--theme-select-trigger-border-radius);
+  background-color: var(--theme-color-component);
+  color: var(--theme-select-input-value-color);
+  appearance: none;
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: var(--theme-input-focus-border-color);
+  box-shadow: 0 0 0 2px var(--theme-input-focus-box-shadow-color);
+  outline: none;
+}
+
+.select:disabled {
+  color: var(--theme-select-trigger-font-color);
+  background-color: var(--theme-select-trigger-disabled-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.invalid {
+  border-color: var(--theme-input-error-text-color);
+  color: var(--theme-input-error-text-color);
+}
+
+.errorMessage {
+  margin-top: 8px;
+  font-size: var(--font-size-body);
+  color: var(--theme-input-error-text-color);
+}

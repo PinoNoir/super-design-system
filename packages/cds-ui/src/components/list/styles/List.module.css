@@ -1,0 +1,66 @@
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: var(--space-8);
+  width: 100%;
+  padding: var(--space-12);
+  margin-block-end: var(--space-8);
+  background-color: var(--theme-color-foreground);
+  box-shadow: var(--shadow-bottom-2);
+  border-radius: var(--border-radius-4);
+  transition: background-color 300ms ease;
+  overflow: hidden;
+}
+
+.listItem button svg {
+  width: 20px;
+  height: 20px;
+  color: var(--theme-icon-base);
+}
+
+.innerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.actionBarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-8);
+}
+
+.listItemForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--space-16);
+}
+
+.listItemFormButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-8);
+}
+
+.draggable {
+  cursor: grab;
+}
+
+.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}

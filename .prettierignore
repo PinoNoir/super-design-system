@@ -1,0 +1,8 @@
+# Add files here to ignore them from prettier formatting
+
+/packages/*/dist
+/packages/*/lib
+/packages/*/coverage
+/packages/*/storybook-static
+/packages/*/*.dts
+/apps/gen-ai/.next

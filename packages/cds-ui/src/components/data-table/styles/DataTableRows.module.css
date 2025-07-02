@@ -1,0 +1,292 @@
+/**********************************************
+                TR ELEMENT
+**********************************************/
+
+.dataTableRow {
+  font-size: 13px;
+  color: var(--theme-table-row-text-color);
+  background-color: var(--theme-table-row-background-color);
+  padding-inline: 1rem;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: var(--theme-table-row-hover-background-color);
+    color: var(--theme-table-row-hover-text-color);
+    cursor: pointer;
+  }
+}
+
+.dataTableRow:nth-child(even) {
+  color: var(--theme-table-row-text-color);
+  background-color: var(--theme-table-row-even-background-color);
+
+  &:hover {
+    color: var(--theme-table-row-hover-text-color);
+    background-color: var(--theme-table-row-even-hover-background-color);
+    cursor: pointer;
+  }
+}
+
+/* Row State Modifiers */
+.dataTableRow.disabled {
+  opacity: 0.5;
+  color: var(--color-neutral-60);
+  background-color: var(--theme-color-disabled);
+  cursor: not-allowed;
+}
+
+.dataTableRow.disabled:nth-child(even) {
+  background-color: var(--theme-color-disabled);
+}
+
+.dataTableRow.disabled:hover {
+  background-color: var(--theme-table-row-hover-background-color);
+}
+
+.selected {
+  color: var(--theme-table-row-selected-text-color);
+  background-color: var(--theme-table-row-selected-background-color);
+}
+
+.selected:nth-child(even) {
+  color: var(--theme-table-row-selected-text-color);
+  background-color: var(--theme-table-row-selected-background-color);
+}
+
+.selected td:has(.ssnContainer) {
+  color: var(--theme-table-row-selected-text-color);
+}
+
+.dragging {
+  opacity: 0.5;
+  background-color: var(--theme-color-primary);
+  cursor: grabbing !important;
+}
+
+.draggable {
+  cursor: grab;
+}
+
+.draggable svg {
+  cursor: grab;
+  color: var(--theme-text-base);
+  width: 24px;
+  height: 24px;
+  transition: color 300ms ease-in-out;
+}
+
+.draggable svg:hover {
+  color: var(--theme-color-primary);
+}
+
+.draggable tr {
+  opacity: 0.5;
+  background-color: var(--theme-color-primary);
+}
+
+/* Expandable/Collapsible Rows */
+.expanded {
+  background-color: var(--theme-color-primary);
+}
+
+.collapsibleRow {
+  background-color: var(--theme-color-primary);
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 300ms ease-in-out;
+}
+
+.expanded + .collapsibleRow {
+  max-height: 100%;
+}
+
+.collapsibleContent {
+  padding: var(--space-24);
+}
+
+/**********************************************
+                ROW HEIGHT VARIANTS
+**********************************************/
+
+.base {
+  height: 52px;
+}
+
+.condensed {
+  height: 40px;
+}
+
+/* Cell Content Elements */
+.dataTableRow.disabled > .dataTableCell > button:disabled {
+  background-color: var(--color-neutral-30);
+  border-color: var(--color-neutral-30);
+  color: var(--color-neutral-60);
+}
+
+.dataTableRow.disabled > .dataTableCell > input {
+  background-color: var(--color-neutral-30);
+}
+
+/* Dropdown Triggers */
+.dataTableRow > .dataTableCell > .dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: var(--color-transparent, transparent);
+  border: 0;
+  color: var(--color-neutral-100);
+}
+
+.dataTableRow > .dataTableCell:last-child:has(.dropdownTrigger) {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-inline-end: 0px;
+  height: 52px;
+}
+
+.dataTableRow > .dataTableCell:last-child:has(.dropdownTrigger svg) {
+  cursor: pointer;
+}
+
+.dataTableRow > .dataTableCell > .dropdownTrigger svg:hover {
+  cursor: pointer;
+  color: var(--color-neutral-100);
+}
+
+.dataTableRow.selected > .dataTableCell > .dropdownTrigger {
+  background-color: var(--color-transparent, transparent);
+  border: 0;
+  color: var(--color-neutral-100);
+}
+
+/* Main row styles */
+.collapsibleRow {
+  display: table-row;
+  /* Remove visibility: collapse - it can cause layout issues */
+}
+
+.collapsibleContentRow {
+  display: table-row;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover:not(.disabled) {
+  background-color: var(--theme-table-row-hover-background-color);
+}
+
+.expanded {
+  /* Remove height: auto - not needed for table rows */
+}
+
+/* Collapsible content container */
+.collapsibleContent {
+  display: block; /* Changed from flex - td content should be block */
+  padding: var(--space-16);
+  border-top: 1px solid var(--theme-border-base);
+  background-color: var(--theme-color-foreground);
+  overflow: hidden;
+
+  /* Improved animation approach */
+  transition:
+    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease-in-out,
+    padding 0.3s ease-in-out;
+
+  /* Start collapsed */
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Expanded state - apply this class when isExpanded is true */
+.collapsibleContent.expanded {
+  max-height: 1000px; /* Use a reasonable max instead of 100vh */
+  opacity: 1;
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+}
+
+/* Alternative: If you want smooth height transitions, consider this approach */
+.collapsibleContentWrapper {
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 0;
+}
+
+.collapsibleContentWrapper.expanded {
+  max-height: 500px; /* Adjust based on your content needs */
+}
+
+.collapsibleContentInner {
+  padding: var(--space-16);
+  border-top: 1px solid var(--theme-border-base);
+  background-color: var(--theme-color-foreground);
+}
+
+/* Expand button styles */
+.expandColumn {
+  width: 40px;
+  padding: 0 !important;
+  text-align: center;
+  vertical-align: middle; /* Better alignment in table cell */
+}
+
+.expandButton {
+  all: unset;
+  background: none;
+  border: none;
+  padding: var(--space-8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius-4); /* Add border radius for better UX */
+  transition: background-color 0.2s ease;
+}
+
+.expandButton:hover:not(:disabled) {
+  background-color: var(--theme-table-cell-hover-background-color);
+}
+
+.expandButton:focus-visible {
+  outline: 2px solid var(--theme-focus-outline-color);
+  outline-offset: 2px;
+}
+
+.expandIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expandIcon svg {
+  fill: var(--theme-icon-base);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 20px;
+  height: 20px;
+}
+
+.expandIcon[data-state='expanded'] svg {
+  transform: rotate(180deg);
+}
+
+.dataTableRow.collapsibleRow:hover .expandButton {
+  background-color: var(--theme-table-cell-hover-background-color);
+}
+
+/* Disabled state */
+.disabled .expandButton {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.disabled .expandIcon svg {
+  fill: var(--theme-icon-disabled);
+}

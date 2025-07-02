@@ -1,0 +1,101 @@
+/* Theme overrides for file card error text color */
+
+:root[data-theme='bcc-dark'],
+:root[data-theme='tsc-dark'],
+:root[data-theme='core-dark'] {
+  --theme-uploader-border-color: var(--theme-color-primary);
+  --theme-uploader-text-color: var(--theme-color-primary);
+  --theme-uploader-helper-text-color: var(--color-neutral-40);
+}
+
+:root[data-theme='bcc-light'],
+:root[data-theme='tsc-light'],
+:root[data-theme='core-light'] {
+  --theme-uploader-border-color: var(--theme-color-primary);
+  --theme-uploader-text-color: var(--theme-color-primary);
+  --theme-uploader-helper-text-color: var(--theme-text-muted);
+}
+
+.fileUploader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.fileContainer {
+  display: grid;
+  gap: var(--space-12);
+  grid-template-columns: 1fr;
+}
+
+.fileDescription {
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  line-height: var(--line-height-body);
+  color: var(--theme-uploader-helper-text-color);
+}
+
+.fileDropContainer {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: inherit;
+  vertical-align: baseline;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: center;
+  inline-size: 100%;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-body);
+  color: var(--theme-uploader-text-color);
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--space-16);
+  border: 2px dashed var(--theme-uploader-border-color);
+  border-radius: var(--border-radius-4);
+  background-color: var(--color-teal-10);
+  block-size: 6rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.fileDropContainer:hover {
+  border-color: var(--color-teal-70);
+  background-color: var(--color-teal-20);
+}
+
+.fileDropContainer:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-teal-50);
+}
+
+.fileDropContainer:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disabled:not([disabled]):hover {
+  background-color: var(--color-teal-10);
+}
+
+.fileDropContainer .disabled > button {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fileDropContainer .disabled > button:hover {
+  background-color: var(--color-teal-70);
+}
+
+.fileDropContainer .disabled > button:focus {
+  outline: none;
+  box-shadow: none;
+}

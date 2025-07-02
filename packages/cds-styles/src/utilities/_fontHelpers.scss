@@ -1,0 +1,30 @@
+@use '../foundations' as *;
+
+// Font size classes based on the Typography $font-sizes map
+
+@each $font-size, $value in $font-sizes {
+
+  .font-size {
+    &-#{$font-size} {
+      font-size: $value;
+    }
+  }
+}
+
+// Utility classes for font weights
+
+.fw-light {
+  font-weight: var(--font-weight-light);
+}
+
+.fw-regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.fw-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.fw-bold {
+  font-weight: var(--font-weight-bold);
+}

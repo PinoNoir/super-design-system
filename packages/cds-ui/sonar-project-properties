@@ -1,0 +1,22 @@
+#sonar.organization=YOUR-ORGANISATION-KEY
+sonar.projectKey=Cadence.Design.System.cds-ui
+sonar.projectName=Cadence.Design.System.cds-ui
+sonar.projectDescription=Cadence.Design.System.cds-ui
+
+## relative paths to source directories. More details and properties are described
+## in https://sonarcloud.io/documentation/project-administration/narrowing-the-focus/
+sonar.sources=./packages/cds-ui/src
+sonar.exclusions=**/types/**/*,**/common/**/*,**/utilities/**/*,**/*.stories.tsx
+sonar.coverage.exclusions=**/*.css.ts,**/*.js,**/*.stories.tsx,**/*.spec.tsx,**/*.spec.ts,**/*.mock.ts,**/*.test.tsx,**/*.test.ts,src/types/**/*,src/common/**/*,src/utilities/**/*
+sonar.language=ts
+sonar.tests=./packages/cds-ui/src
+sonar.test.inclusions=**/*.test.tsx,**/*.test.ts
+
+sonar.typescript.lcov.reportPaths=./packages/cds-ui/coverage/lcov.info
+sonar.javascript.lcov.reportPaths=./packages/cds-ui/coverage/lcov.info
+
+##sonar.dependencyCheck.jsonReportPath=./dependency-check-reports/dependency-check-report.json
+##sonar.dependencyCheck.htmlReportPath=./dependency-check-reports/dependency-check-report.html
+##sonar.dependencyCheck.summarize=true
+
+sonar.sourceEncoding=UTF-8

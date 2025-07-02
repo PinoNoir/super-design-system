@@ -1,0 +1,21 @@
+.caseList {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.caseListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: var(--space-16);
+  color: var(--theme-text-base);
+  border: 1px solid var(--theme-border-base);
+  border-radius: var(--border-radius-4);
+  padding: var(--space-8);
+  margin-block-start: var(--space-16);
+}

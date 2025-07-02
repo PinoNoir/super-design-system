@@ -1,0 +1,53 @@
+@use '../base/global-tokens' as *;
+
+// Google Roboto font import
+@import 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap';
+
+// Stretto typography
+$font-family-base: var(--font-family-base); // base system font-family
+$font-family-code: var(--font-family-code); // monospace system font-family
+$font-family-headings: var(--font-family-headings); // base system font-family
+$font-family-body: var(--font-family-body); // base system font-family
+
+// lineheight
+$font-line-height-condensed: var(--font-line-height-condensed);
+$font-line-height-body: var(--font-line-height-body);
+$font-line-height-headings: var(--font-line-height-headings);
+
+// Sass map for utility classes
+$font-sizes: (
+  'h1': 2rem,
+  // h1 size
+  'h2': 1.5rem,
+  // h2 size
+  'h3': 1.25rem,
+  // h3 size
+  'h4': 1rem,
+  // h4 size
+  'h5': 0.875rem,
+  // h5 size
+  'h6': 0.75rem,
+  // h6 size
+  'body': 0.875rem,
+  // h5, body, paragraph, and label font size
+  'sm': 0.75rem,
+  // Use for tootip and popover text
+  'xs': 0.625rem,
+  // Use for footer copywrite text & disclaimer
+);
+
+// For use in the code base
+$font-size-h1: var(--font-size-h1);
+$font-size-h2: var(--font-size-h2);
+$font-size-h3: var(--font-size-h3);
+$font-size-h4: var(--font-size-h4);
+$font-size-h5: var(--font-size-h5);
+$font-size-h6: var(--font-size-h6);
+$font-size-body: var(--font-size-body);
+$font-size-sm: var(--font-size-sm);
+$font-size-xs: var(--font-size-xs);
+
+$font-weight-bold: var(--font-weight-bold); // Bold font-weight for input field labels
+$font-weight-medium: var(--font-weight-medium); // Medium font-weight emphasized text
+$font-weight-regular: var(--font-weight-regular); // Normal font-weight for body text
+$font-weight-light: var(--font-weight-light); // Light font-weight for headings

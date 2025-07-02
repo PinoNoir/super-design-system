@@ -1,0 +1,36 @@
+.link {
+  all: unset;
+  cursor: pointer;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--theme-color-info);
+  text-decoration: none;
+  transition: color 300ms ease;
+}
+
+.link:hover {
+  color: var(--color-blue-50);
+  text-decoration: underline;
+}
+
+.link:focus {
+  outline: 2px solid var(--color-blue-50);
+  outline-offset: 2px;
+}
+
+.sm {
+  font-size: 0.75rem;
+}
+
+.md {
+  font-size: 0.875rem;
+}
+
+.lg {
+  font-size: 1rem;
+}
+
+.visited {
+  color: var(--theme-color-help);
+}

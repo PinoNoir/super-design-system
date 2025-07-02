@@ -1,0 +1,139 @@
+.skeletonTable {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: var(--border-radius-8)
+}
+
+.skeletonHeader,
+.skeletonRow {
+  display: flex;
+}
+
+.skeletonCell {
+  flex: 1;
+  height: 52px;
+  background-color: var(--theme-color-component);
+  animation: pulse 1.5s infinite ease-in-out;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+}
+
+.skeletonCell.header {
+  height: 40px;
+  background-color: var(--color-neutral-20);
+}
+
+/* Content placeholders */
+.headerText {
+  height: 16px;
+  background-color: var(--color-neutral-40, #d1d5db);
+  border-radius: 4px;
+  width: 80%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.primaryText {
+  height: 16px;
+  background-color: var(--color-neutral-40, #e5e7eb);
+  border-radius: 4px;
+  width: 85%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.secondaryText {
+  height: 12px;
+  background-color: var(--color-neutral-30, #f3f4f6);
+  border-radius: 4px;
+  width: 60%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.avatarCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-neutral-30, #e5e7eb);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.avatarText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.badge {
+  height: 24px;
+  width: 64px;
+  background-color: var(--color-neutral-30, #e5e7eb);
+  border-radius: 12px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.numberText {
+  height: 16px;
+  width: 48px;
+  background-color: var(--color-neutral-30, #e5e7eb);
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dateText {
+  height: 16px;
+  width: 72px;
+  background-color: var(--color-neutral-30, #e5e7eb);
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Variations for more realistic appearance */
+.skeletonRow:nth-child(odd) .primaryText {
+  width: 75%;
+}
+
+.skeletonRow:nth-child(even) .primaryText {
+  width: 90%;
+}
+
+.skeletonRow:nth-child(3n) .secondaryText {
+  width: 45%;
+}
+
+.skeletonRow:nth-child(4n) .dateText {
+  width: 80px;
+}
+
+.skeletonRow:nth-child(5n) .numberText {
+  width: 56px;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

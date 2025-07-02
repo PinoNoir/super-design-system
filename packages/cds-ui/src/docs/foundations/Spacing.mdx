@@ -1,0 +1,32 @@
+import { Canvas, Meta, Story, Markdown, Unstyled } from '@storybook/addon-docs';
+import { Box } from '../../components/box';
+import { Icon } from '@iconify/react';
+import { PageTemplate, HeadingTemplate } from '../storybook-components';
+
+<Meta title="Foundations/Spacing" />
+
+<Unstyled>
+<PageTemplate>
+<HeadingTemplate>Spacing</HeadingTemplate>
+
+> All spacing values use `rem` units (root em) and are only relative to the HTML document's root element. Use these values for consistent spacing across the entire application.
+
+## Spacing Tokens
+
+Read more about using CSS custom properties [here <Icon icon="mdi:open-in-new"/>](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties" 'title').
+
+```css
+--space-48: 2.75rem // 48px
+  --space-40: 2.5rem // 40px
+  --space-32: 2rem // 32px
+  --space-24: 1.5rem // 24px
+  --space-16: 1rem // 16px - Base size
+  --space-12: 0.75rem // 12px
+  --space-8: 0.5rem // 8px
+  --space-4: 0.25rem // 4px
+  --space-2: 0.125rem // 2px
+  --space-0: 0; // 0px - Use as a reset;
+```
+
+</PageTemplate>
+</Unstyled>

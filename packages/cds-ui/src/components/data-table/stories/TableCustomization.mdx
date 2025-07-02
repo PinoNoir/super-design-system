@@ -1,0 +1,591 @@
+import { Controls, Description, Meta, Story, Title, Canvas } from '@storybook/addon-docs/blocks';
+import Table from '../Table';
+import * as TableCustomizationStories from './TableCustomization.stories';
+
+<Meta of={TableCustomizationStories} />
+
+<Title />
+
+<Description />
+
+The `Table` component provides powerful customization capabilities through the `renderRow` prop, allowing you to completely customize how individual rows are rendered while maintaining all the built-in functionality like selection, sorting, and pagination.
+
+### Custom Row Rendering Overview
+
+The `renderRow` prop transforms how your table displays data while preserving all native table functionality. You get complete control over the visual presentation without losing features like keyboard navigation, accessibility, or state management.
+
+## When to Use Custom Row Rendering
+
+- **Card-style layouts** within table structure
+- **Complex row content** with multiple data points
+- **Interactive elements** like buttons or expandable sections
+- **Conditional styling** based on data values
+- **Mixed content types** within the same table
+- **Enhanced visual hierarchy** for better data presentation
+
+## RowRenderer Type Definition
+
+```typescript
+type RowRenderer<T extends TableRowBase> = (
+  rowData: T,
+  index: number,
+  options: {
+    isSelected: boolean;
+    isDisabled: boolean;
+    rowClasses: string;
+    defaultRowProps: {
+      id: string;
+      data: T;
+      columns: TableColumnProps<T>[];
+      isDisabled: boolean;
+      isSelected: boolean;
+      onRowSelect?: (rowId: string, rowData: T, isSelected: boolean, multipleSelect: boolean) => void;
+      onClick?: () => void;
+      isDraggable: boolean;
+      onDragStart?: (event: React.DragEvent) => void;
+      onDragOver?: (event: React.DragEvent) => void;
+      onDragEnd?: () => void;
+      className: string;
+    };
+  },
+) => React.ReactElement;
+```
+
+## Parameters Explained
+
+- **`rowData`**: The data object for this specific row
+- **`index`**: The row's position in the current data set
+- **`isSelected`**: Whether this row is currently selected
+- **`isDisabled`**: Whether this row should be disabled
+- **`rowClasses`**: Pre-computed CSS classes for the row
+- **`defaultRowProps`**: All the props needed to maintain table functionality
+
+### Card-Style Rows
+
+Transform your table into a card-based layout while maintaining table functionality.
+
+<Canvas of={TableCustomizationStories.CardStyleRows} />
+
+## Implementation Pattern
+
+```typescript
+const cardRowRenderer: RowRenderer<UserData> = (
+  rowData,
+  index,
+  { isSelected, isDisabled, defaultRowProps }
+) => (
+  <tr key={rowData.id}>
+    <td colSpan={columns.length} style={{ padding: '8px' }}>
+      <div
+        role="button"
+        tabIndex={isDisabled ? -1 : 0}
+        aria-pressed={isSelected}
+        style={{
+          border: isSelected ? '2px solid #3b82f6' : '1px solid #e5e7eb',
+          borderRadius: '12px',
+          padding: '16px',
+          cursor: isDisabled ? 'not-allowed' : 'pointer',
+        }}
+        onClick={isDisabled ? undefined : defaultRowProps.onClick}
+      >
+        {/* Your card content here */}
+      </div>
+    </td>
+  </tr>
+);
+```
+
+**Key Points:**
+
+- Use `colSpan={columns.length}` to span the full table width
+- Include `defaultRowProps.onClick` to maintain selection behavior
+- Use `aria-pressed` and `role="button"` for accessibility
+- Style based on `isSelected` and `isDisabled` states
+
+### Expandable Rows
+
+Create expandable rows that reveal additional details on interaction.
+
+<Canvas of={TableCustomizationStories.ExpandableRows} />
+
+## Implementation Pattern
+
+```typescript
+const expandableRowRenderer: RowRenderer<UserData> = (
+  rowData,
+  index,
+  { isSelected, defaultRowProps }
+) => {
+  const isExpanded = expandedRows.has(rowData.id);
+
+  return (
+    <React.Fragment key={rowData.id}>
+      {/* Main Row */}
+      <tr style={{ cursor: 'pointer' }}>
+        <td>
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent row selection
+              toggleExpanded(rowData.id);
+            }}
+          >
+            <Icon
+              icon="mdi:chevron-right"
+              style={{
+                transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s ease',
+              }}
+            />
+          </button>
+        </td>
+        <td onClick={defaultRowProps.onClick}>{rowData.name}</td>
+        {/* More columns... */}
+      </tr>
+
+      {/* Expanded Content */}
+      {isExpanded && (
+        <tr>
+          <td colSpan={columns.length}>
+            <div style={{ padding: '16px', backgroundColor: '#f9fafb' }}>
+              {/* Expanded content here */}
+            </div>
+          </td>
+        </tr>
+      )}
+    </React.Fragment>
+  );
+};
+```
+
+**Key Points:**
+
+- Use `React.Fragment` to return multiple `<tr>` elements
+- Use `e.stopPropagation()` to prevent conflicts between expand and select
+- Apply `onClick` to specific cells to maintain selection on the main row
+- Conditionally render the expanded row based on state
+
+## Hybrid Approach
+
+Mix custom and default row rendering within the same table.
+
+<Canvas of={TableCustomizationStories.HybridApproach} />
+
+### Implementation Pattern
+
+```typescript
+const hybridRowRenderer: RowRenderer<UserData> = (
+  rowData,
+  index,
+  { defaultRowProps }
+) => {
+  // Custom rendering for special rows
+  if (rowData.role === 'Admin') {
+    return (
+      <tr key={rowData.id} style={{ backgroundColor: '#fef3c7' }}>
+        <td colSpan={columns.length}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <TableCheckbox
+              rowId={rowData.id}
+              rowData={rowData}
+              checked={isSelected}
+              onRowChange={handleCheckboxChange}
+            />
+            <span className="admin-badge">ADMIN</span>
+            <strong>{rowData.name}</strong>
+          </div>
+        </td>
+      </tr>
+    );
+  }
+
+  // Use default rendering for regular rows
+  return <TableRow key={rowData.id} {...defaultRowProps} />;
+};
+```
+
+**Key Points:**
+
+- Conditionally choose between custom and default rendering
+- Use `TableRow` component with `defaultRowProps` for standard rows
+- Maintain consistent selection behavior across both row types
+
+### Selection Integration
+
+Properly integrate selection with custom row rendering.
+
+<Canvas of={TableCustomizationStories.SimpleCustomRows} />
+
+## Best Practices for Selection
+
+```typescript
+const customRowRenderer: RowRenderer<TableRowData> = (
+  rowData,
+  index,
+  { isSelected, isDisabled }
+) => {
+  const handleRowClick = (e: React.MouseEvent) => {
+    // Prevent row selection when clicking on checkbox
+    if (
+      (e.target as HTMLElement).closest('input[type="checkbox"]') ||
+      (e.target as HTMLElement).closest('[data-checkbox-container]')
+    ) {
+      return;
+    }
+
+    // Update selection state
+    tableState.handleRowSelection(rowData.id, rowData, isSelected, true);
+  };
+
+  const handleCheckboxChange = (rowId: string, rowData: TableRowData, isChecked: boolean) => {
+    tableState.handleRowSelection(rowId, rowData, !isChecked, true);
+  };
+
+  return (
+    <tr
+      key={rowData.id}
+      style={{
+        backgroundColor: isSelected ? '#e6f6fb' : 'transparent',
+        cursor: isDisabled ? 'not-allowed' : 'pointer',
+      }}
+      onClick={handleRowClick}
+    >
+      <td data-checkbox-container>
+        <TableCheckbox
+          rowId={rowData.id}
+          rowData={rowData}
+          checked={isSelected}
+          disabled={isDisabled}
+          onRowChange={handleCheckboxChange}
+        />
+      </td>
+      {/* Other cells... */}
+    </tr>
+  );
+};
+```
+
+**Selection Best Practices:**
+
+- Use `data-checkbox-container` to identify checkbox areas
+- Use `closest()` to detect clicks on checkbox elements
+- Handle checkbox changes separately from row clicks
+- Apply visual feedback for selected state
+- Respect disabled state for both styling and interaction
+
+### Drag and Drop Integration
+
+Implement draggable rows with custom rendering.
+
+<Canvas of={TableCustomizationStories.DraggableRows} />
+
+## Drag and Drop Pattern
+
+```typescript
+const draggableRowRenderer: RowRenderer<TableRowData> = (
+  rowData,
+  index,
+  { defaultRowProps }
+) => (
+  <tr
+    key={rowData.id}
+    draggable={defaultRowProps.isDraggable}
+    onDragStart={defaultRowProps.onDragStart}
+    onDragOver={defaultRowProps.onDragOver}
+    onDragEnd={defaultRowProps.onDragEnd}
+    className={defaultRowProps.className} // Includes drag styling
+  >
+    {/* Drag handle column (automatically added when draggableRows=true) */}
+    {defaultRowProps.isDraggable && (
+      <td style={{ cursor: 'grab' }}>
+        <Icon icon="mdi:drag-vertical" />
+      </td>
+    )}
+
+    {/* Your custom content */}
+    <td>{rowData.name}</td>
+    <td>{rowData.email}</td>
+  </tr>
+);
+
+// Usage
+<Table
+  data={data}
+  columns={columns}
+  renderRow={draggableRowRenderer}
+  draggableRows={true}
+  onRowDragEnd={handleDragEnd}
+/>
+```
+
+**Drag and Drop Requirements:**
+
+- Include all `defaultRowProps` drag event handlers
+- Use `defaultRowProps.className` for drag styling
+- Check `defaultRowProps.isDraggable` before rendering drag handles
+- The drag handle column is automatically added to your column count
+
+### Advanced Styling Techniques
+
+## Conditional Row Styling
+
+```typescript
+const styledRowRenderer: RowRenderer<UserData> = (rowData, index, { isSelected }) => {
+  const getRowStyle = () => {
+    if (rowData.status === 'inactive') {
+      return { opacity: 0.6, backgroundColor: '#f3f4f6' };
+    }
+    if (rowData.priority === 'high') {
+      return { borderLeft: '4px solid #ef4444' };
+    }
+    if (isSelected) {
+      return { backgroundColor: '#dbeafe' };
+    }
+    return {};
+  };
+
+  return (
+    <tr key={rowData.id} style={getRowStyle()}>
+      {/* Row content */}
+    </tr>
+  );
+};
+```
+
+### Responsive Row Design
+
+```typescript
+const responsiveRowRenderer: RowRenderer<UserData> = (rowData, index) => (
+  <tr key={rowData.id}>
+    <td colSpan={columns.length}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '16px',
+          padding: '16px',
+        }}
+      >
+        <div>
+          <strong>{rowData.name}</strong>
+          <p>{rowData.email}</p>
+        </div>
+        <div>
+          <span>Role: {rowData.role}</span>
+          <span>Status: {rowData.status}</span>
+        </div>
+      </div>
+    </td>
+  </tr>
+);
+```
+
+### Common Pitfalls and Solutions
+
+## ❌ Don't Forget Event Handling
+
+```typescript
+// ❌ Bad - No event handling
+const badRenderer = (rowData) => (
+  <tr>
+    <td>{rowData.name}</td>
+  </tr>
+);
+
+// ✅ Good - Proper event handling
+const goodRenderer = (rowData, index, { defaultRowProps }) => (
+  <tr onClick={defaultRowProps.onClick}>
+    <td>{rowData.name}</td>
+  </tr>
+);
+```
+
+## ❌ Don't Break Accessibility
+
+```typescript
+// ❌ Bad - No accessibility attributes
+<div onClick={handleClick}>
+  Row content
+</div>
+
+// ✅ Good - Proper accessibility
+<div
+  role="button"
+  tabIndex={0}
+  aria-pressed={isSelected}
+  onClick={handleClick}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  }}
+>
+  Row content
+</div>
+```
+
+## ❌ Don't Lose Column Alignment
+
+```typescript
+// ❌ Bad - Column count mismatch
+<tr>
+  <td colSpan="999">{/* Custom content */}</td>
+</tr>
+
+// ✅ Good - Proper column spanning
+<tr>
+  <td colSpan={columns.length + (draggableRows ? 1 : 0)}>
+    {/* Custom content */}
+  </td>
+</tr>
+```
+
+### Performance Considerations
+
+## Memoize Heavy Renderers
+
+```typescript
+const MemoizedCustomRow = React.memo<{
+  rowData: UserData;
+  index: number;
+  options: any;
+}>(({ rowData, index, options }) => {
+  // Expensive rendering logic
+  return <tr>{/* Custom content */}</tr>;
+});
+
+const optimizedRenderer: RowRenderer<UserData> = (rowData, index, options) => (
+  <MemoizedCustomRow rowData={rowData} index={index} options={options} />
+);
+```
+
+### Avoid Inline Styles for Large Tables
+
+```typescript
+// ❌ Avoid for large datasets
+<tr style={{ backgroundColor: isSelected ? '#blue' : 'white' }}>
+
+// ✅ Better for performance
+<tr className={isSelected ? 'row-selected' : 'row-default'}>
+```
+
+## Real-World Examples
+
+### Data Management Dashboard
+
+```typescript
+const dashboardRenderer: RowRenderer<UserData> = (rowData, index, { isSelected, defaultRowProps }) => (
+  <tr key={rowData.id} className={isSelected ? 'selected' : ''}>
+    <td>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <img src={rowData.avatar} alt="" style={{ width: 32, height: 32, borderRadius: '50%' }} />
+        <div>
+          <strong>{rowData.name}</strong>
+          <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>{rowData.email}</div>
+        </div>
+      </div>
+    </td>
+    <td>
+      <span className={`status-badge status-${rowData.status}`}>
+        {rowData.status}
+      </span>
+    </td>
+    <td>
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <button onClick={(e) => { e.stopPropagation(); editUser(rowData.id); }}>
+          Edit
+        </button>
+        <button onClick={(e) => { e.stopPropagation(); deleteUser(rowData.id); }}>
+          Delete
+        </button>
+      </div>
+    </td>
+  </tr>
+);
+```
+
+### Invoice List with Status Indicators
+
+```typescript
+const invoiceRenderer: RowRenderer<Invoice> = (invoice, index, { isSelected }) => (
+  <tr key={invoice.id} style={{ backgroundColor: isSelected ? '#f0f9ff' : 'transparent' }}>
+    <td>
+      <div>
+        <strong>#{invoice.number}</strong>
+        <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+          {invoice.client}
+        </div>
+      </div>
+    </td>
+    <td>
+      <div style={{ textAlign: 'right' }}>
+        <strong>${invoice.amount.toLocaleString()}</strong>
+        <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+          Due: {invoice.dueDate}
+        </div>
+      </div>
+    </td>
+    <td>
+      <div
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '4px',
+          padding: '4px 8px',
+          borderRadius: '12px',
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          backgroundColor: getStatusColor(invoice.status).bg,
+          color: getStatusColor(invoice.status).text,
+        }}
+      >
+        <div
+          style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            backgroundColor: getStatusColor(invoice.status).dot,
+          }}
+        />
+        {invoice.status}
+      </div>
+    </td>
+  </tr>
+);
+```
+
+## Migration from Default Rows
+
+### Before (Default Rendering)
+
+```typescript
+<Table
+  data={users}
+  columns={[
+    { key: 'name', header: 'Name', render: (user) => user.name },
+    { key: 'email', header: 'Email', render: (user) => user.email },
+  ]}
+/>
+```
+
+### After (Custom Rendering)
+
+```typescript
+<Table
+  data={users}
+  columns={standardColumns}
+  renderRow={(user, index, { defaultRowProps }) => (
+    <tr key={user.id} onClick={defaultRowProps.onClick}>
+      <td>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src={user.avatar} alt="" />
+          {user.name}
+        </div>
+      </td>
+      <td>{user.email}</td>
+    </tr>
+  )}
+/>
+```
+
+The `renderRow` prop transforms your table from a simple data display into a rich, interactive interface while preserving all the powerful functionality that makes the Table component so versatile. Whether you need cards, expandable content, or complex interactive elements, custom row rendering gives you the flexibility to create exactly the experience your users need.

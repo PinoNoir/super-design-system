@@ -1,0 +1,70 @@
+import { Icon } from '@iconify/react';
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { PageTemplate, HeadingTemplate } from '../storybook-components';
+
+<Meta title="Getting Started/MUI Components" />
+
+<Unstyled>
+<PageTemplate>
+<HeadingTemplate>Material UI Components</HeadingTemplate>
+
+> There are instances when a CDS component isn't available for a specific use case. In these cases, you can use Material-UI components in your application.
+
+## Installation
+
+To use MUI components in your project, ensure you have the required dependencies installed:
+
+```
+npm install @mui/material @emotion/react @emotion/styled
+```
+
+## Theme configuration
+
+MUI components automatically inherit your application's theme settings through the ThemeProvider from MUI. This ensures consistency with existing CDS component styling. Currently,
+the `@stretto/cds-ui` package only provides a default light theme for BCC that you can use in your react application. This will apply BCC styling to most MUI components!
+
+To use the custom MUI lightTheme from CDS, include the following code:
+
+```tsx
+// main.tsx
+import { ThemeProvider } from '@mui/material/styles';
+import { lightTheme } from '@stretto/mui-themes';
+
+function App() {
+  return <ThemeProvider theme={lightTheme}>{/* Your application content */}</ThemeProvider>;
+}
+```
+
+## Using MUI components
+
+To use MUI components in your application, import the component(s) from the MUI and include it in your project:
+
+```tsx
+// Form.tsx
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+
+function Form() {
+  return (
+    <>
+      <Button variant="contained" color="primary">
+        Click Me
+      </Button>
+      <TextField label="Enter text" variant="outlined" />
+    </>
+  );
+}
+```
+
+## Component Selection
+
+First, check if a CDS component exists for your use case. Use an MUI component only when a CDS alternative isn't available, this ensures consistency in your React application.
+Review the list of [MUI components](https://teamlink.stretto.com/pages/viewpage.action?spaceKey=CDS&title=CDS+Component+Library+Status 'MUI components') that are commonly used in Stretto React applications.
+
+### Additional Resources
+
+- [MUI Official Documentation](https://mui.com/material-ui/getting-started/ 'MUI Official Documentation')
+
+</PageTemplate>
+</Unstyled>

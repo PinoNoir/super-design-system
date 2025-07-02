@@ -1,0 +1,36 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { PageTemplate, HeadingTemplate } from '../storybook-components';
+
+<Meta title="Getting Started/Webpack Config" />
+
+<Unstyled>
+<PageTemplate>
+<HeadingTemplate>Setting Up Webpack</HeadingTemplate>
+
+> The CDS components are bundled as ES modules (ESM). This guide will help you properly configure Webpack to ensure our components are correctly transpiled and integrated into your application.
+
+## Basic Setup
+
+CDS components require the following module rules to work properly:
+
+```js
+// webpack.config.js
+
+module.exports = {
+  module: {
+    rules: [
+      // This is required to handle ES modules properly
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+    ],
+    // Additional rules...
+  },
+};
+```
+
+</PageTemplate>
+</Unstyled>

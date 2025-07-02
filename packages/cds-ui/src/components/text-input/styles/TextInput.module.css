@@ -1,0 +1,356 @@
+/* Autofill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-appearance: none;
+  -webkit-box-shadow: 0 0 0 30px var(--theme-input-background-color) inset !important;
+  -webkit-text-fill-color: var(--theme-input-text-color) !important;
+  transition: background-color 500ms ease-in-out 0s;
+}
+
+@keyframes autofill {
+  from {
+    background: transparent;
+  }
+
+  to {
+    color: var(--theme-input-text-color);
+    background: var(--theme-input-background-color);
+  }
+}
+
+/******************************************************************
+                    Text Input Base Styles
+*******************************************************************/
+
+.textInput {
+  font-family: inherit;
+  box-sizing: border-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  width: 100%;
+  padding-inline: var(--space-8);
+  min-height: var(--theme-input-height);
+  border: 1px solid var(--theme-input-border-color);
+  border-radius: var(--theme-input-border-radius);
+  color: var(--theme-input-text-color);
+  background-color: var(--theme-input-background-color);
+  transition:
+    border-color 150ms ease-in-out,
+    box-shadow 150ms ease-in-out;
+
+  &:focus {
+    border: 1px solid var(--theme-input-focus-border-color);
+    outline: 2px solid transparent;
+    box-shadow:
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color),
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color);
+  }
+
+  &:focus-visible {
+    border: 1px solid var(--theme-input-focus-border-color);
+    outline: 2px solid transparent;
+    box-shadow:
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color),
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color);
+  }
+
+  &::placeholder {
+    color: var(--theme-input-placeholder-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--theme-input-disabled-background-color);
+    color: var(--theme-input-disabled-text-color);
+    border: 1px solid var(--theme-input-disabled-border-color);
+  }
+
+  &:read-only {
+    pointer-events: none;
+  }
+}
+
+.textInput[data-invalid] {
+  color: var(--theme-input-error-text-color);
+  border: var(--theme-input-border-width) solid var(--theme-input-error-border-color);
+  outline: 2px solid transparent;
+
+  &:focus {
+    box-shadow:
+      0px 0px 0px 2px var(--theme-input-error-box-shadow-color),
+      0px 0px 0px 2px var(--theme-input-error-box-shadow-color);
+    background-color: var(--theme-input-error-background-color);
+  }
+}
+
+.textInput[data-invalid]:focus-within {
+  outline: 2px solid transparent;
+}
+
+/******************************************************************
+                    Text Input Label Styles
+*******************************************************************/
+
+.label {
+  font-size: var(--font-size-body);
+  display: inline-block;
+  margin-bottom: var(--space-8);
+  color: var(--theme-input-label-text-color);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--font-line-height-condensed);
+  vertical-align: baseline;
+
+  &:disabled {
+    color: var(--theme-input-label-disabled-color);
+  }
+}
+
+.requiredLabel {
+  position: relative;
+}
+
+.requiredLabel[data-required='true']::before {
+  content: '*';
+  color: var(--theme-input-error-text-color);
+  margin-inline-end: var(--space-2);
+}
+
+.labelDisabled {
+  color: var(--theme-input-disabled-text-color);
+}
+
+/******************************************************************
+                    Text Input Wrapper Styles
+*******************************************************************/
+
+.formItem {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-condensed);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.textInputWrapper {
+  display: flex;
+  width: 100%;
+  min-width: 200px;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.textInputWrapper:last-child {
+  margin-bottom: 0;
+}
+
+.textInputFieldOuterWrapper {
+  display: flex;
+  width: 100%;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.textInputFieldWrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.textInputLabelWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.textInputLabelCounter {
+  align-self: end;
+}
+
+.textInputLabelHelperWrapper {
+  max-width: fit-content;
+  flex: 2;
+  flex-direction: column;
+  margin-right: var(--space-24);
+  overflow-wrap: break-word;
+}
+
+/******************************************************************
+                    Inline Styles
+*******************************************************************/
+
+.textInputWrapperInlineInvalid {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+}
+
+.textInputWrapperInline {
+  flex-flow: row wrap;
+}
+
+.textInputFieldOuterWrapperInline {
+  flex: 8;
+  flex-direction: column;
+}
+
+.textInputWrapper .formHelperTextInline {
+  margin-top: var(--space-2);
+}
+
+.textInputWrapper .labelInline {
+  flex: 1;
+  margin: var(--space-8) 0 0 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/******************************************************************
+                    Supportive Text Styles
+*******************************************************************/
+
+.textInputWarning {
+  padding-right: var(--space-8);
+}
+
+.textInputInvalid {
+  padding-right: var(--space-8);
+}
+
+.textInputSuccess {
+  padding-right: var(--space-8);
+}
+
+.formHelperText {
+  width: 100%;
+  margin-top: var(--space-4);
+  font-size: var(--font-size-small);
+  line-height: var(--font-line-height-condensed);
+  color: var(--theme-input-helper-text-text-color);
+  opacity: 1;
+}
+
+.formHelperTextDisabled {
+  opacity: 0.5;
+}
+
+/******************************************************************
+                    Warning & Error States
+*******************************************************************/
+
+.errorText {
+  color: var(--theme-input-error-text-color);
+  margin-block: var(--space-8);
+  display: block;
+  overflow: visible;
+  max-height: 200px;
+  font-weight: 400;
+}
+
+.formRequirement {
+  margin-block: var(--space-8);
+  display: block;
+  overflow: visible;
+  max-height: 200px;
+  font-weight: 400;
+}
+
+.textInputFieldWrapperWarning {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.textInputFieldWrapperInvalid {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.textInputFieldWrapperInvalid + div {
+  color: var(--theme-input-error-text-color);
+}
+
+.textInputFieldWrapperWarning input:focus {
+  color: var(--theme-input-warning-text-color);
+  border: var(--border-width-1) solid var(--theme-input-warning-border-color);
+  outline: 2px solid transparent;
+  box-shadow:
+    0px 0px 0px 2px var(--theme-input-warning-box-shadow-color),
+    0px 0px 0px 2px var(--theme-input-warning-box-shadow-color);
+}
+
+.textInputFieldWrapperWarning + div {
+  color: var(--theme-input-warning-text-color);
+}
+
+.textInputFieldWrapperSuccess input:focus {
+  color: var(--theme-input-success-text-color);
+  border: var(--border-width-1) solid var(--theme-input-success-border-color);
+  outline: 2px solid transparent;
+  box-shadow:
+    0px 0px 0px 2px var(--theme-input-success-box-shadow-color),
+    0px 0px 0px 2px var(--theme-input-success-box-shadow-color);
+}
+
+.successIcon {
+  fill: var(--theme-input-success-text-color);
+}
+
+.warningIcon {
+  fill: var(--theme-input-warning-text-color);
+}
+
+.errorIcon {
+  fill: var(--theme-input-error-text-color);
+}
+
+.textInputFieldWrapperSuccess + div {
+  color: var(--theme-input-success-text-color);
+}
+
+.textInputFieldWrapper svg {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  right: 1rem;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.textInputCounterAlert {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  visibility: inherit;
+  white-space: nowrap;
+}

@@ -1,0 +1,26 @@
+.dropZone {
+  border: 2px dashed var(--color-blue-50);
+  border-radius: var(--border-radius-4);
+  padding: var(--space-40);
+  text-align: center;
+  cursor: pointer;
+  color: var(--color-blue-70);
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-bold);
+  background-color: var(--theme-color-foreground);
+  transition: background-color 300ms ease;
+
+  &:focus {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 3px var(--theme-button-filled-tertiary-focus-outline);
+  }
+}
+
+.dragging {
+  background-color: var(--color-blue-10);
+  border-color: var(--color-blue-60);
+}
+
+.hiddenInput {
+  display: none;
+}

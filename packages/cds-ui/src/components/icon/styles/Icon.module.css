@@ -1,0 +1,134 @@
+.iconContainer {
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+.iconContainer > div {
+  border: 1px solid var(--color-neutral-20);
+  border-radius: 8px;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.iconContainer > div > span {
+  margin-top: var(--space-16);
+}
+
+/* Base icon styles */
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Size variants */
+.sizeSmall {
+  width: 16px;
+  height: 16px;
+}
+
+.sizeDefault {
+  width: 20px;
+  height: 20px;
+}
+
+.sizeLarge {
+  width: 32px;
+  height: 32px;
+}
+
+/* Color variants */
+.colorDefault {
+  fill: var(--theme-icon-base);
+  transition: fill 300ms ease-out;
+}
+
+.colorDefault:hover {
+  cursor: pointer;
+  fill: var(--color-neutral-90);
+}
+
+.colorPrimary {
+  fill: var(--color-teal-70);
+  transition: fill 300ms ease-out;
+}
+
+.colorPrimary:hover {
+  cursor: pointer;
+  fill: var(--color-teal-90);
+}
+
+.colorSecondary {
+  fill: var(--color-neutral-40);
+  transition: fill 300ms ease-out;
+}
+
+.colorSecondary:hover {
+  cursor: pointer;
+  fill: var(--color-neutral-60);
+}
+
+.colorTertiary {
+  fill: var(--color-blue-50);
+  transition: fill 300ms ease-out;
+}
+
+.colorTertiary:hover {
+  cursor: pointer;
+  fill: var(--color-blue-70);
+}
+
+.colorAccent {
+  fill: var(--color-magenta-50);
+  transition: fill 300ms ease-out;
+}
+
+.colorAccent:hover {
+  cursor: pointer;
+  fill: var(--color-magenta-70);
+}
+
+.colorDisabled {
+  cursor: not-allowed;
+  fill: var(--color-neutral-30);
+}
+
+.colorInfo {
+  fill: var(--color-blue-50);
+  transition: fill 300ms ease-out;
+}
+
+.colorInfo:hover {
+  cursor: pointer;
+  fill: var(--color-blue-70);
+}
+
+.colorSuccess {
+  fill: var(--color-green-50);
+  transition: fill 300ms ease-out;
+}
+
+.colorSuccess:hover {
+  fill: var(--color-green-70);
+}
+
+.colorWarning {
+  fill: var(--color-yellow-70);
+  transition: fill 300ms ease-out;
+}
+
+.colorWarning:hover {
+  fill: var(--color-yellow-90);
+}
+
+.colorError {
+  fill: var(--color-red-50);
+  transition: fill 300ms ease-out;
+}
+
+.colorError:hover {
+  fill: var(--color-red-70);
+}

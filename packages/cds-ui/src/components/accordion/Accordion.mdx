@@ -1,0 +1,183 @@
+import { Controls, Description, Meta, Story, Title } from '@storybook/addon-docs/blocks';
+import * as AccordionStories from './Accordion.stories';
+
+<Meta of={AccordionStories} />
+
+<Title />
+
+<Description />
+
+### Component API
+
+<Controls />
+
+### Usage
+
+# Accordion Component Documentation
+
+The `Accordion` component accepts an array of `AccordionItem` objects as its `items` prop. Each `AccordionItem` object has the following properties:
+
+> - `id` - The unique id of the `AccordionItem`.
+> - `title` - The title of the `AccordionItem`.
+> - `description` - The description of the `AccordionItem`.
+> - `link` - An optional link to be displayed in the `AccordionItem`.
+> - `children` - The content of the `AccordionItem`.
+> - `contextMenu` - An optional context menu to be displayed in the `AccordionItem`. It expects a function that returns a context menu component. Clicking on the context menu items will not trigger the accordion to open or close.
+> - `open` - A boolean value indicating whether the `AccordionItem` is initially open or closed. It does not update dynamically.
+> - `disabled` - A boolean value indicating whether the `AccordionItem` is disabled.
+> - `onHeadingClick` - A callback function triggered when the heading of an `AccordionItem` is clicked. It can be used to perform additional actions or handle events.
+
+#### Adding a ref to the Accordion component
+
+> The `Accordion` component can be assigned a ref to access the underlying DOM element. The ref can be used to focus the `Accordion` or perform other actions.
+
+```jsx
+import { useRef } from 'react';
+
+const accordionRef = useRef < HTMLUListElement > null;
+
+<Accordion ref={accordionRef}>
+  <AccordionItem id="accordion-item-1" open={false} title="Section 1">
+    <p>Accordion Content 1</p>
+  </AccordionItem>
+  <AccordionItem id="accordion-item-2" open={false} title="Section 2">
+    <p>Accordion Content 2</p>
+  </AccordionItem>
+</Accordion>;
+```
+
+<hr />
+
+#### Adding a ref to the AccordionItem component
+
+> The `AccordionItem` component can be assigned a ref to access the underlying DOM element. The ref can be used to focus the `AccordionItem` or perform other actions.
+
+```jsx
+import { useRef } from 'react';
+
+const accordionItemRef = useRef < HTMLLIElement > null;
+
+<Accordion>
+  <AccordionItem ref={accordionItemRef} id="accordion-item-1" open={false} title="Section 1">
+    <p>Accordion Content 1</p>
+  </AccordionItem>
+  <AccordionItem id="accordion-item-2" open={false} title="Section 2">
+    <p>Accordion Content 2</p>
+  </AccordionItem>
+</Accordion>;
+```
+
+<hr />
+
+### Basic Accordion
+
+> The `Accordion` component is used to render a list of `AccordionItem` components.
+
+```jsx
+<Accordion>
+  <AccordionItem id="accordion-item-1" open={false} title="Section 1">
+    <p>Accordion Content 1</p>
+  </AccordionItem>
+  <AccordionItem id="accordion-item-2" open={false} title="Section 2">
+    <p>Accordion Content 2</p>
+  </AccordionItem>
+</Accordion>
+```
+
+<Story of={AccordionStories.BasicAccordion} />
+
+<br />
+<hr />
+
+### Light Accordion (Default)
+
+> By default the accordion is rendered with a light color scheme.
+> Optionally render a link and context menu in the `AccordionItem` by providing the `link` and `contextMenu` props.
+
+```jsx
+import { ContextMenu, ContextMenuItem, Link } from '@stretto/cds-ui';
+
+const createContextMenu = () => {
+  return (
+    <ContextMenu>
+      <ContextMenuItem>Item 1</ContextMenuItem>
+      <ContextMenuItem>Item 2</ContextMenuItem>
+      <ContextMenuItem>Item 3</ContextMenuItem>
+    </ContextMenu>
+  );
+};
+
+<Accordion variant="light">
+  <AccordionItem
+    id="accordion-item-1"
+    open={false}
+    title="Section 1"
+    description="This is the description of section 1."
+    link={<Link href="#">Optional Link</Link>}
+    contextMenu={createContextMenu()}
+  >
+    <p>Accordion Content 1</p>
+  </AccordionItem>
+  <AccordionItem
+    id="accordion-item-2"
+    open={false}
+    title="Section 2"
+    description="This is the description of section 1."
+    link={<Link href="#">Optional Link</Link>}
+    contextMenu={createContextMenu()}
+  >
+    <p>Accordion Content 2</p>
+  </AccordionItem>
+</Accordion>;
+```
+
+<Story of={AccordionStories.WithContextMenu} />
+
+<br />
+<hr />
+
+### Dark Accordion
+
+> Use the `variant="dark"` prop to change the color scheme of the `Accordion`.
+> The `disabled` prop can be used to disable all of the `AccordionItem`s in the `Accordion`.
+
+```jsx
+<Accordion disabled={true} variant="dark">
+  <AccordionItem
+    id="accordion-item-1"
+    open={false}
+    title="Section 1"
+    description="This is the description of section 1."
+    link={<Link href="#">Optional Link</Link>}
+    contextMenu={createContextMenu()}
+  >
+    <p>Accordion Content 1</p>
+  </AccordionItem>
+  <AccordionItem
+    id="accordion-item-2"
+    open={false}
+    title="Section 2"
+    description="This is the description of section 1."
+    link={<Link href="#">Optional Link</Link>}
+    contextMenu={createContextMenu()}
+  >
+    <p>Accordion Content 2</p>
+  </AccordionItem>
+</Accordion>
+```
+
+<Story of={AccordionStories.DarkVariant} />
+
+<br />
+<hr />
+
+### Accessibility
+
+> The Accordion component is built with accessibility in mind. It uses appropriate ARIA attributes and supports keyboard navigation to ensure a seamless experience for all users.
+
+<hr />
+
+### Troubleshooting
+
+> If the context menu items are not functioning as expected, ensure that the contextMenu prop is provided with a function that returns a valid context menu component.
+> If the AccordionItems are not toggling correctly, verify that each AccordionItem has a unique id prop assigned to it.

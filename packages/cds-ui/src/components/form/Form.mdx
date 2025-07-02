@@ -1,0 +1,212 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as FormStories from './Form.stories';
+
+<Meta of={FormStories} />
+
+# Form
+
+A simple form wrapper component that provides consistent styling and layout. This component handles basic form structure and presentation, while form state management and validation should be handled by the parent component or custom hooks.
+
+## Features
+
+- ✅ Consistent form styling and layout
+- ✅ Optional header and footer sections
+- ✅ Loading state indicator
+- ✅ Responsive design
+- ✅ Flexible children rendering
+- ✅ Custom CSS class support
+
+## Props
+
+- `children` - `React.ReactNode | React.ReactNode[]` | Form content
+- `onSubmit` - `React.FormEventHandler<HTMLFormElement>` | Form submission handler
+- `onReset` - `React.FormEventHandler<HTMLFormElement>` | Form reset handler
+- `id` - `string` | Optional form ID
+- `header` - `string` | Optional form header text
+- `className` - `string` | Additional CSS classes
+- `helperText` - `React.ReactNode` | Helper text displayed below header
+- `footer` - `React.ReactNode` | Optional footer content
+- `isLoading` - `boolean` | Loading state indicator
+- `automation-id` - `string` | Optional automation ID for testing (defaults to "form")
+
+### With Zod Validation
+
+<Canvas of={FormStories.WithZodValidation} />
+
+## Basic Usage
+
+```tsx
+import { Form } from './Form';
+
+function MyForm() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      username: formData.get('username'),
+      email: formData.get('email'),
+    };
+    console.log('Form submitted:', data);
+  };
+
+  return (
+    <Form onSubmit={handleSubmit} header="User Registration">
+      <input name="username" placeholder="Username" required />
+      <input name="email" type="email" placeholder="Email" required />
+      <button type="submit">Submit</button>
+    </Form>
+  );
+}
+```
+
+## Advanced Usage
+
+### With Helper Text and Footer
+
+```tsx
+function FormWithExtras() {
+  return (
+    <Form
+      onSubmit={handleSubmit}
+      header="Contact Form"
+      helperText="Please fill out all required fields"
+      footer={
+        <div>
+          <button type="reset">Clear</button>
+          <button type="submit">Send Message</button>
+        </div>
+      }
+    >
+      <input name="name" placeholder="Name" required />
+      <textarea name="message" placeholder="Message" required />
+    </Form>
+  );
+}
+```
+
+### With Loading State
+
+```tsx
+function LoadingForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Submit form data
+      await submitForm(event.currentTarget);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Form onSubmit={handleSubmit} isLoading={isSubmitting}>
+      <input name="data" placeholder="Enter data" />
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Submitting...' : 'Submit'}
+      </button>
+    </Form>
+  );
+}
+```
+
+### Integration with Form Libraries
+
+For complex forms with validation, integrate with libraries like React Hook Form:
+
+```tsx
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+const schema = z.object({
+  username: z.string().min(3),
+  email: z.string().email(),
+});
+
+function ValidatedForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    console.log('Valid form data:', data);
+  };
+
+  return (
+    <Form onSubmit={handleSubmit(onSubmit)} header="Registration">
+      <div>
+        <input {...register('username')} placeholder="Username" />
+        {errors.username && <span>{errors.username.message}</span>}
+      </div>
+
+      <div>
+        <input {...register('email')} placeholder="Email" />
+        {errors.email && <span>{errors.email.message}</span>}
+      </div>
+
+      <button type="submit">Register</button>
+    </Form>
+  );
+}
+```
+
+## Notes
+
+- This is a presentation component focused on layout and styling
+- Form state management and validation should be handled separately
+- Use `FormData` API or form libraries for data extraction
+- The component provides consistent styling across your application
+- Loading state shows an overlay with spinner
+- All standard form props are passed through to the underlying `<form>` element
+
+## Migration from Previous Version
+
+If you were using the previous generic `Form<T>` component:
+
+**Before:**
+
+```tsx
+<Form<UserData>
+  schema={userSchema}
+  defaultValues={defaultUser}
+  onSubmit={(data) => console.log(data)} // data was automatically typed
+>
+  {({ register }) => <input {...register('username')} />}
+</Form>
+```
+
+**After:**
+
+```tsx
+// Option 1: Manual form handling
+<Form
+  onSubmit={(event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      username: formData.get('username') as string,
+    };
+    console.log(data);
+  }}
+>
+  <input name="username" />
+</Form>;
+
+// Option 2: Use React Hook Form separately
+const methods = useForm<UserData>({
+  resolver: zodResolver(userSchema),
+  defaultValues: defaultUser,
+});
+
+<Form onSubmit={methods.handleSubmit((data) => console.log(data))}>
+  <input {...methods.register('username')} />
+</Form>;
+```

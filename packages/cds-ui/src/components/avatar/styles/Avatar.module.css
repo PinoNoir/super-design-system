@@ -1,0 +1,56 @@
+.avatar {
+  overflow: hidden;
+  border-radius: 9999px;
+}
+
+.avatarPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--theme-avatar-background);
+}
+
+.placeholderText {
+  color: var(--theme-avatar-text);
+  font-weight: 500;
+  line-height: var(--font-line-height-condensed);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Size Variants */
+.sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sm:has(> span) {
+  font-size: 10px;
+}
+
+.md {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.md:has(> span) {
+  font-size: 16px;
+}
+
+.lg {
+  width: 5rem;
+  height: 5rem;
+}
+
+.lg:has(> span) {
+  font-size: 32px;
+}
+
+.xl {
+  width: 7.5rem;
+  height: 7.5rem;
+}
+
+.xl:has(> span) {
+  font-size: 3.5rem;
+}

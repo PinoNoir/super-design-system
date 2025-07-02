@@ -1,0 +1,33 @@
+/* Base divider styles */
+.divider {
+  box-sizing: content-box;
+  border: none;
+  border-color: var(--theme-border-base);
+}
+
+/* Thickness variants */
+.thin {
+  border-width: 0.5px;
+}
+
+.medium {
+  border-width: 1px;
+}
+
+.thick {
+  border-width: 3px;
+}
+
+/* Orientation variants */
+.vertical {
+  border-left-style: solid;
+  height: 100%;
+  align-self: stretch;
+  margin-inline: var(--space-4);
+}
+
+.horizontal {
+  border-top-style: solid;
+  width: 100%;
+  margin-block: var(--space-4);
+}

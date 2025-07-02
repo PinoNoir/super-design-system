@@ -1,0 +1,218 @@
+/* Theme overrides for file card error text color */
+
+:root[data-theme='bcc-dark'],
+:root[data-theme='tsc-dark'],
+:root[data-theme='core-dark'] {
+  --theme-file-card-error-text: var(--color-red-30);
+}
+
+:root[data-theme='bcc-light'],
+:root[data-theme='tsc-light'],
+:root[data-theme='core-light'] {
+  --theme-file-card-error-text: var(--color-red-60);
+}
+
+.fileCard {
+  min-height: 80px;
+  width: 100%;
+  display: grid;
+  padding: var(--space-16) var(--space-24);
+  align-items: center;
+  color: var(--theme-text-base);
+  background-color: var(--theme-color-foreground);
+  border: 1px solid var(--theme-border-base);
+  border-radius: var(--space-4);
+}
+
+.fileCard[data-status='uploading'] {
+  background-color: var(--theme-color-foreground);
+  border-color: var(--theme-border-base);
+}
+
+.fileCard[data-status='complete'] {
+  background-color: var(--theme-color-foreground);
+}
+
+.fileCard[data-status='failed'],
+.fileCard[data-status='validationFailed'] {
+  background-color: var(--theme-color-foreground);
+  border-color: var(--theme-color-error);
+}
+
+.fileCardStatusIcon {
+  display: flex;
+  align-items: flex-end;
+}
+
+.fileCardStatusIcon[data-status='uploading'] {
+  color: var(--theme-color-info);
+}
+
+.fileCardStatusIcon[data-status='complete'] {
+  color: var(--theme-color-success);
+}
+
+.fileCardStatusIcon[data-status='failed'],
+.fileCardStatusIcon[data-status='validationFailed'] {
+  color: var(--theme-color-error);
+}
+
+.cardInfoContainer {
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: min-content 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+}
+
+.fileTypeIcon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.fileTypeIcon[data-name='docx'],
+.fileTypeIcon[data-name='doc'] {
+  color: var(--theme-color-info);
+}
+
+.fileTypeIcon[data-name='xlsx'],
+.fileTypeIcon[data-name='xls'] {
+  color: var(--theme-color-success);
+}
+
+.fileTypeIcon[data-name='pdf'] {
+  color: var(--theme-color-error);
+}
+
+.fileTypeIcon[data-name='image'] {
+  color: var(--theme-text-base);
+}
+
+.fileTitle {
+  font-weight: var(--font-weight-bold);
+  margin-inline-end: var(--space-16);
+  color: var(--theme-text-base);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.fileMetaData {
+  margin-inline-end: var(--space-16);
+  color: var(--theme-text-base);
+  font-size: var(--font-size-body);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.fileSize {
+  margin-inline-end: var(--space-16);
+  color: var(--theme-text-base);
+  font-size: var(--font-size-body);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.fileCardProgressBarContainer {
+  padding-block-start: var(--space-4);
+  width: 100%;
+  position: relative;
+}
+
+.documentContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+}
+
+.fileTitleContainer {
+  flex-direction: row;
+  justify-content: space-between;
+  display: inline-flex;
+}
+
+[data-status='uploading'] .menuContainer > button {
+  display: none;
+}
+
+.statusIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.fileStatusIcon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-inline-end: var(--space-8);
+}
+
+.defaultMessageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--theme-text-base);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  font-family: var(--font-family-body);
+  margin-block-start: var(--space-8);
+}
+
+.errorMessageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--theme-file-card-error-text);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-body);
+  margin-block-start: var(--space-8);
+}
+
+.successMessageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--theme-text-success);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  font-family: var(--font-family-body);
+  margin-block-start: var(--space-8);
+}
+
+.retryButton {
+  margin-inline: var(--space-8);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-h2);
+  padding: var(--space-4);
+  color: var(--theme-text-base);
+  border: none;
+  background-color: var(--color-transparent);
+  border-radius: var(--border-radius-round);
+  transition:
+    background-color 300ms ease-in,
+    box-shadow 0.15s ease-in;
+}
+
+.retryButton:hover {
+  background-color: var(--color-neutral20);
+}
+
+.retryButton:focus {
+  background-color: var(--theme-color-foreground);
+  outline: 2px solid transparent;
+  box-shadow: var(--shadow-bottom-4);
+}
+
+.statusIconContainer svg {
+  width: 20px;
+  height: 20px;
+}

@@ -1,0 +1,263 @@
+/************************************************************************
+          Radio Button Variants (Layout)
+*************************************************************************/
+
+.vertical {
+  flex-direction: column;
+}
+
+.horizontal {
+  flex-direction: row;
+}
+
+/************************************************************************
+          Radio Button Label and Input Styles
+*************************************************************************/
+
+.radioButtonWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  block-size: 1px;
+  clip: rect(0, 0, 0, 0);
+  inline-size: 1px;
+  visibility: inherit;
+  white-space: nowrap;
+}
+
+.radioButtonLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--theme-text-base);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-body);
+}
+
+.radioButton {
+  position: absolute;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  block-size: 1px;
+  clip: rect(0, 0, 0, 0);
+  inline-size: 1px;
+  visibility: inherit;
+  white-space: nowrap;
+}
+
+.radioButtonAppearance {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  flex-shrink: 0;
+  border: 1px solid var(--color-neutral-60);
+  border-radius: 50%;
+  background-color: transparent;
+  block-size: 1.125rem;
+  inline-size: 1.125rem;
+  margin-inline: 0.125rem 0.5rem;
+}
+
+/* Style when the radio button is checked */
+.radioButton:checked + .radioButtonLabel .radioButtonAppearance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-blue-50);
+}
+
+/* Style for the inner circle when the radio button is checked */
+.radioButton:checked + .radioButtonLabel .radioButtonAppearance::before {
+  content: '';
+  display: block;
+  border-radius: 50%;
+  box-shadow: inset 1em 1em var(--color-blue-50);
+  transform: scale(0.75);
+  block-size: 100%;
+  inline-size: 100%;
+  margin: auto;
+}
+
+/* Focus styles */
+.radioButton:focus + .radioButtonLabel .radioButtonAppearance {
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 3px oklch(56.08% 0.1215 245.8 / 0.3);
+}
+
+/* Disabled styles */
+.radioButton:disabled + .radioButtonLabel .radioButtonAppearance {
+  cursor: not-allowed;
+  border: 1px solid var(--theme-color-disabled);
+  opacity: 0.5;
+}
+
+/* Override the checked state for disabled buttons */
+.radioButton:disabled:checked + .radioButtonLabel .radioButtonAppearance::before {
+  box-shadow: inset 1em 1em var(--theme-color-disabled);
+}
+
+/* Disabled Label styles - targeting the Text component */
+.radioButton:disabled + .radioButtonLabel .visuallyHidden,
+.radioButton:disabled + .radioButtonLabel > span:not(.radioButtonAppearance) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/************************************************************************
+          Radio Button Group Styles
+*************************************************************************/
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--theme-text-base);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-400);
+  line-height: var(--font-line-height-body);
+}
+
+.radioButtonGroup {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex: 1 1 auto;
+}
+
+.radioButtonGroupContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+@media screen and (max-width: 768px) {
+  .radioButtonGroupContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.layoutHorizontal .radioButtonGroupContent {
+  gap: var(--space-24);
+}
+
+@media screen and (min-width: 768px) {
+  .layoutVertical .radioButtonGroupContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.groupLabel {
+  display: inline-block;
+  vertical-align: baseline;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--font-line-height-body);
+  color: var(--theme-text-base);
+  margin-block-end: var(--space-12);
+}
+
+fieldset:disabled .groupLabel {
+  opacity: 0.5;
+}
+
+/* Styles for invalid states */
+
+.radioButtonGroupInvalid {
+  /* Base class for invalid state */
+}
+
+.radioButtonGroupWarning {
+  /* Base class for warning state */
+}
+
+.radioButtonGroupReadonly {
+  /* Base class for readonly state */
+}
+
+.radioButtonInvalidIcon {
+  color: var(--color-red-50);
+  margin-inline-end: var(--space-4);
+  width: 20px;
+  height: 20px;
+}
+
+.radioButtonInvalidIconWarning {
+  color: var(--color-yellow-70);
+  margin-inline-end: var(--space-4);
+  width: 20px;
+  height: 20px;
+}
+
+.radioButtonGroupInvalid .radioButton:checked + .radioButtonLabel .radioButtonAppearance {
+  border: 2px solid var(--color-red-50);
+  cursor: pointer;
+}
+
+.radioButtonGroupInvalid .radioButton:checked + .radioButtonLabel .radioButtonAppearance::before {
+  box-shadow: inset 1em 1em var(--color-red-50);
+}
+
+.radioButtonGroupInvalid .radioButton:focus + .radioButtonLabel .radioButtonAppearance {
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 3px rgba(225, 35, 57, 0.4);
+}
+
+.radioButtonValidationMsg {
+  display: flex;
+  align-items: flex-end;
+  margin-block-start: var(--space-8);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-body);
+  color: var(--color-red-50);
+  z-index: 0;
+  inline-size: 100%;
+  opacity: 1;
+}
+
+.formRequirement {
+  display: flex;
+  align-items: center;
+}
+
+.formHelperText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--theme-text-muted);
+  z-index: 0;
+  inline-size: 100%;
+  margin-block-start: var(--space-4);
+  opacity: 1;
+}
+
+.radioButtonGroup ~ .formHelperText {
+  margin-block-start: var(--space-8);
+}
+
+fieldset:disabled .formHelperText {
+  opacity: 0.5;
+}

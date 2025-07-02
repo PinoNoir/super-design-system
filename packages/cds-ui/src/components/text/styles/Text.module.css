@@ -1,0 +1,140 @@
+/* Base styles */
+.text {
+  font-family: var(--font-family-body);
+  line-height: var(--font-line-height-body);
+}
+
+/* Size variants */
+.xs {
+  font-size: var(--font-size-xs);
+  line-height: var(--font-line-height-condensed);
+}
+
+.small {
+  font-size: var(--font-size-sm);
+  line-height: var(--font-line-height-body);
+}
+
+.body {
+  font-size: var(--font-size-body);
+  line-height: var(--font-line-height-body);
+}
+
+.large {
+  font-size: var(--font-size-h2);
+  line-height: var(--font-line-height-headings);
+}
+
+.xl {
+  font-size: var(--font-size-h1);
+  line-height: var(--font-line-height-headings);
+}
+
+.h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--font-line-height-headings);
+  font-weight: var(--font-weight-headings);
+}
+
+.h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--font-line-height-headings);
+  font-weight: var(--font-weight-headings);
+}
+
+.h3 {
+  font-size: var(--font-size-h3);
+  line-height: var(--font-line-height-headings);
+  font-weight: var(--font-weight-headings);
+}
+
+.h4 {
+  font-size: var(--font-size-h4);
+  line-height: var(--font-line-height-headings);
+}
+
+.h5 {
+  font-size: var(--font-size-h5);
+  line-height: var(--font-line-height-headings);
+}
+
+.h6 {
+  font-size: var(--font-size-h6);
+  line-height: var(--font-line-height-headings);
+}
+
+.a {
+  font-size: var(--font-size-body);
+  line-height: var(--font-line-height-body);
+  cursor: pointer;
+}
+
+/* Weight variants */
+.light {
+  font-weight: var(--font-weight-light);
+}
+
+.normal {
+  font-weight: var(--font-weight-regular);
+}
+
+.medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.bold {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Color variants */
+.base {
+  color: var(--theme-color-neutral-100);
+}
+
+.neutral80 {
+  color: var(--theme-color-neutral-80);
+}
+
+.neutral60 {
+  color: var(--theme-color-neutral-60);
+}
+
+.disabled {
+  color: var(--theme-color-disabled);
+}
+
+.primary {
+  color: var(--theme-color-primary);
+}
+
+.secondary {
+  color: var(--theme-color-secondary);
+}
+
+.tertiary {
+  color: var(--theme-color-tertiary);
+}
+
+.accent {
+  color: var(--theme-color-accent);
+}
+
+.help {
+  color: var(--theme-color-help);
+}
+
+.info {
+  color: var(--theme-color-info);
+}
+
+.success {
+  color: var(--theme-color-success);
+}
+
+.warning {
+  color: var(--theme-color-warning);
+}
+
+.error {
+  color: var(--theme-color-error);
+}

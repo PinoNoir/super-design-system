@@ -1,0 +1,14 @@
+.widgetPlaceholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.placeholderCard {
+  height: 80px;
+  background-color: var(--theme-color-inverted);
+  border-radius: 4px;
+  opacity: 0.5;
+}

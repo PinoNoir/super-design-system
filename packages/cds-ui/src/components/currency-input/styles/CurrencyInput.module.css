@@ -1,0 +1,309 @@
+/******************************************************************
+					Text Input Base Style & Recipe
+*******************************************************************/
+
+.numberInput {
+  font-family: inherit;
+  box-sizing: border-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  width: 100%;
+  padding-inline: var(--space-8);
+  height: var(--theme-input-height);
+  border: 1px solid var(--theme-input-border-color);
+  border-radius: var(--theme-input-border-radius);
+  color: var(--theme-input-text-color);
+  background-color: var(--theme-input-background-color);
+  transition:
+    border-color 150ms ease-in-out,
+    box-shadow 150ms ease-in-out;
+
+  &:focus {
+    border: 1px solid var(--theme-input-focus-border-color);
+    outline: 2px solid transparent;
+    box-shadow:
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color),
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color);
+  }
+
+  &::placeholder {
+    color: var(--theme-input-placeholder-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--theme-input-disabled-background-color);
+    color: var(--theme-input-disabled-text-color);
+    border: 1px solid var(--theme-input-disabled-border-color);
+  }
+
+  &:read-only {
+    pointer-events: none;
+  }
+}
+
+.numberInput[data-invalid] {
+  color: var(--theme-input-error-text-color);
+  border: var(--theme-input-border-width) solid var(--theme-input-error-border-color);
+  outline: 2px solid transparent;
+
+  &:focus {
+    box-shadow:
+      0px 0px 0px 2px var(--theme-input-error-box-shadow-color),
+      0px 0px 0px 2px var(--theme-input-error-box-shadow-color);
+    background-color: var(--theme-input-error-background-color);
+  }
+}
+
+.numberInput[data-invalid]:focus-within {
+  outline: 2px solid transparent;
+}
+
+/******************************************************************
+					Text Input Label Styles
+*******************************************************************/
+
+.label {
+  font-size: var(--font-size-body);
+  display: inline-block;
+  margin-bottom: var(--space-8);
+  color: var(--theme-input-label-text-color);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--font-line-height-condensed);
+  vertical-align: baseline;
+
+  &:disabled {
+    color: var(--theme-input-disabled-text-color);
+  }
+}
+
+.required-Label {
+  position: relative;
+}
+
+.required-Label[data-required-='true']::before {
+  content: '*';
+  color: var(--theme-input-error-text-color);
+  margin-inline-end: var(--space-2);
+}
+
+.labelDisabled {
+  color: var(--theme-input-disabled-text-color);
+}
+
+/******************************************************************
+					Text Input Wrapper Styles
+*******************************************************************/
+
+.formItem {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-condensed);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.numberInputWrapper {
+  display: flex;
+  width: 100%;
+  min-width: 200px;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.numberInputWrapper:last-child {
+  margin-bottom: 0;
+}
+
+.numberInputFieldOuterWrapper {
+  display: flex;
+  width: 100%;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.numberInputFieldWrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.numberInputLabelWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.numberInputLabelWrapper .numberInputLabelCounter {
+  align-self: end;
+}
+
+.numberInputLabelHelperWrapper {
+  max-width: fit-content;
+  flex: 1 0 auto;
+  flex-direction: column;
+  margin-right: var(--space-24);
+  overflow-wrap: break-word;
+}
+
+/******************************************************************
+					Inline Styles
+*******************************************************************/
+
+.numberInputWrapperInlineInvalid {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+}
+
+.numberInputWrapperInline {
+  flex-flow: row wrap;
+}
+
+.numberInputFieldOuterWrapperInline {
+  flex: 8;
+  flex-direction: column;
+}
+
+.numberInputWrapper .formHelperTextInline {
+  margin-top: var(--space-2);
+}
+
+.numberInputWrapper .labelInline {
+  flex: 1 0 auto;
+  margin: var(--space-8) 0 0 0;
+  word-break: keep-all;
+}
+
+/******************************************************************
+					Supportive Text Styles
+*******************************************************************/
+
+.numberInputWarning {
+  padding-right: var(--space-8);
+}
+
+.numberInputInvalid {
+  padding-right: var(--space-8);
+}
+
+.formHelperText {
+  width: 100%;
+  margin-top: var(--space-4);
+  font-size: var(--font-size-small);
+  line-height: var(--font-line-height-condensed);
+  color: var(--theme-input-helper-text-text-color);
+  opacity: 1;
+}
+
+.formHelperTextDisabled {
+  opacity: 0.5;
+}
+
+/******************************************************************
+					Warning & Error States
+*******************************************************************/
+
+.errorNumber {
+  color: var(--theme-input-error-text-color);
+  margin-block: var(--space-8);
+  display: block;
+  overflow: visible;
+  max-height: 200px;
+  font-weight: 400;
+}
+
+.formRequirement {
+  margin-block: var(--space-8);
+  display: block;
+  overflow: visible;
+  max-height: 200px;
+  font-weight: 400;
+}
+
+.numberInputFieldWrapperWarning {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.numberInputFieldWrapperInvalid {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.numberInputFieldWrapperInvalid + div {
+  color: var(--theme-input-error-text-color);
+}
+
+.numberInputFieldWrapperWarning input:focus {
+  color: var(--theme-input-warning-text-color);
+  border: var(--border-width-1) solid var(--theme-input-warning-border-color);
+  outline: 2px solid transparent;
+  box-shadow:
+    0px 0px 0px 2px var(--theme-input-warning-box-shadow-color),
+    0px 0px 0px 2px var(--theme-input-warning-box-shadow-color);
+}
+
+.numberInputFieldWrapperWarning + div {
+  color: var(--theme-input-warning-text-color);
+}
+
+.numberInputFieldWrapperSuccess input:focus {
+  color: var(--theme-input-success-text-color);
+  border: var(--border-width-1) solid var(--theme-input-success-border-color);
+  outline: 2px solid transparent;
+  box-shadow:
+    0px 0px 0px 2px var(--theme-input-success-box-shadow-color),
+    0px 0px 0px 2px var(--theme-input-success-box-shadow-color);
+}
+
+.numberInputFieldWrapperSuccess + div {
+  color: var(--theme-input-success-text-color);
+}
+
+.numberInputFieldWrapper svg {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  right: 1rem;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.numberInputCounterAlert {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  visibility: inherit;
+  white-space: nowrap;
+}

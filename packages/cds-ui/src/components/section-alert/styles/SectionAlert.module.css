@@ -1,0 +1,132 @@
+/* Base Section Alert Style */
+.baseSectionAlertStyle {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: var(--space-12);
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-regular);
+  border-radius: var(--border-radius-4);
+  margin-block-end: var(--space-16);
+}
+
+/* Wrapper Style */
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-4);
+}
+
+/* Section Alert Message Heading */
+.sectionAlertMessageHeading {
+  display: flex;
+  align-self: center;
+  font-size: var(--font-size-body);
+  line-height: var(--font-line-height-body);
+  font-weight: var(--font-weight-500);
+  color: var(--color-neutral-100);
+  margin-block: var(--space-0);
+}
+
+/* Heading Styles */
+.heading1 {
+  display: flex;
+  align-items: center;
+  margin-block-end: var(--space-8);
+}
+
+.heading2 {
+  display: flex;
+  align-items: flex-start;
+  margin-block-end: var(--space-8);
+}
+
+/* Layout Styles */
+.layout1 {
+  display: flex;
+  flex-direction: row;
+}
+
+.layout2 {
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  margin-block-start: var(--space-8);
+  margin-block-end: var(--space-4);
+}
+
+/* Message Styles */
+.sectionAlertMessage {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-size-body);
+  line-height: var(--font-line-height-body);
+  font-weight: var(--font-weight-body);
+  color: var(--color-neutral-100);
+}
+
+.sectionAlertMessageLink {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-blue-50);
+  font-size: var(--font-size-body);
+  line-height: var(--font-line-height-body);
+  margin-block-start: var(--space-8);
+  font-weight: var(--font-weight-regular);
+}
+
+.sectionAlertMessageLink:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.sectionAlertAdditionalMessage {
+  display: inline-flex;
+  font-size: var(--font-size-body);
+  line-height: var(--font-line-height-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-100);
+}
+
+.sectionAlertIcon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Variant Styles */
+.warning {
+  color: var(--color-neutral-100);
+  background: var(--color-yellow-10);
+  border: var(--border-width-1) solid var(--color-yellow-50);
+}
+
+.success {
+  color: var(--color-neutral-100);
+  background: var(--color-green-10);
+  border: var(--border-width-1) solid var(--color-green-50);
+}
+
+.info {
+  color: var(--color-neutral-100);
+  background: var(--color-blue-10);
+  border: var(--border-width-1) solid var(--color-blue-50);
+}
+
+.error {
+  color: var(--color-neutral-100);
+  background: var(--color-red-10);
+  border: var(--border-width-1) solid var(--color-red-50);
+}
+
+/* Add global variant if needed */
+.global {
+  color: var(--color-neutral-100);
+  background: var(--color-neutral-10);
+  border: var(--border-width-1) solid var(--color-neutral-50);
+}

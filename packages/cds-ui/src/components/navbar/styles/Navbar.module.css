@@ -1,0 +1,124 @@
+.nav {
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  width: 100%;
+  height: 60px;
+  background-color: var(--theme-navbar-background);
+  border-bottom: 1px solid var(--theme-navbar-bottom-border);
+  margin: 0 auto;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  line-height: var(--font-line-height-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--theme-navbar-text);
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.navLogo {
+  cursor: pointer;
+  margin-inline-start: var(--space-32);
+  margin-inline-end: var(--space-24);
+  padding: 0;
+}
+
+.navLogo img {
+  display: block;
+}
+
+.navLinks {
+  align-items: center;
+  display: flex;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-wrap: wrap;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.navLinks li {
+  list-style-type: none;
+  height: 100%;
+  align-items: center;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  line-height: var(--font-line-height-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--theme-navbar-text);
+  border-bottom: 4px solid transparent;
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--space-16);
+  text-decoration: none;
+  transition: border-bottom 200ms ease-out;
+}
+
+.navLinks li:focus {
+  outline: none;
+}
+
+.navLinks li:hover,
+.navLinks li:active {
+  border-bottom: 4px solid var(--theme-navbar-hover-border);
+}
+
+.navLinks li a {
+  color: var(--theme-navbar-text);
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.navLinks li a:focus {
+  outline: none;
+}
+
+.additionalContentContainer {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: var(--space-16);
+  margin-inline-end: var(--space-32);
+}
+
+.activeLink {
+  border-bottom: 4px solid var(--color-teal-50);
+}
+
+.navAvatar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  cursor: pointer;
+}
+
+.avatarTrigger:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--color-transparent) !important;
+}
+
+.logoutButtonWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.alertContainer {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.alertBadge {
+  position: relative;
+  top: -2px;
+  right: 15px;
+  width: 8px;
+  height: 8px;
+}

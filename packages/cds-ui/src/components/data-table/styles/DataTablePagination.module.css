@@ -1,0 +1,138 @@
+.pagination {
+  /* CSS custom properties for easier theming */
+  --select-background: var(--theme-color-foreground);
+  --select-border: var(--theme-border-base);
+  --select-padding: 4px 8px;
+  --select-hover-background: var(--color-neutral-20);
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  gap: var(--space-8);
+}
+
+.paginationWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  min-width: 100%;
+  font-size: var(--font-size-sm);
+  background-color: var(--theme-color-foreground);
+}
+
+@media screen and (max-width: 600px) {
+  .paginationWrapper {
+    flex-direction: column;
+    gap: var(--space-8);
+    overflow-x: scroll;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .pagination {
+    justify-content: flex-start;
+  }
+}
+
+.pageList {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.pageSizeSelect {
+  width: 80px;
+  min-width: auto;
+}
+
+.selectContainer {
+  display: flex;
+  margin-inline-start: var(--space-16);
+}
+
+/* Page number buttons */
+.pageNumbers {
+  all: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 10px;
+  font-size: var(--font-size-sm);
+  background-color: var(--theme-color-foreground);
+  border: none;
+  border-radius: var(--border-radius-4);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pageNumbers:hover {
+  color: var(--color-white);
+  background-color: var(--theme-button-filled-primary-hover-bg);
+}
+
+.activePage {
+  color: var(--color-white);
+  background-color: var(--theme-color-primary);
+}
+
+.activePage:hover {
+  color: var(--color-white);
+  background-color: var(--theme-color-primary);
+}
+
+/* Navigation buttons (prev/next) */
+.paginationButton {
+  all: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  padding: var(--space-2);
+  background-color: var(--theme-color-foreground);
+  border: 1px solid var(--theme-border-base);
+  border-radius: var(--border-radius-4);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.paginationButton:hover {
+  background-color: var(--color-neutral-20);
+}
+
+.paginationButton:disabled {
+  cursor: not-allowed;
+  background-color: var(--color-neutral-20);
+  color: var(--color-neutral-70);
+}
+
+.pagination button:disabled svg {
+  color: var(--color-neutral-30);
+}
+
+.pagination button > svg {
+  width: 16px;
+  height: 16px;
+  margin: var(--space-2);
+  color: var(--theme-icon-base);
+}
+
+/* Page info text */
+.pageInfo {
+  color: var(--theme-text-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin-inline-end: var(--space-16);
+}
+
+/* Ellipsis for page number gaps */
+.ellipsis {
+  color: var(--theme-text-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin-inline: var(--space-8);
+  padding: 0 8px;
+  user-select: none;
+}

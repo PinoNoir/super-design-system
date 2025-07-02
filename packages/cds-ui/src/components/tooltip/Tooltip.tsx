@@ -1,0 +1,99 @@
+import * as RadixTooltip from '@radix-ui/react-tooltip';
+import React from 'react';
+import styles from './styles/Tooltip.module.css';
+
+export interface TooltipProps extends RadixTooltip.TooltipProps {
+  /** Pass in the child to which the tooltip will be applied */
+  children: React.ReactNode;
+
+  /**
+   * Provide the description to be rendered inside of the Tooltip. The
+   * description will use `aria-describedby` and will describe the child node
+   * in addition to the text rendered inside of the child. This means that if you
+   * have text in the child node, it will be announced alongside the
+   * description to the screen reader.
+   */
+  description?: React.ReactNode;
+
+  /**If true, the tooltip will open.*/
+  open?: boolean;
+
+  /** The sticky behavior on the align axis. "partial" will keep the content in the boundary as long as the trigger is at least partially in the boundary whilst "always" will keep the content in the boundary regardless. */
+  sticky?: 'partial' | 'always';
+
+  /** The preferred side of the trigger to render against when open. Will be reversed when collisions occur and avoidCollisions is enabled. */
+  side?: 'top' | 'right' | 'bottom' | 'left';
+
+  /** When true, overrides the side andalign preferences to prevent collisions with boundary edges. */
+  avoidCollisions?: boolean;
+
+  /** The element used as the collision boundary. By default this is the viewport, though you can provide additional element(s) to be included in this check. */
+  collisionBoundary?: Element | null | Array<Element | null>;
+
+  /** The preferred alignment against the trigger. May change when collisions occur. */
+  align?: 'start' | 'center' | 'end';
+
+  /** The distance in pixels from the trigger. */
+  sideOffset?: number;
+
+  /** Optionally specify the delay duration for the tooltip on open. */
+  openDelay?: number;
+
+  /** If true, the tooltip will be open by default. */
+  defaultOpen?: boolean;
+
+  /** Callback fired when the tooltip opens or closes. */
+  onOpenChange?: (open: boolean) => void;
+
+  /** Event handler called when the escape key is down. It can be prevented by calling event.preventDefault. */
+  onEscapeKeydown?: (event: KeyboardEvent) => void;
+
+  /** By default, screenreaders will announce the content inside the component. If this is not descriptive enough, or you have content that cannot be announced, use aria-label as a more descriptive label. */
+  ['aria-label']?: string;
+
+  /** Optionally specify an automation id for testing purposes. */
+  ['automation-id']?: string;
+}
+
+// Displays additional information related to an element when the user hovers over it.
+const Tooltip = ({
+  children,
+  description,
+  defaultOpen,
+  open,
+  onOpenChange,
+  delayDuration,
+  side = 'top',
+  sideOffset = 5,
+  sticky = 'partial',
+  align = 'center',
+  ...props
+}: TooltipProps) => {
+  return (
+    <RadixTooltip.Provider delayDuration={delayDuration}>
+      <RadixTooltip.Root open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+        <RadixTooltip.Trigger className={styles.trigger} asChild automation-id="tooltip-trigger">
+          {children}
+        </RadixTooltip.Trigger>
+        <RadixTooltip.Portal>
+          <RadixTooltip.Content
+            className={styles.content}
+            sideOffset={sideOffset}
+            side={side}
+            sticky={sticky}
+            align={align}
+            automation-id="tooltip-content"
+            {...props}
+          >
+            {description}
+            <RadixTooltip.Arrow className={styles.arrow} />
+          </RadixTooltip.Content>
+        </RadixTooltip.Portal>
+      </RadixTooltip.Root>
+    </RadixTooltip.Provider>
+  );
+};
+
+Tooltip.displayName = 'Tooltip';
+
+export default Tooltip;

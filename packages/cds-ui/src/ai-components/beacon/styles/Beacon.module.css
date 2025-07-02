@@ -1,0 +1,176 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: var(--space-4);
+  justify-content: flex-start;
+  width: 100%;
+  height: fit-content;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.svgContainer {
+  position: relative;
+  margin-right: var(--space-8);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--border-radius-round);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.circleWrapper {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: var(--color-neutral-100);
+  border: 2px solid var(--color-white);
+  transition:
+    box-shadow 300ms ease,
+    transform 300ms ease;
+}
+
+.active {
+  animation:
+    shadowPulse 2s ease-in-out infinite,
+    circlePulse 2s ease-in-out infinite;
+}
+
+.disabled {
+  animation: none;
+  opacity: 0.5;
+  pointer-events: none;
+
+  & .statusText {
+    color: var(--color-neutral-30);
+  }
+  & .circle {
+    background-color: var(--color-neutral-30);
+    box-shadow: none;
+  }
+}
+
+.textContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  flex: 1;
+}
+
+.statusText {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-base);
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  transition:
+    transform 300ms ease,
+    opacity 300ms ease;
+}
+
+.statusTextContent {
+  flex-shrink: 0;
+}
+
+.statusDots {
+  display: inline-block;
+  width: 24px;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.statusText.initial {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.statusText.entering {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.statusText.current {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.statusText.exiting {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.progressBarContainer {
+  display: block;
+  height: 4px;
+  width: 100%;
+  background-color: var(--color-neutral-10);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressBar {
+  height: 100%;
+  width: 30%;
+  border-radius: 2px;
+  background-color: var(--color-neutral-70);
+  position: absolute;
+  left: -30%;
+  animation: indeterminateProgress 2s infinite linear;
+}
+
+/* Animations */
+@keyframes shadowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  }
+}
+
+@keyframes circlePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+}
+
+@keyframes indeterminateProgress {
+  0% {
+    left: -30%;
+  }
+  100% {
+    left: 100%;
+  }
+}

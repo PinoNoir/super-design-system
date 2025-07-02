@@ -1,0 +1,140 @@
+.chip {
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius-4);
+  padding: var(--space-8) var(--space-12);
+  margin: var(--space-4);
+  height: 56px;
+  max-width: 350px;
+  background-color: var(--theme-color-background);
+  border: 1px solid var(--theme-border-base);
+}
+
+.base {
+  border-color: var(--theme-border-base);
+}
+
+.success {
+  border-color: var(--theme-border-base);
+}
+
+.error {
+  border-color: var(--theme-border-base);
+}
+
+.infoWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+}
+
+.fileIconWrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.fileInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+  gap: var(--space-16);
+  min-width: 0;
+}
+
+.fileName {
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fileMetaData {
+  font-weight: var(--font-weight-regular);
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-muted);
+}
+
+.fileTypeIcon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--theme-icon-base);
+}
+
+.fileTypeIcon[data-name='docx'],
+.fileTypeIcon[data-name='doc'] {
+  color: var(--theme-icon-info);
+}
+
+.fileTypeIcon[data-name='xlsx'],
+.fileTypeIcon[data-name='xls'] {
+  color: var(--theme-icon-success);
+}
+
+.fileTypeIcon[data-name='pdf'] {
+  color: var(--theme-icon-error);
+}
+
+.fileTypeIcon[data-name='image'] {
+  color: var(--theme-icon-info);
+}
+
+.fileTypeIcon[data-name='text'] {
+  color: var(--theme-icon-base);
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin-inline: var(--space-8);
+}
+
+.retryButton {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-h2);
+  padding: var(--space-4);
+  color: var(--theme-text-base);
+  border: none;
+  background-color: var(--color-transparent);
+  border-radius: var(--border-radius-round);
+  transition:
+    background-color 300ms ease-in,
+    box-shadow 0.15s ease-in;
+
+  & svg {
+    fill: var(--theme-icon-base);
+  }
+}
+
+.removeButton {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-h2);
+  padding: var(--space-4);
+  color: var(--theme-text-base);
+  border: none;
+  background-color: var(--color-transparent);
+  border-radius: var(--border-radius-round);
+  transition:
+    background-color 300ms ease-in,
+    box-shadow 0.15s ease-in;
+
+  & svg {
+    fill: var(--theme-icon-base);
+  }
+}
+
+.loading {
+  margin-left: var(--space-8);
+}

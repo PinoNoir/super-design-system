@@ -1,0 +1,71 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-height: 240px;
+  min-height: 160px;
+  padding: var(--space-24);
+  border-top: 1px solid var(--theme-border-base);
+  background-color: var(--theme-color-foreground);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+.inputWrapper {
+  display: flex;
+  gap: var(--space-24);
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.inputWrapper textarea {
+  flex: 1;
+  resize: none;
+  min-height: 80px;
+}
+
+.textAreaContainer {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.fileButton {
+  position: absolute;
+  right: var(--space-8);
+  bottom: var(--space-8);
+  display: flex;
+  align-items: center;
+}
+
+.uploadedFile {
+  display: flex;
+  margin-top: var(--space-8);
+  font-size: var(--font-size-body);
+  color: var(--theme-text-base);
+  font-weight: var(--font-weight-regular);
+  padding: var(--space-16);
+  background-color: var(--color-neutral-10);
+  border-radius: var(--border-radius-4);
+  border: 2px dashed var(--theme-border-base);
+}
+
+/* For screens smaller than 768px */
+@media (max-width: 768px) {
+  .inputContainer {
+    padding: var(--space-16);
+    min-height: 120px;
+  }
+
+  .inputWrapper {
+    gap: var(--space-12);
+  }
+}

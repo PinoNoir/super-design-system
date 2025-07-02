@@ -1,0 +1,42 @@
+import { Icon } from '@iconify/react';
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+import { PageTemplate, HeadingTemplate } from '../storybook-components';
+
+<Meta title="Getting Started/Migrating to CDS-UI v9" />
+
+<Unstyled>
+<PageTemplate>
+<HeadingTemplate>Migration Guide</HeadingTemplate>
+
+# Migrating to CDS-UI v9
+
+## Breaking Changes
+
+The main breaking change in v9 is the requirement to import the component styles in the root of your application. Previously all component
+styles were injected into the head of the document, this lead to incosistent errors depending on the consuming application's architecture/configuration.
+This change ensures that styles are only loaded once and improves performance. They're also minified and tree-shaken to reduce bundle size.
+
+### Component Styles Import
+
+In v9, you need to import the component styles in your main CSS file or at the root of your application. This is a one-time setup and will ensure that all components are styled and themed correctly.
+
+### Example
+
+```css
+// Import the main theme CSS bundle from the cds-styles v9 package (Available themes are: bcc, tsc, and core each have a light and dark theme included)
+@import '@stretto/cds-styles/bcc';
+// Import the main component CSS bundle
+@import '@stretto/cds-ui/component-styles';
+```
+
+```jsx
+// Import components in your jsx or tsx file
+import { Button } from '@stretto/cds-ui';
+```
+
+### Need Help?
+
+If you encounter any issues during migration, please open an issue and assign it to nicholas.pino@stretto.com or reach out to me directly via teams chat.
+
+</PageTemplate>
+</Unstyled>

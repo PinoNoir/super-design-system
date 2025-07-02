@@ -1,0 +1,27 @@
+/* Messages container - allows messages to scroll */
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-16);
+  padding-bottom: 0;
+}
+
+/* Messages wrapper - contains all messages */
+.messagesWrapper {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-16);
+  padding-bottom: var(--space-16);
+  width: 100%;
+}
+
+.loaderContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-16);
+  height: 60px;
+}

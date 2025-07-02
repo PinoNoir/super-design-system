@@ -1,0 +1,44 @@
+/* styles.module.css */
+
+.strengthIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.strengthBar {
+  width: 100%;
+  height: var(--space-8);
+  background-color: var(--theme-input-background-color);
+  border-radius: var(--space-4);
+  overflow: hidden;
+}
+
+.strengthFill {
+  height: 100%;
+  transition: width 300ms;
+}
+
+.strengthLabel {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-input-text-color);
+}
+
+.strengthChecklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checkPassed {
+  color: var(--theme-input-success-text-color);
+}
+
+.checkFailed {
+  color: var(--theme-input-error-text-color);
+}

@@ -1,0 +1,602 @@
+import { Controls, Description, Meta, Story, Title, Canvas } from '@storybook/addon-docs/blocks';
+import Table from '../Table';
+import * as TablePaginationStories from './TablePagination.stories';
+
+<Meta of={TablePaginationStories} />
+
+<Title />
+
+<Description />
+
+The `Table` component provides robust pagination capabilities supporting both **client-side** and **server-side** pagination patterns. Choose the approach that best fits your data size and architecture requirements.
+
+## When to Use Each Approach
+
+### Client-Side Pagination
+
+- **Small to medium datasets** (< 10,000 records)
+- **Fast user interactions** with immediate search/sort
+- **Simple data sources** that can be loaded entirely
+- **Offline-capable** applications
+
+### Server-Side Pagination
+
+- **Large datasets** (> 10,000 records)
+- **Database-driven** applications
+- **Memory-constrained** environments
+- **Real-time data** that changes frequently
+
+## Client-Side Pagination
+
+All data is loaded into memory and processed locally. Perfect for responsive user experiences with smaller datasets.
+
+<Canvas of={TablePaginationStories.ClientSidePagination} />
+
+### Implementation Pattern
+
+```tsx
+function ClientSidePaginationExample() {
+  // All data stored in client state
+  const [tableData] = useState(LARGE_DATASET);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Client-side processing hooks
+  const { searchTerm, filterData, handleSearch } = useDataSearch();
+  const { sortedData, handleSort, sortKey, sortDirection } = useDataSort();
+  const tableState = useRowSelection({ multipleSelect: true });
+
+  // Process all data through search and sort
+  const processedData = useMemo(() => {
+    const filtered = filterData(tableData);
+    return sortedData(filtered);
+  }, [tableData, filterData, sortedData]);
+
+  // Client handles pagination slicing
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return processedData.slice(startIndex, endIndex);
+  }, [processedData, currentPage, pageSize]);
+
+  return (
+    <Table
+      data={paginatedData} // Pass sliced data
+      columns={columns}
+      // Pagination props
+      enablePagination
+      currentPage={currentPage}
+      pageSize={pageSize}
+      totalItems={processedData.length} // Total after filtering
+      onPageChange={setCurrentPage}
+      onPageSizeChange={(size) => {
+        setPageSize(size);
+        setCurrentPage(1); // Reset to first page
+      }}
+      // Search and sort
+      sortKey={sortKey}
+      sortDirection={sortDirection}
+      onSort={handleSort}
+      // Selection
+      selectedRowIds={tableState.selectedRowIds}
+      onRowSelect={tableState.handleRowSelection}
+      getIsRowSelected={tableState.isRowSelected}
+      enableSelectAll={true}
+    />
+  );
+}
+```
+
+### Key Benefits
+
+- **Instant responses** to search/sort/pagination
+- **Consistent selection** across page changes
+- **Simple state management** with all data in memory
+- **Offline functionality** once data is loaded
+
+### Performance Tips
+
+```tsx
+// Memoize expensive computations
+const processedData = useMemo(() => {
+  const filtered = filterData(tableData);
+  return sortedData(filtered);
+}, [tableData, filterData, sortedData]);
+
+// Debounce search for large datasets
+const debouncedSearch = useMemo(() => debounce(handleSearch, 300), [handleSearch]);
+
+// Use virtual scrolling for very large client-side data
+// (Consider libraries like react-window for 50k+ records)
+```
+
+## Server-Side Pagination
+
+Data is processed on the server and only the current page is loaded. Essential for large datasets and database-driven applications.
+
+<Canvas of={TablePaginationStories.ServerSidePagination} />
+
+### Implementation Pattern
+
+```tsx
+function ServerSidePaginationExample() {
+  // Server state management
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Search and sort trigger server requests
+  const { searchTerm, handleSearch } = useDataSearch();
+  const { handleSort, sortKey, sortDirection } = useDataSort();
+  const tableState = useRowSelection({ multipleSelect: true });
+
+  // Server data fetching
+  const loadData = async (page, size, search, sort, direction) => {
+    setLoading(true);
+    setError(null);
+    tableState.clearSelection(); // Clear selection on new data
+
+    try {
+      const response = await fetchData(page, size, search, sort, direction);
+      setTableData(response.items); // Server provides ready data
+      setTotalItems(response.total);
+    } catch (err) {
+      setError(err.message);
+      setTableData([]);
+      setTotalItems(0);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reload when any parameter changes
+  useEffect(() => {
+    loadData(currentPage, pageSize, searchTerm, sortKey, sortDirection);
+  }, [currentPage, pageSize, searchTerm, sortKey, sortDirection]);
+
+  return (
+    <Table
+      data={tableData} // Server provides pre-processed data
+      columns={columns}
+      // Pagination props
+      enablePagination
+      currentPage={currentPage}
+      pageSize={pageSize}
+      totalItems={totalItems} // Total from server
+      onPageChange={setCurrentPage}
+      onPageSizeChange={(size) => {
+        setPageSize(size);
+        setCurrentPage(1);
+      }}
+      // Server-side configuration
+      serverSide={{
+        enabled: true,
+        totalItems,
+        isLoading: loading,
+        error,
+        onRetry: () => loadData(currentPage, pageSize, searchTerm, sortKey, sortDirection),
+        itemDescription: {
+          singular: 'record',
+          plural: 'records',
+        },
+        pageInfoText: 'Showing {start}-{end} of {total} {items}',
+      }}
+      // Search and sort (triggers server requests)
+      sortKey={sortKey}
+      sortDirection={sortDirection}
+      onSort={handleSort}
+      // Selection (cleared on data reload)
+      selectedRowIds={tableState.selectedRowIds}
+      onRowSelect={tableState.handleRowSelection}
+      getIsRowSelected={tableState.isRowSelected}
+      enableSelectAll={true}
+    />
+  );
+}
+```
+
+### Server-Side Props
+
+| Prop                         | Type                                 | Description                     |
+| ---------------------------- | ------------------------------------ | ------------------------------- |
+| `serverSide.enabled`         | `boolean`                            | Enables server-side mode        |
+| `serverSide.isLoading`       | `boolean`                            | Shows loading state             |
+| `serverSide.error`           | `string \| null`                     | Error message to display        |
+| `serverSide.onRetry`         | `() => void`                         | Retry function for errors       |
+| `serverSide.itemDescription` | `{singular: string, plural: string}` | Item labels for pagination text |
+| `serverSide.pageInfoText`    | `string`                             | Custom pagination text template |
+
+### API Integration Examples
+
+#### REST API Pattern
+
+```tsx
+const fetchData = async (page, pageSize, search, sortKey, sortDirection) => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: pageSize.toString(),
+    ...(search && { search }),
+    ...(sortKey && { sortBy: sortKey }),
+    ...(sortDirection && sortDirection !== 'none' && { sortOrder: sortDirection }),
+  });
+
+  const response = await fetch(`/api/users?${params}`);
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  return {
+    items: data.users,
+    total: data.totalCount,
+  };
+};
+```
+
+#### GraphQL Pattern
+
+```tsx
+const fetchData = async (page, pageSize, search, sortKey, sortDirection) => {
+  const query = `
+    query GetUsers($page: Int!, $pageSize: Int!, $search: String, $sortBy: String, $sortOrder: SortOrder) {
+      users(page: $page, pageSize: $pageSize, search: $search, sortBy: $sortBy, sortOrder: $sortOrder) {
+        items {
+          id
+          name
+          email
+          status
+        }
+        totalCount
+      }
+    }
+  `;
+
+  const { data } = await graphqlClient.query({
+    query,
+    variables: { page, pageSize, search, sortBy: sortKey, sortOrder: sortDirection },
+  });
+
+  return {
+    items: data.users.items,
+    total: data.users.totalCount,
+  };
+};
+```
+
+### Error Handling Best Practices
+
+```tsx
+// Comprehensive error handling
+try {
+  const response = await fetchData(page, pageSize, search, sort, direction);
+  setTableData(response.items);
+  setTotalItems(response.total);
+  setError(null); // Clear previous errors
+} catch (err) {
+  // Handle different error types
+  if (err.name === 'AbortError') {
+    return; // Request was cancelled
+  }
+
+  const errorMessage = err.response?.data?.message || err.message || 'An unexpected error occurred';
+
+  setError(errorMessage);
+  setTableData([]); // Clear data on error
+  setTotalItems(0);
+
+  // Optional: Log error for monitoring
+  console.error('Table data fetch error:', err);
+}
+```
+
+## No Pagination
+
+For small datasets where showing all data at once provides the best user experience.
+
+<Canvas of={TablePaginationStories.NoPagination} />
+
+### When to Use No Pagination
+
+- **Small datasets** (< 100 records)
+- **Reference tables** (countries, categories, etc.)
+- **Dashboard summaries** where overview is important
+- **Print-friendly** data displays
+
+```tsx
+<Table
+  data={allData}
+  columns={columns}
+  enablePagination={false} // Explicitly disable
+  // ... other props
+/>
+```
+
+## Pagination Configuration
+
+### Page Size Options
+
+```tsx
+// Default page size options
+const defaultPageSizes = [10, 25, 50, 100];
+
+// Custom page size options
+<Table
+  pageSize={pageSize}
+  onPageSizeChange={setPageSize}
+  pageSizeOptions={[5, 15, 30, 50]} // Custom options
+/>;
+```
+
+### Custom Pagination Text
+
+```tsx
+<Table
+  serverSide={{
+    enabled: true,
+    pageInfoText: 'Displaying {start} to {end} of {total} {items}',
+    itemDescription: {
+      singular: 'user',
+      plural: 'users',
+    },
+  }}
+/>
+```
+
+Available placeholders in `pageInfoText`:
+
+- `{start}` - First item number on current page
+- `{end}` - Last item number on current page
+- `{total}` - Total number of items
+- `{items}` - Singular or plural item description
+
+## Performance Optimization
+
+### Client-Side Optimizations
+
+```tsx
+// Memoize expensive operations
+const processedData = useMemo(() => {
+  const filtered = filterData(tableData);
+  return sortedData(filtered);
+}, [tableData, filterData, sortedData]);
+
+// Debounce search input
+const debouncedSearch = useCallback(
+  debounce((term) => handleSearch(term), 300),
+  [handleSearch],
+);
+
+// Use React.memo for complex row renderers
+const MemoizedCustomRow = React.memo(CustomRowComponent);
+```
+
+### Server-Side Optimizations
+
+```tsx
+// Debounce server requests
+const debouncedLoadData = useCallback(
+  debounce((page, size, search, sort, direction) => {
+    loadData(page, size, search, sort, direction);
+  }, 500),
+  [loadData],
+);
+
+// Cancel previous requests
+useEffect(() => {
+  const controller = new AbortController();
+
+  fetchData(currentPage, pageSize, searchTerm, {
+    signal: controller.signal,
+  });
+
+  return () => controller.abort();
+}, [currentPage, pageSize, searchTerm]);
+
+// Cache frequently accessed pages
+const cache = new Map();
+const cachedFetch = async (params) => {
+  const key = JSON.stringify(params);
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
+
+  const result = await fetchData(params);
+  cache.set(key, result);
+  return result;
+};
+```
+
+## Styling and Customization
+
+### Custom Pagination Controls
+
+```tsx
+// The table provides pagination controls automatically
+// But you can customize the appearance with CSS
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.pagination-info {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.page-size-selector {
+  margin-left: 16px;
+}
+```
+
+### Loading States
+
+```tsx
+// Custom loading overlay
+<Table
+  data={tableData}
+  serverSide={{
+    enabled: true,
+    isLoading: loading,
+    // Custom loading component
+    loadingComponent: <CustomLoadingSpinner />,
+  }}
+/>
+```
+
+## Common Pitfalls and Solutions
+
+### ❌ Don't Filter Server Data Client-Side
+
+```tsx
+// ❌ Bad - Processing server data client-side
+const processedData = useMemo(() => {
+  const filtered = filterData(serverData); // Server already filtered!
+  return sortedData(filtered);
+}, [serverData, filterData, sortedData]);
+
+// ✅ Good - Use server data directly
+<Table data={serverData} />;
+```
+
+### ❌ Don't Forget to Reset Page on Search
+
+```tsx
+// ❌ Bad - Staying on page 5 when search results fit on page 1
+const handleSearch = (term) => {
+  setSearchTerm(term);
+  // Page remains unchanged - user might see empty results
+};
+
+// ✅ Good - Reset to first page on search
+const handleSearch = (term) => {
+  setSearchTerm(term);
+  setCurrentPage(1); // Reset pagination
+};
+```
+
+### ❌ Don't Lose Selection State Inappropriately
+
+```tsx
+// ❌ Bad - Clearing selection on every page change (client-side)
+const handlePageChange = (page) => {
+  setCurrentPage(page);
+  clearSelection(); // User loses selection when paginating
+};
+
+// ✅ Good - Preserve selection across pages (client-side)
+const handlePageChange = (page) => {
+  setCurrentPage(page);
+  // Keep selection intact
+};
+
+// ✅ Good - Clear selection when loading new data (server-side)
+const loadData = async (...) => {
+  setLoading(true);
+  clearSelection(); // Clear stale selections
+  // ... fetch new data
+};
+```
+
+## Real-World Examples
+
+### E-commerce Product Catalog
+
+```tsx
+function ProductCatalog() {
+  const [products, setProducts] = useState([]);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [category, setCategory] = useState('all');
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+
+  const loadProducts = async () => {
+    const response = await fetch('/api/products', {
+      method: 'POST',
+      body: JSON.stringify({
+        page: currentPage,
+        pageSize,
+        filters: {
+          category: category !== 'all' ? category : undefined,
+          priceMin: priceRange[0],
+          priceMax: priceRange[1],
+        },
+      }),
+    });
+
+    const data = await response.json();
+    setProducts(data.products);
+    setTotalProducts(data.total);
+  };
+
+  return (
+    <Table
+      data={products}
+      columns={productColumns}
+      enablePagination
+      currentPage={currentPage}
+      pageSize={pageSize}
+      totalItems={totalProducts}
+      onPageChange={setCurrentPage}
+      onPageSizeChange={setPageSize}
+      serverSide={{
+        enabled: true,
+        itemDescription: { singular: 'product', plural: 'products' },
+      }}
+    />
+  );
+}
+```
+
+### User Management Dashboard
+
+```tsx
+function UserManagement() {
+  const [users, setUsers] = useState([]);
+  const tableState = useRowSelection({ multipleSelect: true });
+
+  const bulkActions = [
+    { label: 'Activate Users', action: activateUsers },
+    { label: 'Deactivate Users', action: deactivateUsers },
+    { label: 'Send Invitation', action: sendInvitations },
+  ];
+
+  return (
+    <>
+      {tableState.getSelectedCount() > 0 && (
+        <BulkActionBar
+          selectedCount={tableState.getSelectedCount()}
+          actions={bulkActions}
+          selectedRows={tableState.getSelectedRows(users)}
+        />
+      )}
+
+      <Table
+        data={users}
+        columns={userColumns}
+        selectedRowIds={tableState.selectedRowIds}
+        onRowSelect={tableState.handleRowSelection}
+        getIsRowSelected={tableState.isRowSelected}
+        enableSelectAll={true}
+        enablePagination
+        serverSide={{ enabled: true }}
+      />
+    </>
+  );
+}
+```
+
+The pagination system provides a solid foundation for both simple and complex data display scenarios. Choose the approach that matches your data size and architecture, and leverage the built-in optimizations for the best user experience.

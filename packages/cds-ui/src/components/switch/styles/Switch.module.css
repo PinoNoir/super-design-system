@@ -1,0 +1,126 @@
+.switchRoot {
+  all: unset;
+  cursor: pointer;
+  width: 36px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-neutral-40);
+  border-radius: 9999px;
+  transition: background-color 300ms ease-in-out;
+  position: relative;
+}
+
+.switchRoot[data-state='checked'] {
+  background-color: var(--color-blue-20);
+}
+
+.switchRoot[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.switchThumb {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-neutral-70);
+  border-radius: var(--border-radius-round);
+  box-shadow:
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  transition: transform 100ms;
+  transform: translateX(0px);
+  will-change: transform;
+}
+
+.switchRoot[data-state='checked'] .switchThumb {
+  background-color: var(--color-blue-50);
+  transform: translateX(16px);
+}
+
+.switchThumb:hover {
+  outline: var(--space-8) solid rgba(0, 0, 0, 0.04);
+}
+
+.switchRoot[data-state='checked'] .switchThumb:hover {
+  outline: var(--space-8) solid rgba(42, 122, 183, 0.08);
+}
+
+.switchWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.switchBase {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.switchLabel {
+  display: flex;
+  margin-block-end: var(--space-8);
+}
+
+.labelWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.labelRight {
+  flex-direction: row;
+}
+
+.labelLeft {
+  flex-direction: row-reverse;
+}
+
+.label {
+  font-size: var(--font-size-body);
+  color: var(--theme-tex-base);
+  font-weight: var(--font-weight-bold);
+  line-height: 1rem;
+  vertical-align: middle;
+}
+
+.labelInline {
+  flex: 1;
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.requiredLabel {
+  position: relative;
+}
+
+.requiredLabel[data-required='true']::after {
+  content: '*';
+  color: var(--color-red-50);
+  margin-left: 2px;
+}
+
+.labelDisabled {
+  color: var(--color-neutral-30);
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  visibility: inherit;
+  white-space: nowrap;
+}

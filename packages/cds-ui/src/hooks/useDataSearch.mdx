@@ -1,0 +1,319 @@
+# useDataSearch Hook
+
+A custom React hook for searching and filtering data with debounced input handling. This hook provides a flexible filtering mechanism that works with any array of objects.
+
+## Overview
+
+The `useDataSearch` hook manages search state and provides a filtering function that can be applied to any dataset. It features debounced search input handling and intelligent filtering logic that searches across all object properties.
+
+## API Reference
+
+### Parameters
+
+This hook takes no parameters.
+
+### Returns
+
+The hook returns an object with the following properties:
+
+| Property              | Type                                             | Description                                                  |
+| --------------------- | ------------------------------------------------ | ------------------------------------------------------------ |
+| `searchTerm`          | `string`                                         | The current search input value                               |
+| `debouncedSearchTerm` | `string`                                         | The debounced search term (delayed by 300ms)                 |
+| `filterData`          | `<T>(data: T[]) => T[]`                          | Function to filter an array of data based on the search term |
+| `handleSearch`        | `(event: ChangeEvent<HTMLInputElement>) => void` | Handler for search input changes                             |
+| `handleClear`         | `() => void`                                     | Function to clear the search term                            |
+
+## Features
+
+### Debouncing
+
+- **300ms delay**: Search filtering is debounced to improve performance
+- **Automatic cancellation**: Previous timeouts are cleared when new input is received
+- **Smooth UX**: Prevents excessive filtering while typing
+
+### Filtering
+
+- **Cross-property search**: Searches across all object properties
+- **Case-insensitive**: Matches regardless of letter case
+- **Type conversion**: Converts all values to strings for comparison
+- **Smart exclusions**: Automatically excludes 'action' fields and null/undefined values
+
+### Flexible Usage
+
+- **Generic support**: Works with any object type using TypeScript generics
+- **No data binding**: You control when and how to apply the filter
+- **Composable**: Can be combined with other hooks like sorting and pagination
+
+## Basic Usage
+
+```tsx
+import { useDataSearch } from '@stretto/cds-ui';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  department: string;
+}
+
+const SearchableUserList: React.FC = () => {
+  const users: User[] = [
+    { id: '1', name: 'John Doe', email: 'john@example.com', department: 'Engineering' },
+    { id: '2', name: 'Jane Smith', email: 'jane@example.com', department: 'Marketing' },
+  ];
+
+  const { searchTerm, filterData, handleSearch, handleClear } = useDataSearch();
+
+  const filteredUsers = filterData(users);
+
+  return (
+    <div>
+      <div className="search-controls">
+        <input type="text" value={searchTerm} onChange={handleSearch} placeholder="Search users..." />
+        {searchTerm && <button onClick={handleClear}>Clear</button>}
+      </div>
+
+      <div className="results">
+        {filteredUsers.length > 0 ? (
+          <ul>
+            {filteredUsers.map((user) => (
+              <li key={user.id}>
+                <strong>{user.name}</strong> - {user.email}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No users found matching "{searchTerm}"</p>
+        )}
+      </div>
+    </div>
+  );
+};
+```
+
+## Advanced Usage
+
+### With Table Component
+
+```tsx
+import { useDataSearch, Table } from '@stretto/cds-ui';
+
+const SearchableTable: React.FC = () => {
+  const { searchTerm, filterData, handleSearch } = useDataSearch();
+
+  const filteredData = filterData(originalData);
+
+  return (
+    <div>
+      <input type="text" value={searchTerm} onChange={handleSearch} placeholder="Search table data..." />
+      <Table data={filteredData} columns={columns} />
+    </div>
+  );
+};
+```
+
+### With Multiple Filters
+
+```tsx
+const MultiFilterComponent: React.FC = () => {
+  const { searchTerm, filterData, handleSearch } = useDataSearch();
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+
+  const filteredData = useMemo(() => {
+    let result = filterData(originalData);
+
+    if (statusFilter !== 'all') {
+      result = result.filter((item) => item.status === statusFilter);
+    }
+
+    return result;
+  }, [filterData, originalData, statusFilter]);
+
+  return (
+    <div>
+      <input type="text" value={searchTerm} onChange={handleSearch} placeholder="Search..." />
+      <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+        <option value="all">All Statuses</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+      {/* Render filtered results */}
+    </div>
+  );
+};
+```
+
+## Filtering Behavior
+
+### Included in Search
+
+- ✅ String values (case-insensitive)
+- ✅ Number values (converted to strings)
+- ✅ Boolean values (converted to strings)
+- ✅ All object properties except exclusions
+
+### Excluded from Search
+
+- ❌ Properties with key name 'action'
+- ❌ `null` values
+- ❌ `undefined` values
+
+### Search Examples
+
+```tsx
+const data = [
+  {
+    id: '1',
+    name: 'John Doe',
+    age: 30,
+    isActive: true,
+    department: 'Engineering',
+    action: 'edit', // This field is excluded from search
+  },
+];
+
+// These searches would match the above record:
+// - "john" (matches name)
+// - "30" (matches age)
+// - "true" (matches isActive)
+// - "engineering" (matches department, case-insensitive)
+
+// This would NOT match:
+// - "edit" (action field is excluded)
+```
+
+## Performance Considerations
+
+- **Debouncing**: 300ms delay prevents excessive filtering during typing
+- **Memoization**: `filterData` function is memoized based on `debouncedSearchTerm`
+- **Immutability**: Original data arrays are never modified
+- **Efficient comparison**: Uses `includes()` for substring matching
+
+## TypeScript Support
+
+The hook is fully typed and supports generic data types:
+
+```tsx
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+}
+
+const { filterData } = useDataSearch();
+
+// TypeScript knows this returns Product[]
+const filteredProducts: Product[] = filterData(products);
+```
+
+## Migration Guide
+
+### Breaking Changes from Previous Version
+
+#### ❌ Removed: Data Parameter
+
+**Before (v1.x):**
+
+```tsx
+const { searchResults } = useDataSearch(data);
+```
+
+**After (v2.x):**
+
+```tsx
+const { filterData } = useDataSearch();
+const searchResults = filterData(data);
+```
+
+#### ❌ Removed: searchResults Property
+
+**Before (v1.x):**
+
+```tsx
+const { searchResults } = useDataSearch(data);
+```
+
+**After (v2.x):**
+
+```tsx
+const { filterData } = useDataSearch();
+const searchResults = filterData(data);
+```
+
+#### ✅ New: handleClear Function
+
+**New in v2.x:**
+
+```tsx
+const { handleClear } = useDataSearch();
+// Clear search with one function call
+```
+
+#### ✅ New: debouncedSearchTerm Exposure
+
+**New in v2.x:**
+
+```tsx
+const { debouncedSearchTerm } = useDataSearch();
+// Access the debounced value directly
+```
+
+### Migration Steps
+
+1. **Remove data parameter** from `useDataSearch()` call
+2. **Replace `searchResults`** with `filterData(yourData)`
+3. **Update your component logic** to call `filterData` with your data
+4. **Optional**: Use new `handleClear` and `debouncedSearchTerm` features
+
+### Example Migration
+
+**Before:**
+
+```tsx
+const MyComponent = () => {
+  const { searchResults, handleSearch, searchTerm } = useDataSearch(userData);
+
+  return (
+    <div>
+      <input value={searchTerm} onChange={handleSearch} />
+      {searchResults.map((user) => (
+        <div key={user.id}>{user.name}</div>
+      ))}
+    </div>
+  );
+};
+```
+
+**After:**
+
+```tsx
+const MyComponent = () => {
+  const { filterData, handleSearch, searchTerm, handleClear } = useDataSearch();
+  const searchResults = filterData(userData);
+
+  return (
+    <div>
+      <input value={searchTerm} onChange={handleSearch} />
+      <button onClick={handleClear}>Clear</button>
+      {searchResults.map((user) => (
+        <div key={user.id}>{user.name}</div>
+      ))}
+    </div>
+  );
+};
+```
+
+## Best Practices
+
+1. **Memoize expensive data transformations** before filtering
+2. **Combine with other hooks** like `useDataSort` for full table functionality
+3. **Use `handleClear`** to provide clear button functionality
+4. **Access `debouncedSearchTerm`** when you need the actual filtered value
+5. **Validate data structure** to ensure objects have searchable properties
+
+## Related Hooks
+
+- [`useDataSort`](./useDataSort.md) - For sorting data
+- [`useRowSelection`](./useRowSelection.md) - For row selection in tables

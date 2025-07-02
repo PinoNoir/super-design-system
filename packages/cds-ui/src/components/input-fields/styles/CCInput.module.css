@@ -1,0 +1,12 @@
+.wrapper {
+  position: relative;
+}
+
+.cardTypeIcon {
+  position: absolute;
+  right: 8px;
+  top: 42px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 2;
+}

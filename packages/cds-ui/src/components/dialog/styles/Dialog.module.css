@@ -1,0 +1,145 @@
+/* Dialog Animation */
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Dialog Base */
+.dialog {
+  background-color: var(--theme-dialog-background);
+  border-radius: var(--theme-dialog-border-radius);
+  border: none;
+  box-shadow: var(--theme-dialog-box-shadow);
+  z-index: var(--z-index-modal);
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  animation: contentShow 250ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* Dialog Content */
+.dialogTitle {
+  font-family: inherit;
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-h2);
+  line-height: var(--font-line-height-headings);
+  display: inline-block;
+  margin: 0;
+  margin-block-end: var(--space-16);
+  padding: var(--space-24);
+  padding-bottom: 0;
+  color: var(--theme-dialog-text-color);
+}
+
+.dialogBody {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  margin-bottom: 16px;
+  padding-left: var(--space-24);
+  padding-right: var(--space-24);
+  color: var(--theme-dialog-text-color);
+  overflow-y: auto;
+  max-height: calc(100vh - 256px);
+  min-height: 300px;
+}
+
+.dialogFooter {
+  box-sizing: content-box;
+  display: flex;
+  justify-content: space-between;
+  border-block-start: 1px solid var(--theme-border-base);
+  padding: var(--space-24);
+  padding-top: var(--space-24);
+}
+
+.dialogFooterContent {
+  display: flex;
+  gap: var(--space-16);
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* Overlay */
+.dialogOverlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Width Variants */
+.small {
+  width: 500px;
+  max-width: 80%;
+  min-width: 400px;
+}
+
+.medium {
+  width: 650px;
+  max-width: 80%;
+  min-width: 400px;
+}
+
+.large {
+  width: 800px;
+  max-width: 80%;
+  min-width: 400px;
+}
+
+/* Dialog Close Icon Button */
+.dialogClose {
+  all: unset;
+  font-family: inherit;
+  border-radius: var(--border-radius-round);
+  height: var(--space-32);
+  width: var(--space-32);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-dialog-text-color);
+  position: absolute;
+  top: var(--space-24);
+  right: var(--space-24);
+  transition: all 300ms ease-in;
+}
+
+.dialogClose:hover {
+  cursor: pointer;
+  background-color: var(--theme-button-filled-secondary-bg);
+
+  & > svg {
+    color: var(--theme-button-filled-secondary-hover-icon);
+  }
+}
+
+.dialogClose:focus {
+  box-shadow: 0 0 0 var(--theme-button-filled-secondary-hover-bg);
+}
+
+.dialogClose div > svg {
+  width: 20px;
+  height: 20px;
+}

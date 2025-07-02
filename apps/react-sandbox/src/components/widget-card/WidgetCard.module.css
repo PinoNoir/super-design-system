@@ -1,0 +1,19 @@
+.widgetWrapper {
+  width: 100%;
+  margin-block-end: var(--space-24);
+}
+
+.dragHeader {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-4);
+  cursor: grab;
+  border-block-end: 1px solid var(--theme-border-base);
+  margin-block-end: var(--space-12);
+}
+
+.dragging {
+  box-shadow: none !important;
+  cursor: grabbing;
+}

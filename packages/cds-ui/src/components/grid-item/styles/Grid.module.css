@@ -1,0 +1,8 @@
+.gridExample {
+  justify-items: center;
+  padding: var(--space-32);
+  color: var(--theme-text-base);
+  background: var(--theme-color-foreground);
+  border-radius: var(--border-radius-4);
+  box-shadow: var(--shadow-bottom-2);
+}

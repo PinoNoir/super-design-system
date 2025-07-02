@@ -1,0 +1,375 @@
+/**********************************************
+ CONTAINER ELEMENTS
+**********************************************/
+/* Container that wraps the entire table system */
+.tableContainer {
+  border: 1px solid var(--theme-border-base);
+  overflow: hidden;
+  background: var(--theme-color-foreground);
+}
+
+.tableContainer.none {
+  border-radius: 0;
+}
+
+.tableContainer.rounded {
+  border-radius: var(--border-radius-8, 8px);
+}
+
+/* Remove individual borders since container handles the outer border */
+.tableContainer .dataTable {
+  border: none;
+}
+
+.tableContainer .pagination {
+  border: none;
+  border-top: 1px solid var(--theme-border-base);
+}
+
+/* Only add bottom border if pagination exists */
+.tableContainer .content:not(:last-child) {
+  border-bottom: 1px solid var(--theme-border-base);
+}
+
+.content {
+  display: block;
+  max-height: 800px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/**********************************************
+                TABLE ELEMENT
+**********************************************/
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border-spacing: 0;
+  font-family: var(--font-family-body);
+  border: 1px solid var(--theme-border-base);
+}
+
+/**********************************************
+                THEAD ELEMENT
+**********************************************/
+
+.dataTable thead {
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+  background-color: var(--theme-table-header-background-color);
+  border-block-end: 1px solid var(--theme-border-base);
+  font-size: var(--font-size-body);
+  color: var(--theme-text-base);
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.dataTable thead th {
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+  height: 40px;
+  white-space: nowrap;
+}
+
+.dataTable thead th .checkboxColumn {
+  min-inline-size: 2.5rem;
+  padding-inline-end: 0.25rem;
+  padding-inline-start: 1rem;
+  width: 60px;
+  height: 60px;
+}
+
+/**********************************************
+                TH ELEMENT
+**********************************************/
+
+.dataTable th,
+.dataTableCell {
+  text-align: start;
+  vertical-align: middle;
+}
+
+.dataTable th:last-of-type {
+  position: static;
+  inline-size: auto;
+}
+
+.dataTable th .checkboxColumn {
+  position: static;
+  inline-size: 2rem;
+  transition: background-color 70ms cubic-bezier(0, 0, 0.38, 0.9);
+}
+
+.sort {
+  cursor: pointer;
+  color: var(--theme-text-base);
+  border-bottom: 1px solid var(--theme-border-base);
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+  height: 40px;
+
+  & span {
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-bold);
+    color: var(--theme-table-header-text-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.sortButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  transition: background-color 300ms ease-in;
+}
+
+.sortButton:hover {
+  opacity: var(--color-neutral-20);
+}
+
+.sortButton:focus {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+.dataTableHeader {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-table-header-text-color);
+  display: flex;
+  align-items: center;
+  height: fit-content;
+}
+
+.sort .dataTableHeader {
+  box-sizing: inherit;
+  color: var(--theme-text-base);
+  font: inherit;
+  inline-size: 100%;
+  line-height: 1;
+  min-block-size: 100%;
+  text-align: start;
+  transition:
+    background-color 300ms ease-in,
+    outline 300ms ease-in;
+}
+
+.dataTableHeader > button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.sortIcon {
+  color: var(--theme-icon-inverted);
+  height: 24px;
+  width: 24px;
+  transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.sortIcon[data-state='none'] {
+  transform: rotate(0deg);
+}
+
+.sortIcon[data-state='ascending'] {
+  transform: rotate(180deg);
+}
+
+.sortIcon[data-state='descending'] {
+  transform: rotate(0deg);
+}
+
+.emptyMessageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.emptyMessage {
+  color: var(--theme-text-muted);
+  margin: 0;
+}
+
+.emptyCell {
+  text-align: center;
+  padding: 2rem;
+  border: none;
+  min-height: 400px;
+}
+
+/**********************************************
+                TBODY ELEMENT
+**********************************************/
+
+tbody tr:first-of-type {
+  border-top: 1px solid var(--theme-border-base);
+}
+
+tbody a {
+  color: var(--color-blue-50, #3b82f6);
+}
+
+/* Drag and Drop States */
+.dragOver {
+  border-top: 2px solid var(--theme-color-primary);
+}
+
+.dragging {
+  opacity: 0.5;
+  background-color: var(--theme-color-primary);
+  cursor: grabbing !important;
+}
+
+/**********************************************
+                TD ELEMENT
+**********************************************/
+
+.dataTableCell {
+  min-height: 52px;
+  height: 52px;
+}
+
+.dataTable .dataTableCell {
+  padding-inline-end: 1rem;
+  padding-inline-start: 1rem;
+}
+
+.dataTableCell:last-child {
+  margin-inline-end: var(--space-24);
+}
+
+.dataTableCell:first-child {
+  margin-inline-start: var(--space-0);
+}
+
+/* Special Cell Types */
+.loaderCell {
+  text-align: center;
+  padding: 2rem;
+  border: none;
+  min-height: 500px;
+}
+
+.errorCell {
+  text-align: center;
+  padding: 2rem;
+  border: none;
+  min-height: 400px;
+}
+
+.errorMessageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+.errorMessageContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+.errorIcon {
+  color: var(--color-red-50, #ef4444);
+  width: 24px;
+}
+
+.errorMessage {
+  color: var(--color-red-50, #ef4444);
+  margin: 0;
+}
+
+/* Cell Content Elements */
+.dataTableRow > .dataTableCell > button {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-neutral-40);
+  color: var(--color-neutral-100);
+}
+
+.dataTableRow.selected > .dataTableCell > button {
+  background-color: var(--theme-color-primary);
+  border-color: var(--theme-color-primary);
+  color: var(--color-white);
+}
+
+.dataTableRow.disabled > .dataTableCell > button:disabled {
+  background-color: var(--color-neutral-30);
+  border-color: var(--color-neutral-30);
+  color: var(--color-neutral-60);
+}
+
+.dataTableRow.disabled > .dataTableCell > input {
+  background-color: var(--color-neutral-30);
+}
+
+/* Dropdown Triggers */
+.dataTableRow > .dataTableCell > .dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: var(--color-transparent, transparent);
+  border: 0;
+  color: var(--color-neutral-100);
+}
+
+.dataTableRow > .dataTableCell:last-child:has(.dropdownTrigger) {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-inline-end: 0px;
+  height: 52px;
+}
+
+.dataTableRow > .dataTableCell:last-child:has(.dropdownTrigger svg) {
+  cursor: pointer;
+}
+
+.dataTableRow > .dataTableCell > .dropdownTrigger svg:hover {
+  cursor: pointer;
+  color: var(--color-neutral-100);
+}
+
+.dataTableRow.selected > .dataTableCell > .dropdownTrigger {
+  background-color: var(--color-transparent, transparent);
+  border: 0;
+  color: var(--color-neutral-100);
+}
+
+/**********************************************
+                CHECKBOX COLUMN
+**********************************************/
+
+.checkboxColumn:hover {
+  cursor: pointer;
+}
+
+.dataTable tbody .dataTableCell .checkboxColumn {
+  min-inline-size: 2.5rem;
+  padding-inline-end: 0.25rem;
+  padding-inline-start: 1rem;
+  width: 60px;
+  height: 60px;
+}

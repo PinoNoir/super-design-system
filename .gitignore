@@ -1,0 +1,74 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+dist
+tmp
+*storybook.log
+packages/**/*lib
+build-storybook.log
+storybook-static
+chromatic-diagnostics.json
+chromatic.config.json
+chromatic.log
+css.d.ts
+
+# testing
+coverage/
+test_reports/
+target
+.jest-cache
+
+# next.js
+apps/*/.next/
+apps/*/out/
+
+# production
+apps/*/build
+
+
+# dependencies
+**/node_modules/**
+node_modules
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# IDE - VSCode
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IDE - WebStorm
+.idea
+
+# misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+testem.log
+apps/*/uploads
+
+
+# System Files
+.DS_Store
+Thumbs.db
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# vercel
+apps/*.vercel
+
+# typescript
+*.tsbuildinfo
+apps/*next-env.d.ts

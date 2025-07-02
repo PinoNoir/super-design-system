@@ -1,0 +1,38 @@
+---
+title: useRowSelection Hook
+description: A custom React hook for managing row selection logic in data tables.
+---
+
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Hooks/useRowSelection" />
+
+# `useRowSelection`
+
+The `useRowSelection` hook provides a flexible and extensible way to manage row selection in data tables. It supports both single and multiple selection modes, custom row ID extraction, and integrates seamlessly with UI components.
+
+## Features
+
+- ✅ Multiple or single row selection
+- ✅ Customizable row ID extraction
+- ✅ Select all / deselect all functionality
+- ✅ Disabled row handling
+- ✅ Utility methods for selection state and batch operations
+- ✅ External callback support for selection changes
+
+---
+
+## Usage
+
+```tsx
+import useRowSelection from './hooks/useRowSelection';
+
+const { selectedRowIds, handleSelectionChange, handleSelectAll, isRowSelected, getSelectedRows } = useRowSelection({
+  multipleSelect: true,
+  initialSelectedIds: ['row-1'],
+  onSelectionChange: (rowId, selected, context) => {
+    console.log(`Row ${rowId} selection changed: ${selected}`, context);
+  },
+  rowKey: 'id',
+});
+```

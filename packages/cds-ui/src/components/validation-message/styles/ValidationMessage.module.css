@@ -1,0 +1,30 @@
+.validationMsg {
+  display: flex;
+  align-items: flex-end;
+  text-wrap: auto;
+  margin-block-start: var(--space-8);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-body);
+  z-index: 0;
+  inline-size: 100%;
+  opacity: 1;
+}
+
+.formRequirementInvalid {
+  display: flex;
+  align-items: center;
+  color: var(--theme-input-error-text-color);
+}
+
+.formRequirementWarning {
+  display: flex;
+  align-items: center;
+  color: var(--theme-input-warning-text-color);
+}
+
+.formRequirementSuccess {
+  display: flex;
+  align-items: center;
+  color: var(--theme-input-success-text-color);
+}

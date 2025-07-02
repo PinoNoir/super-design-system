@@ -1,0 +1,115 @@
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* Tooltip Components */
+.trigger {
+  cursor: pointer;
+  border: none;
+}
+
+.content {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-body);
+  line-height: var(--font-line-height-body);
+  border-radius: 4px;
+  padding: 8px;
+  width: var(--radix-tooltip-trigger-width);
+  max-height: var(--radix-tooltip-content-available-height);
+  word-break: break-word;
+  color: var(--theme-tooltip-text);
+  background-color: var(--theme-tooltip-background);
+  box-shadow:
+    hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  user-select: none;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.content:focus {
+  box-shadow:
+    hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+    hsl(206 22% 7% / 20%) 0px 10px 20px -15px,
+    0 0 0 2px var(--color-neutral-10);
+}
+
+.arrow {
+  fill: var(--theme-tooltip-background);
+}
+
+.content[data-state='closed'] {
+  animation-name: fadeOut;
+  animation-duration: 200ms;
+  animation-timing-function: ease-in;
+}
+.content[data-side='top'] {
+  animation-name: slideDown;
+}
+
+.content[data-side='right'] {
+  animation-name: slideLeft;
+}
+
+.content[data-side='bottom'] {
+  animation-name: slideUp;
+}
+
+.content[data-side='left'] {
+  animation-name: slideRight;
+}

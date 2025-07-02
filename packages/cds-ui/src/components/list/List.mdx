@@ -1,0 +1,461 @@
+import { Canvas, Meta, ArgTypes, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as ListStories from './List.stories';
+
+<Meta of={ListStories} />
+
+# List
+
+A flexible, generic list component that supports inline editing, with customizable rendering for both display and edit modes.
+
+<Primary />
+
+## Overview
+
+The List component provides a reusable interface for displaying collections of data with built-in CRUD operations. It supports:
+
+- **Generic typing** - Works with any object type that has an `id` field
+- **Inline editing** - Switch between display and edit modes per item
+- **Customizable rendering** - Full control over how items are displayed and edited
+- **Custom actions** - Flexible action rendering with `renderActions` prop
+- **Action handling** - Built-in edit, save, and delete functionality
+- **Flexible styling** - Customizable CSS classes and automation IDs
+
+## Basic Usage
+
+```tsx
+import { useState } from 'react';
+import List from './List';
+import { TextInput } from '../text-input';
+
+interface Debtor {
+  id: string;
+  name: string;
+  caseNumber: string;
+  filingDate: string;
+  debtAmount: number;
+}
+
+const MyListComponent = () => {
+  const [debtors, setDebtors] = useState<Debtor[]>([
+    { id: '1', name: 'John Smith', caseNumber: 'ABC123', filingDate: '2023-05-01', debtAmount: 10000 },
+    { id: '2', name: 'Jane Doe', caseNumber: 'XYZ789', filingDate: '2023-04-15', debtAmount: 25000 },
+  ]);
+
+  const handleSave = (debtor: Debtor) => {
+    setDebtors((prev) => prev.map((d) => (d.id === debtor.id ? debtor : d)));
+  };
+
+  const handleDelete = (debtor: Debtor) => {
+    setDebtors((prev) => prev.filter((d) => d.id !== debtor.id));
+  };
+
+  return (
+    <List
+      items={debtors}
+      renderItem={(debtor) => (
+        <>
+          <div style={{ fontWeight: 'bold' }}>{debtor.name}</div>
+          <div>Case: {debtor.caseNumber}</div>
+          <div>${debtor.debtAmount.toLocaleString()}</div>
+        </>
+      )}
+      renderEditInputs={(debtor, handleChange) => (
+        <>
+          <TextInput label="Name" value={debtor.name} onChange={(e) => handleChange('name', e.target.value)} />
+          <TextInput
+            label="Case Number"
+            value={debtor.caseNumber}
+            onChange={(e) => handleChange('caseNumber', e.target.value)}
+          />
+          <TextInput
+            label="Debt Amount"
+            type="number"
+            value={debtor.debtAmount.toString()}
+            onChange={(e) => handleChange('debtAmount', Number(e.target.value))}
+          />
+        </>
+      )}
+      onEdit={(debtor) => console.log('Editing:', debtor)}
+      onSave={handleSave}
+      onDelete={handleDelete}
+    />
+  );
+};
+```
+
+## Props
+
+<ArgTypes of={ListStories.InteractiveList} />
+
+### Key Props Explained
+
+#### `items: T[]`
+
+The array of items to display. Each item must have an `id` field of type `string`.
+
+#### `renderItem: (item: T) => React.ReactNode`
+
+Function that defines how each item appears in display mode. Receives the item as a parameter and should return JSX.
+
+#### `renderEditInputs: (item: T, handleChange: (field: keyof T, value: unknown) => void) => React.ReactNode`
+
+Function that defines the edit interface for each item. Receives:
+
+- `item`: The item being edited
+- `handleChange`: Function to update item fields during editing
+
+#### `renderActions?: (item: T) => React.ReactNode` (Optional)
+
+Function that allows complete customization of the action bar for each item. When provided, this replaces the default `ListItemActions` component entirely. Receives the item as a parameter and should return JSX for the action buttons/content.
+
+#### `editingItemId?: string | null` (Optional)
+
+Allows external control of which item is being edited. When provided, the component becomes controlled and the parent manages edit state.
+
+#### Event Handlers
+
+- `onEdit`: Called when edit mode is entered
+- `onSave`: Called when save is triggered (parent should handle persistence)
+- `onDelete`: Called when delete is triggered
+
+### Toast Notifications
+
+Integrate with your toast system for user feedback:
+
+```tsx
+const handleSave = (item) => {
+  try {
+    // Save logic here
+    showToast('success', `${item.name} saved successfully`, 'Save Successful');
+  } catch (error) {
+    showToast('error', 'Failed to save changes', 'Save Failed');
+  }
+};
+```
+
+### Standalone Form Component
+
+A dedicated story showcasing the ListItemForm component used independently with validation and error handling.
+
+<Canvas of={ListStories.StandaloneForm} />
+
+## Advanced Features
+
+### Custom Action Rendering
+
+The `renderActions` prop provides complete control over the action bar for each item:
+
+```tsx
+// Basic custom actions
+<List
+  items={items}
+  renderItem={renderItem}
+  renderEditInputs={renderEditInputs}
+  onEdit={handleEdit}
+  onSave={handleSave}
+  onDelete={handleDelete}
+  renderActions={(item) => (
+    <div className="custom-actions">
+      <button onClick={() => handleView(item)}>👁️ View</button>
+      <button onClick={() => handleEdit(item)}>✏️ Edit</button>
+      <button onClick={() => handleShare(item)}>📤 Share</button>
+      {item.isUrgent && (
+        <span className="urgent-badge">🚨 Urgent</span>
+      )}
+    </div>
+  )}
+/>
+
+// Using ListItemActions with custom props
+<List
+  items={items}
+  renderActions={(item) => (
+    <ListItemActions
+      item={item}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+      beforeActions={
+        <button onClick={() => handleFavorite(item)}>
+          {item.isFavorite ? '⭐' : '☆'}
+        </button>
+      }
+      afterActions={
+        <button onClick={() => handleDuplicate(item)}>📋</button>
+      }
+    />
+  )}
+  // ... other props
+/>
+
+// Conditional actions based on item state
+<List
+  items={items}
+  renderActions={(item) => {
+    if (item.status === 'archived') {
+      return (
+        <button onClick={() => handleRestore(item)}>
+          🔄 Restore
+        </button>
+      );
+    }
+
+    return (
+      <div className="standard-actions">
+        <button onClick={() => handleEdit(item)}>Edit</button>
+        <button onClick={() => handleArchive(item)}>Archive</button>
+      </div>
+    );
+  }}
+  // ... other props
+/>
+```
+
+### Controlled Edit State
+
+For more complex scenarios, you can control the edit state externally:
+
+```tsx
+const [editingItemId, setEditingItemId] = useState<string | null>(null);
+
+const handleEdit = (item) => {
+  setEditingItemId(item.id);
+  // Additional edit logic
+};
+
+const handleSave = (item) => {
+  // Save logic
+  setEditingItemId(null); // Exit edit mode
+};
+
+const handleCancel = () => {
+  setEditingItemId(null); // Exit edit mode without saving
+};
+
+return (
+  <List
+    items={items}
+    editingItemId={editingItemId}
+    onEdit={handleEdit}
+    onSave={handleSave}
+    onDelete={handleDelete}
+    renderItem={renderItem}
+    renderEditInputs={renderEditInputs}
+  />
+);
+```
+
+### Drag and Drop Reordering
+
+The ListItem component supports drag-and-drop functionality for reordering items:
+
+```tsx
+import { useState } from 'react';
+import ListItem from './ListItem';
+
+const DraggableExample = () => {
+  const [items, setItems] = useState(myItems);
+
+  const handleReorder = (draggedId: string, droppedId: string) => {
+    setItems((prevList) => {
+      const newList = [...prevList];
+      const draggedIndex = newList.findIndex((item) => item.id === draggedId);
+      const droppedIndex = newList.findIndex((item) => item.id === droppedId);
+
+      // Remove and reinsert at new position
+      const [draggedItem] = newList.splice(draggedIndex, 1);
+      newList.splice(droppedIndex, 0, draggedItem);
+
+      return newList;
+    });
+  };
+
+  return (
+    <div>
+      {items.map((item) => (
+        <ListItem key={item.id} id={item.id} isDraggable onReorder={handleReorder}>
+          {/* Your item content */}
+        </ListItem>
+      ))}
+    </div>
+  );
+};
+```
+
+### Form Validation
+
+The ListItemForm component supports validation with error display:
+
+```tsx
+const validate = (item: MyItemType): Record<string, string> => {
+  const errors: Record<string, string> = {};
+
+  if (!item.name?.trim()) {
+    errors.name = 'Name is required';
+  }
+
+  if (item.amount <= 0) {
+    errors.amount = 'Amount must be greater than zero';
+  }
+
+  return errors;
+};
+
+// In your renderEditInputs function:
+const renderEditInputs = (item, handleChange, errors) => (
+  <>
+    <TextInput value={item.name} onChange={(e) => handleChange('name', e.target.value)} invalidText={errors?.name} />
+    <TextInput
+      type="number"
+      value={item.amount}
+      onChange={(e) => handleChange('amount', Number(e.target.value))}
+      invalidText={errors?.amount}
+    />
+  </>
+);
+```
+
+## Examples
+
+### Interactive List with CRUD Operations
+
+The main story demonstrates a complete list implementation with edit, save, and delete functionality, including toast notifications for user feedback.
+
+<Canvas of={ListStories.InteractiveList} />
+
+### Custom Actions Demo
+
+Shows how to use the `renderActions` prop to create completely custom action bars.
+
+<Canvas of={ListStories.CustomActions} />
+
+### Extended Actions Demo
+
+Demonstrates using `renderActions` to return `ListItemActions` with `beforeActions` and `afterActions` props.
+
+<Canvas of={ListStories.FullyCustomActions} />
+
+### Draggable List for Reordering
+
+This example shows how to use the ListItem component with drag-and-drop functionality for reordering items.
+
+<Canvas of={ListStories.DraggableList} />
+
+## Sub-Components
+
+The List component is built using several sub-components that work together:
+
+### ListItem
+
+A wrapper component for individual list items that provides consistent styling and structure. Also supports drag-and-drop functionality for reordering.
+
+**Props:**
+
+- `children: React.ReactNode` - The content to display within the list item
+- `id?: string` - Unique identifier for the item (required for drag functionality)
+- `isDraggable?: boolean` - Enables drag-and-drop functionality
+- `onReorder?: (draggedId: string, droppedId: string) => void` - Callback for handling reorder operations
+- `automation-id?: string` - Testing identifier
+
+### ListItemActions
+
+Contains the action buttons that appear for each item in display mode. Uses `IconButton` components for edit and delete actions. Supports flexible customization through additional action slots.
+
+**Props:**
+
+- `item: T` - The item associated with this action bar
+- `onEdit?: (item: T) => void` - Callback for edit button (optional when using custom children)
+- `onDelete?: (item: T) => void` - Callback for delete button (optional when using custom children)
+- `className?: string` - Optional custom CSS class
+- `children?: React.ReactNode | ((item: T) => React.ReactNode)` - Custom content to completely replace default actions
+- `beforeActions?: React.ReactNode | ((item: T) => React.ReactNode)` - Additional actions before edit/delete buttons
+- `afterActions?: React.ReactNode | ((item: T) => React.ReactNode)` - Additional actions after edit/delete buttons
+- `hideEdit?: boolean` - Hide the default edit button
+- `hideDelete?: boolean` - Hide the default delete button
+- `automation-id?: string` - Testing identifier
+
+### ListItemForm
+
+The edit form that appears when an item is in edit mode. Supports validation and error handling.
+
+**Props:**
+
+- `item: T` - The item being edited
+- `onSave: (item: T) => void` - Callback for save action
+- `onCancel: () => void` - Callback for cancel action
+- `renderInputs: (item: T, handleChange: (field: keyof T, value: unknown) => void, errors?: Record<string, string>) => React.ReactNode` - Function to render edit inputs
+- `validate?: (item: T) => Record<string, string>` - Optional validation function that returns error messages
+- `automation-id?: string` - Testing identifier
+
+## Styling
+
+The List component uses CSS modules for styling. The main class is `styles.list` applied to the `<ul>` element.
+
+You can customize the appearance by:
+
+1. **Passing a custom className:**
+
+```tsx
+<List className="my-custom-list" {...props} />
+```
+
+2. **Overriding CSS module styles:**
+
+```css
+/* In your CSS file */
+.list {
+  /* Your custom styles */
+}
+```
+
+The ListItemActions component uses `styles.actionBarWrapper` for the container.
+
+## Accessibility
+
+The component follows semantic HTML practices:
+
+- Uses `<ul>` for the list container
+- Each item is wrapped in `<ListItem>` (likely renders as `<li>`)
+- Action buttons use `IconButton` components with proper `aria-label` attributes
+- Includes `automation-id` attributes for testing
+
+## Testing
+
+Use the `automation-id` prop to target the component in tests:
+
+```tsx
+<List automation-id="user-list" {...props} />
+```
+
+This will set `automation-id="user-list"` on the root `<ul>` element.
+
+The component provides automation-ids for key elements:
+
+- List container: `automation-id="list"` (or custom value)
+- Edit buttons: `automation-id="edit-button"`
+- Delete buttons: `automation-id="delete-button"`
+- Edit form: `automation-id="edit-form"`
+- Save button: `automation-id="save-button"`
+- Cancel button: `automation-id="cancel-button"`
+
+## TypeScript Support
+
+The component is fully typed with TypeScript generics. The type parameter `T` must extend `{ id: string }`:
+
+```tsx
+interface MyItem {
+  id: string;
+  title: string;
+  description: string;
+}
+
+// This works - MyItem has required id field
+<List<MyItem> items={myItems} {...props} />;
+```
+
+## All Stories
+
+<Stories />
+
+## Controls
+
+<Controls />

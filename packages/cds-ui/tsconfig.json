@@ -1,0 +1,37 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib",
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2022"],
+    "types": ["node", "@types/jest", "@types/react", "@types/react-dom"],
+    "target": "ES2022",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true,
+    "moduleDetection": "force",
+    "moduleResolution": "Node",
+    // TODO: Turn back on once stricter typings for internal utitlies are complete
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "lib",
+    "sourceMap": true
+  },
+  "mdx": {
+    "plugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-gfm"]
+  },
+  "include": [
+    "src/**/*",
+    "src/vite-env-override.d.ts",
+    "src/vite-env.d.ts",
+    "src/setup-tests.ts",
+    "src/**/*stories.tsx"
+  ],
+  "exclude": ["lib", "node_modules", "src/docs", "src/mocks", "src/public"]
+}
