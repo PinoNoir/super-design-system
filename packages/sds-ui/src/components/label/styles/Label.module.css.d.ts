@@ -8,10 +8,8 @@
 
 const label: string;
 
-export {
-	label
-};
+export { label };
 
 export default {
-	label
+  label,
 };

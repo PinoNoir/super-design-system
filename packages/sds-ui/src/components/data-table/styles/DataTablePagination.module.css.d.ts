@@ -18,27 +18,27 @@ const pageInfo: string;
 const ellipsis: string;
 
 export {
-	pagination,
-	paginationWrapper,
-	pageList,
-	pageSizeSelect,
-	selectContainer,
-	pageNumbers,
-	activePage,
-	paginationButton,
-	pageInfo,
-	ellipsis
+  pagination,
+  paginationWrapper,
+  pageList,
+  pageSizeSelect,
+  selectContainer,
+  pageNumbers,
+  activePage,
+  paginationButton,
+  pageInfo,
+  ellipsis,
 };
 
 export default {
-	pagination,
-	paginationWrapper,
-	pageList,
-	pageSizeSelect,
-	selectContainer,
-	pageNumbers,
-	activePage,
-	paginationButton,
-	pageInfo,
-	ellipsis
+  pagination,
+  paginationWrapper,
+  pageList,
+  pageSizeSelect,
+  selectContainer,
+  pageNumbers,
+  activePage,
+  paginationButton,
+  pageInfo,
+  ellipsis,
 };

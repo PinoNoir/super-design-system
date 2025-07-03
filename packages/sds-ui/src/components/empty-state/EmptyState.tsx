@@ -4,7 +4,7 @@ import styles from './styles/EmptyState.module.css';
 import { useId } from '../../utilities/use-id';
 import Text from '../text/Text';
 import { Loader } from '../loader';
-import { EmptyInboxIcon, ErrorIcon, NoSearchResultIcon } from '../icon';
+import { AlertIcon, EmptyInboxIcon, ErrorIcon, NoSearchResultIcon } from '../icon';
 
 // Define common illustration types
 export type IllustrationType = 'search' | 'empty-data' | 'error' | 'no-results' | 'loading' | 'custom';
@@ -77,7 +77,7 @@ export interface EmptyStateProps extends ComponentPropsWithoutRef<'div'> {
 // Default illustrations - you would import these from your icon library
 const DefaultIllustrations = {
   search: <NoSearchResultIcon />,
-  'empty-data': <EmptyInboxIcon />,
+  'empty-data': <AlertIcon />,
   error: <ErrorIcon />,
   'no-results': <NoSearchResultIcon />,
   loading: <Loader />,

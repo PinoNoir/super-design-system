@@ -12,18 +12,12 @@ const fileDescription: string;
 const fileDropContainer: string;
 const disabled: string;
 
-export {
-	fileUploader,
-	fileContainer,
-	fileDescription,
-	fileDropContainer,
-	disabled
-};
+export { fileUploader, fileContainer, fileDescription, fileDropContainer, disabled };
 
 export default {
-	fileUploader,
-	fileContainer,
-	fileDescription,
-	fileDropContainer,
-	disabled
+  fileUploader,
+  fileContainer,
+  fileDescription,
+  fileDropContainer,
+  disabled,
 };

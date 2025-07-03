@@ -9,12 +9,9 @@
 const tableHead: string;
 const checkboxColumn: string;
 
-export {
-	tableHead,
-	checkboxColumn
-};
+export { tableHead, checkboxColumn };
 
 export default {
-	tableHead,
-	checkboxColumn
+  tableHead,
+  checkboxColumn,
 };

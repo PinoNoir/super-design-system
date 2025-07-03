@@ -18,30 +18,18 @@ const warning: string;
 const error: string;
 const iconContainer: string;
 
-export {
-	badge,
-	square,
-	bevel,
-	round,
-	base,
-	info,
-	success,
-	accent,
-	warning,
-	error,
-	iconContainer
-};
+export { badge, square, bevel, round, base, info, success, accent, warning, error, iconContainer };
 
 export default {
-	badge,
-	square,
-	bevel,
-	round,
-	base,
-	info,
-	success,
-	accent,
-	warning,
-	error,
-	iconContainer
+  badge,
+  square,
+  bevel,
+  round,
+  base,
+  info,
+  success,
+  accent,
+  warning,
+  error,
+  iconContainer,
 };

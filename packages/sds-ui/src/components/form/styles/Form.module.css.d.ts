@@ -13,20 +13,13 @@ const formContent: string;
 const innerContent: string;
 const actionBar: string;
 
-export {
-	form,
-	formHeader,
-	helperText,
-	formContent,
-	innerContent,
-	actionBar
-};
+export { form, formHeader, helperText, formContent, innerContent, actionBar };
 
 export default {
-	form,
-	formHeader,
-	helperText,
-	formContent,
-	innerContent,
-	actionBar
+  form,
+  formHeader,
+  helperText,
+  formContent,
+  innerContent,
+  actionBar,
 };

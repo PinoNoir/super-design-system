@@ -12,18 +12,12 @@ const md: string;
 const lg: string;
 const visited: string;
 
-export {
-	link,
-	sm,
-	md,
-	lg,
-	visited
-};
+export { link, sm, md, lg, visited };
 
 export default {
-	link,
-	sm,
-	md,
-	lg,
-	visited
+  link,
+  sm,
+  md,
+  lg,
+  visited,
 };

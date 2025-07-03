@@ -19,12 +19,12 @@ const globals = {
     orange: {
       value: '#FD7250',
       category: 'color',
-      comment: "Secondary brand accent color used in the logo and customer facing websites",
+      comment: 'Secondary brand accent color used in the logo and customer facing websites',
     },
     slate: {
       value: '#26353b',
       category: 'color',
-      comment: "Primary brand color used in the logo and customer facing websites",
+      comment: 'Primary brand color used in the logo and customer facing websites',
     },
     neutral: {
       120: {
@@ -34,12 +34,12 @@ const globals = {
       110: {
         value: '#212e35',
         category: 'color',
-        comment: "Primary brand color used in the logo and customer facing websites",
+        comment: 'Primary brand color used in the logo and customer facing websites',
       },
       100: {
         value: '#26353b',
         category: 'color',
-        comment: "Primary brand color used in the logo and customer facing websites",
+        comment: 'Primary brand color used in the logo and customer facing websites',
       },
       90: {
         value: '#3b494f',

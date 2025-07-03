@@ -10,17 +10,17 @@ export interface SkeletonTableProps {
   cellVariants?: ('text' | 'avatar' | 'badge' | 'number' | 'date')[];
 }
 
-const SkeletonTable: React.FC<SkeletonTableProps> = ({ 
-  rows = 10, 
-  columns = 4, 
+const SkeletonTable: React.FC<SkeletonTableProps> = ({
+  rows = 10,
+  columns = 4,
   className,
-  cellVariants = ['text', 'text', 'badge', 'date'] // Default variants for each column
+  cellVariants = ['text', 'text', 'badge', 'date'], // Default variants for each column
 }) => {
   const baseId = useId();
 
   const renderCellContent = (colIndex: number) => {
     const variant = cellVariants[colIndex % cellVariants.length];
-    
+
     switch (variant) {
       case 'avatar':
         return (
@@ -32,16 +32,16 @@ const SkeletonTable: React.FC<SkeletonTableProps> = ({
             </div>
           </div>
         );
-      
+
       case 'badge':
         return <div className={styles.badge} />;
-      
+
       case 'number':
         return <div className={styles.numberText} />;
-      
+
       case 'date':
         return <div className={styles.dateText} />;
-      
+
       case 'text':
       default:
         return (

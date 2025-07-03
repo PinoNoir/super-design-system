@@ -13,20 +13,13 @@ const thick: string;
 const vertical: string;
 const horizontal: string;
 
-export {
-	divider,
-	thin,
-	medium,
-	thick,
-	vertical,
-	horizontal
-};
+export { divider, thin, medium, thick, vertical, horizontal };
 
 export default {
-	divider,
-	thin,
-	medium,
-	thick,
-	vertical,
-	horizontal
+  divider,
+  thin,
+  medium,
+  thick,
+  vertical,
+  horizontal,
 };

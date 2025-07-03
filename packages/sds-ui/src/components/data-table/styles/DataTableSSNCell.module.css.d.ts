@@ -9,12 +9,9 @@
 const ssnContainer: string;
 const ssnText: string;
 
-export {
-	ssnContainer,
-	ssnText
-};
+export { ssnContainer, ssnText };
 
 export default {
-	ssnContainer,
-	ssnText
+  ssnContainer,
+  ssnText,
 };

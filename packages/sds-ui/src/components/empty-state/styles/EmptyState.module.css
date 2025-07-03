@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-32);
-  background-color: var(--theme-color-foreground);
+  background-color: var(--theme-color-component);
   border-radius: var(--border-radius-4);
   border: 1px solid var(--theme-border-base);
   gap: var(--space-24);

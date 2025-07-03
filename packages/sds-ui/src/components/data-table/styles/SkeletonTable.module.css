@@ -1,7 +1,7 @@
 .skeletonTable {
   width: 100%;
   border-collapse: collapse;
-  border-radius: var(--border-radius-8)
+  border-radius: var(--border-radius-8);
 }
 
 .skeletonHeader,

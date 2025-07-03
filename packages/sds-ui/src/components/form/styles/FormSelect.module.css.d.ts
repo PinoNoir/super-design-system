@@ -14,22 +14,14 @@ const select: string;
 const invalid: string;
 const errorMessage: string;
 
-export {
-	selectOuterWrapper,
-	labelWrapper,
-	label,
-	requiredLabel,
-	select,
-	invalid,
-	errorMessage
-};
+export { selectOuterWrapper, labelWrapper, label, requiredLabel, select, invalid, errorMessage };
 
 export default {
-	selectOuterWrapper,
-	labelWrapper,
-	label,
-	requiredLabel,
-	select,
-	invalid,
-	errorMessage
+  selectOuterWrapper,
+  labelWrapper,
+  label,
+  requiredLabel,
+  select,
+  invalid,
+  errorMessage,
 };

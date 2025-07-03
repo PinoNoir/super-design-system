@@ -51,10 +51,7 @@ export const Welcome = () => {
         <div className={styles.subheading}>Internal Resources</div>
         <div className={styles.linkList}>
           <div className={styles.linkItem}>
-            <Link
-              href="#"
-              target="_blank"
-            >
+            <Link href="#" target="_blank">
               <img src={Figma} alt="figma" />
               <span>Figma Library</span>
             </Link>
@@ -68,10 +65,7 @@ export const Welcome = () => {
             <p>Visit our internal docs site for component specs & implementation guides.</p>
           </div>
           <div className={styles.linkItem}>
-            <Link
-              href="#"
-              target="_blank"
-            >
+            <Link href="#" target="_blank">
               <img src={Confluence} alt="confluence" />
               <span>Confluence</span>
             </Link>

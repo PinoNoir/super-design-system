@@ -8,7 +8,8 @@ const meta: Meta<typeof SkeletonTable> = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'A skeleton loading component that displays placeholder content while data is being fetched. Supports different cell variants to match various data types.',
+        component:
+          'A skeleton loading component that displays placeholder content while data is being fetched. Supports different cell variants to match various data types.',
       },
     },
   },
@@ -69,7 +70,8 @@ export const ProductTable: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'A skeleton for a product inventory table with name, description, price, quantity, status, and date columns.',
+        story:
+          'A skeleton for a product inventory table with name, description, price, quantity, status, and date columns.',
       },
     },
   },
@@ -166,7 +168,8 @@ export const Playground: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Interactive playground to experiment with different configurations. Try changing the controls in the panel below!',
+        story:
+          'Interactive playground to experiment with different configurations. Try changing the controls in the panel below!',
       },
     },
   },

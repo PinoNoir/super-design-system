@@ -10,14 +10,10 @@ const mainContainer: string;
 const content: string;
 const heading: string;
 
-export {
-	mainContainer,
-	content,
-	heading
-};
+export { mainContainer, content, heading };
 
 export default {
-	mainContainer,
-	content,
-	heading
+  mainContainer,
+  content,
+  heading,
 };

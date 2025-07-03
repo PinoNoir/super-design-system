@@ -6,7 +6,7 @@ This is a monorepo configuration that uses `pnpm workspaces` for all related _Ca
 
 - `.packages/` folder contains all of our individual packages and respective workspace environments:
 
-  - sds-tokens (A custom Style Dictionary project that outputs global and theme design tokens for all  brands). Please reference the `README.md` in that directory for instructions
+  - sds-tokens (A custom Style Dictionary project that outputs global and theme design tokens for all brands). Please reference the `README.md` in that directory for instructions
   - sds-styles (A custom Sass project used to generate a global css files for all brands). Please reference the `README.md` in that directory for instructions
   - sds-ui (A custom Storybook dev environment, and React component library, & their respective CSS module files). Please reference the `README.md` in that directory for instructions
   - Check the `package.json` file for the build/dev/lint scripts used to start the dev server and build each library for each workspace.
