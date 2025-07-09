@@ -12,7 +12,7 @@ const meta: Meta<typeof Sidebar> = {
     docs: {
       description: {
         component:
-          'A flexible sidebar component with support for navigation sections, collapsing, and extensive customization options.',
+          'A flexible sidebar component with support for navigation sections, collapsing, and extensive customization options. See the documentation for detailed usage examples and API reference.',
       },
     },
   },
@@ -395,14 +395,6 @@ export const RealWorldExample: Story = {
       />
     );
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'A comprehensive example showing a real-world admin panel sidebar with collapsing, active states, badges, and custom header/footer.',
-      },
-    },
-  },
 };
 
 export const ControlledSidebar: Story = {
@@ -456,6 +448,293 @@ export const ControlledSidebar: Story = {
               </SidebarSectionStatic>
             }
           />
+        </div>
+      </div>
+    );
+  },
+};
+
+export const ControlledSections: Story = {
+  render: function ControlledSections() {
+    const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+      main: true,
+      history: false,
+    });
+
+    const handleSectionToggle = (sectionId: string, expanded: boolean) => {
+      setExpandedSections((prev) => ({
+        ...prev,
+        [sectionId]: expanded,
+      }));
+      console.log(`Section ${sectionId} ${expanded ? 'expanded' : 'collapsed'}`);
+    };
+
+    const sections = [
+      {
+        id: 'main',
+        title: 'Main Navigation',
+        items: [
+          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
+          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
+          { id: 'messages', label: 'Messages', icon: <MessageCircle />, badge: '3' },
+        ],
+      },
+      {
+        id: 'history',
+        title: 'History',
+        items: [
+          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
+          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
+          { id: 'recent-3', label: 'Recent Chat 3', icon: <MessageCircle /> },
+        ],
+      },
+      {
+        id: 'settings',
+        title: 'Settings',
+        items: [
+          { id: 'profile', label: 'Profile', icon: <User /> },
+          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
+        ],
+      },
+    ];
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <Sidebar
+          sections={sections}
+          expandedSections={expandedSections}
+          onSectionToggle={handleSectionToggle}
+          sectionsCollapsible={true}
+        />
+        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
+          <h2>Controlled Sections Example</h2>
+          <p>This example demonstrates how to control which sections are expanded/collapsed.</p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Current State:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+              }}
+            >
+              {JSON.stringify(expandedSections, null, 2)}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Controls:</h3>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              {Object.keys(expandedSections).map((sectionId) => (
+                <Button
+                  key={sectionId}
+                  variant="secondary"
+                  onClick={() => handleSectionToggle(sectionId, !expandedSections[sectionId])}
+                >
+                  {expandedSections[sectionId] ? 'Collapse' : 'Expand'} {sectionId}
+                </Button>
+              ))}
+              <Button variant="base" onClick={() => setExpandedSections({ main: true, history: true, settings: true })}>
+                Expand All
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setExpandedSections({ main: false, history: false, settings: false })}
+              >
+                Collapse All
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const LazyLoadingSections: Story = {
+  render: function LazyLoadingSections() {
+    const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+      main: true,
+      history: false,
+      settings: false,
+    });
+
+    const handleSectionToggle = (sectionId: string, expanded: boolean) => {
+      setExpandedSections((prev) => ({
+        ...prev,
+        [sectionId]: expanded,
+      }));
+    };
+
+    const sections = [
+      {
+        id: 'main',
+        title: 'Main Navigation',
+        items: [
+          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
+          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
+          { id: 'messages', label: 'Messages', icon: <MessageCircle />, badge: '3' },
+        ],
+      },
+      {
+        id: 'history',
+        title: 'History (Lazy Loaded)',
+        items: [
+          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
+          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
+          { id: 'recent-3', label: 'Recent Chat 3', icon: <MessageCircle /> },
+          { id: 'recent-4', label: 'Recent Chat 4', icon: <MessageCircle /> },
+          { id: 'recent-5', label: 'Recent Chat 5', icon: <MessageCircle /> },
+        ],
+      },
+      {
+        id: 'settings',
+        title: 'Settings (Lazy Loaded)',
+        items: [
+          { id: 'profile', label: 'Profile', icon: <User /> },
+          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
+          { id: 'security', label: 'Security', icon: <Settings /> },
+          { id: 'notifications', label: 'Notifications', icon: <Settings /> },
+        ],
+      },
+    ];
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <Sidebar
+          sections={sections}
+          expandedSections={expandedSections}
+          onSectionToggle={handleSectionToggle}
+          lazyLoadSections={true}
+          sectionsCollapsible={true}
+        />
+        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
+          <h2>Lazy Loading Sections</h2>
+          <p>
+            This example demonstrates lazy loading of section content. Content is only rendered when sections are
+            expanded.
+          </p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Performance Benefits:</h3>
+            <ul>
+              <li>
+                <strong>Faster Initial Load:</strong> Only render visible content
+              </li>
+              <li>
+                <strong>Reduced Memory Usage:</strong> DOM elements created on-demand
+              </li>
+              <li>
+                <strong>Better Performance:</strong> Fewer components to manage
+              </li>
+              <li>
+                <strong>Scalable:</strong> Works well with large numbers of sections
+              </li>
+            </ul>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Current State:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+              }}
+            >
+              {JSON.stringify(expandedSections, null, 2)}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Try it:</h3>
+            <p>
+              Expand the "History" or "Settings" sections to see lazy loading in action. The content will only be
+              rendered when you expand the section.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const DefaultExpandedSections: Story = {
+  render: function DefaultExpandedSections() {
+    const sections = [
+      {
+        id: 'main',
+        title: 'Main Navigation',
+        items: [
+          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
+          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
+        ],
+      },
+      {
+        id: 'history',
+        title: 'History',
+        items: [
+          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
+          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
+        ],
+      },
+      {
+        id: 'settings',
+        title: 'Settings',
+        items: [
+          { id: 'profile', label: 'Profile', icon: <User /> },
+          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
+        ],
+      },
+    ];
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <Sidebar
+          sections={sections}
+          defaultExpandedSections={{
+            main: true, // Main section expanded by default
+            history: false, // History section collapsed by default
+            settings: true, // Settings section expanded by default
+          }}
+        />
+        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
+          <h2>Default Expanded Sections</h2>
+          <p>
+            This example shows how to set default expanded states for sections using the \`defaultExpandedSections\`
+            prop.
+          </p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Configuration:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+              }}
+            >
+              {`defaultExpandedSections={{
+                main: true,     // Main section expanded by default
+                history: false, // History section collapsed by default
+                settings: true, // Settings section expanded by default
+              }}`}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Benefits:</h3>
+            <ul>
+              <li>Control initial state without managing controlled state</li>
+              <li>Improve performance by not expanding all sections by default</li>
+              <li>Provide better UX by showing most important sections first</li>
+              <li>Reduce content loading issues in complex applications</li>
+            </ul>
+          </div>
         </div>
       </div>
     );

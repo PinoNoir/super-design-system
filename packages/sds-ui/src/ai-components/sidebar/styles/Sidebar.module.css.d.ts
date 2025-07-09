@@ -16,12 +16,17 @@ const brand: string;
 const logoContainer: string;
 const logoButton: string;
 const sectionHeader: string;
+const sectionHeaderCollapsible: string;
+const sectionToggleIcon: string;
 const sectionContent: string;
+const sectionContentAnimated: string;
+const sectionContentExpanded: string;
 const sidebarContent: string;
 const sidebarNav: string;
 const navSection: string;
 const sidebarSection: string;
 const sectionTitle: string;
+const sectionContentItems: string;
 const navButton: string;
 const active: string;
 const disabled: string;
@@ -42,12 +47,17 @@ export {
   logoContainer,
   logoButton,
   sectionHeader,
+  sectionHeaderCollapsible,
+  sectionToggleIcon,
   sectionContent,
+  sectionContentAnimated,
+  sectionContentExpanded,
   sidebarContent,
   sidebarNav,
   navSection,
   sidebarSection,
   sectionTitle,
+  sectionContentItems,
   navButton,
   active,
   disabled,
@@ -69,12 +79,17 @@ export default {
   logoContainer,
   logoButton,
   sectionHeader,
+  sectionHeaderCollapsible,
+  sectionToggleIcon,
   sectionContent,
+  sectionContentAnimated,
+  sectionContentExpanded,
   sidebarContent,
   sidebarNav,
   navSection,
   sidebarSection,
   sectionTitle,
+  sectionContentItems,
   navButton,
   active,
   disabled,

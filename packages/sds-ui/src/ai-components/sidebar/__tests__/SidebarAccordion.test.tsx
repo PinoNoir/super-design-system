@@ -26,7 +26,7 @@ const mockSections: NavSection[] = [
 describe('Sidebar Accordion Behavior', () => {
   it('toggles multiple sections independently', async () => {
     const user = userEvent.setup();
-    render(<Sidebar sections={mockSections} />);
+    render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
     const mainToggle = screen.getByRole('button', { name: /main navigation/i });
     const settingsToggle = screen.getByRole('button', { name: /settings/i });
@@ -35,20 +35,32 @@ describe('Sidebar Accordion Behavior', () => {
     expect(screen.getByText('Profile')).toBeVisible();
 
     await user.click(mainToggle);
-    await waitFor(() => {
-      expect(screen.queryByText('Home')).not.toBeVisible();
-    });
+    await waitFor(
+      () => {
+        const mainSection = screen.getByRole('button', { name: /main navigation/i });
+        expect(mainSection).toHaveAttribute('aria-expanded', 'false');
+      },
+      { timeout: 1000 },
+    );
     expect(screen.getByText('Profile')).toBeVisible();
 
     await user.click(settingsToggle);
-    await waitFor(() => {
-      expect(screen.queryByText('Profile')).not.toBeVisible();
-    });
+    await waitFor(
+      () => {
+        const settingsSection = screen.getByRole('button', { name: /settings/i });
+        expect(settingsSection).toHaveAttribute('aria-expanded', 'false');
+      },
+      { timeout: 1000 },
+    );
 
     await user.click(mainToggle);
-    await waitFor(() => {
-      expect(screen.getByText('Home')).toBeVisible();
-    });
+    await waitFor(
+      () => {
+        const mainSection = screen.getByRole('button', { name: /main navigation/i });
+        expect(mainSection).toHaveAttribute('aria-expanded', 'true');
+      },
+      { timeout: 1000 },
+    );
   });
 
   it('hides section titles and disables toggling when sidebar is collapsed', async () => {

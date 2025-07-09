@@ -1,0 +1,214 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import * as SidebarStories from './Sidebar.stories';
+
+<Meta of={SidebarStories} />
+
+# Sidebar Component
+
+A flexible sidebar component with support for navigation sections, collapsing, and extensive customization options.
+
+## Features
+
+- **Navigation Sections**: Organize navigation items into collapsible sections
+- **Section Control**: Control which sections are expanded/collapsed
+- **Responsive Design**: Adapts to different screen sizes
+- **Customization**: Extensive styling and rendering options
+- **Performance**: Optimized with pure CSS transitions
+
+## Basic Usage
+
+<Canvas of={SidebarStories.Default} />
+
+The Sidebar component provides a flexible navigation structure with support for sections, icons, badges, and various interaction patterns.
+
+## Section Control
+
+The Sidebar component offers multiple ways to control which sections are expanded or collapsed, depending on your needs.
+
+### Controlled Sections
+
+For full control over section states, use the `expandedSections` and `onSectionToggle` props:
+
+<Canvas of={SidebarStories.ControlledSections} />
+
+```tsx
+import { useState } from 'react';
+import { Sidebar } from './Sidebar';
+
+function MyApp() {
+  const [expandedSections, setExpandedSections] = useState({
+    main: true,
+    history: false,
+  });
+
+  const handleSectionToggle = (sectionId: string, expanded: boolean) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [sectionId]: expanded,
+    }));
+  };
+
+  return <Sidebar sections={sections} expandedSections={expandedSections} onSectionToggle={handleSectionToggle} />;
+}
+```
+
+**Use cases for controlled sections:**
+
+- Persist section states in localStorage
+- Sync section states across multiple components
+- Implement "remember user preferences" functionality
+- Control sections based on user permissions or context
+
+### Default Expanded Sections
+
+For simpler use cases, set initial expanded states without managing controlled state:
+
+<Canvas of={SidebarStories.DefaultExpandedSections} />
+
+```tsx
+<Sidebar
+  sections={sections}
+  defaultExpandedSections={{
+    main: true, // Main section expanded by default
+    history: false, // History section collapsed by default
+  }}
+/>
+```
+
+**Benefits:**
+
+- Control initial state without managing controlled state
+- Improve performance by not expanding all sections by default
+- Provide better UX by showing most important sections first
+- Reduce content loading issues in complex applications
+
+### Section-Level Control
+
+Individual sections can also control their default state:
+
+```tsx
+const sections = [
+  {
+    id: 'main',
+    title: 'Main Navigation',
+    defaultExpanded: true,  // This section expanded by default
+    items: [...]
+  },
+  {
+    id: 'history',
+    title: 'History',
+    defaultExpanded: false, // This section collapsed by default
+    items: [...]
+  }
+];
+```
+
+## Performance Optimization
+
+### Lazy Loading Sections
+
+For better performance with many sections, enable lazy loading:
+
+<Canvas of={SidebarStories.LazyLoadingSections} />
+
+```tsx
+<Sidebar
+  sections={sections}
+  expandedSections={expandedSections}
+  onSectionToggle={handleSectionToggle}
+  lazyLoadSections={true} // Enable lazy loading
+/>
+```
+
+**Performance benefits:**
+
+- **Faster Initial Load**: Only render visible content
+- **Reduced Memory Usage**: DOM elements created on-demand
+- **Better Performance**: Fewer components to manage
+- **Scalable**: Works well with large numbers of sections
+
+**When to use lazy loading:**
+
+- When you have many sections with lots of content
+- To improve initial page load performance
+- When sections contain expensive components
+- For better memory management in complex applications
+
+## Variants
+
+The Sidebar component supports different visual variants:
+
+<Canvas of={SidebarStories.Variants} />
+
+- **Base**: Standard sidebar with full width (260px)
+- **Compact**: Reduced width (200px) for space-constrained layouts
+- **Minimal**: Minimal width (180px) for icon-only navigation
+
+## Collapsible Sidebar
+
+Make the entire sidebar collapsible:
+
+<Canvas of={SidebarStories.Collapsible} />
+
+```tsx
+function CollapsibleSidebar() {
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <Sidebar collapsible collapsed={collapsed} onToggleCollapse={() => setCollapsed(!collapsed)} sections={sections} />
+  );
+}
+```
+
+## Customization
+
+### Custom Header and Footer
+
+<Canvas of={SidebarStories.WithCustomHeader} />
+
+<Canvas of={SidebarStories.WithCustomFooter} />
+
+### Custom Rendering
+
+<Canvas of={SidebarStories.WithCustomRendering} />
+
+### Compound Components
+
+<Canvas of={SidebarStories.CompoundComponents} />
+
+## Real-World Example
+
+<Canvas of={SidebarStories.RealWorldExample} />
+
+This comprehensive example shows a real-world admin panel sidebar with:
+
+- Collapsing functionality
+- Active states
+- Badges for notifications
+- Custom header with branding
+- Footer with help section
+
+## Accessibility
+
+The Sidebar component includes comprehensive accessibility features:
+
+- **Keyboard Navigation**: Full keyboard support for navigation
+- **ARIA Labels**: Proper ARIA attributes for screen readers
+- **Focus Management**: Maintains focus state during interactions
+- **Semantic HTML**: Uses appropriate HTML elements for navigation
+
+## Use Cases
+
+- **Admin Panels**: Organize features into logical sections
+- **Documentation**: Collapsible navigation for large documentation sites
+- **Chat Applications**: Group conversations by category or status
+- **E-commerce**: Organize product categories and filters
+- **Dashboards**: Section-based navigation for complex dashboards
+
+## Best Practices
+
+1. **Performance**: Use lazy loading for large numbers of sections
+2. **User Experience**: Set sensible default expanded states
+3. **Accessibility**: Ensure proper ARIA labels and keyboard navigation
+4. **State Management**: Choose between controlled and uncontrolled based on your needs
+5. **Responsive Design**: Test the sidebar across different screen sizes

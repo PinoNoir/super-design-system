@@ -19,29 +19,29 @@ const titleSection: string;
 const titleIcon: string;
 
 export {
-	container,
-	sizeSmall,
-	illustration,
-	sizeMedium,
-	sizeLarge,
-	centered,
-	titleWrapper,
-	actionButtons,
-	content,
-	titleSection,
-	titleIcon
+  container,
+  sizeSmall,
+  illustration,
+  sizeMedium,
+  sizeLarge,
+  centered,
+  titleWrapper,
+  actionButtons,
+  content,
+  titleSection,
+  titleIcon,
 };
 
 export default {
-	container,
-	sizeSmall,
-	illustration,
-	sizeMedium,
-	sizeLarge,
-	centered,
-	titleWrapper,
-	actionButtons,
-	content,
-	titleSection,
-	titleIcon
+  container,
+  sizeSmall,
+  illustration,
+  sizeMedium,
+  sizeLarge,
+  centered,
+  titleWrapper,
+  actionButtons,
+  content,
+  titleSection,
+  titleIcon,
 };

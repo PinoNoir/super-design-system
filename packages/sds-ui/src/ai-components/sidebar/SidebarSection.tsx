@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { Icon } from '@iconify/react';
 import styles from './styles/Sidebar.module.css';
@@ -10,14 +9,12 @@ export interface SidebarSectionProps {
   collapsed: boolean;
   sectionClassName?: string;
   sectionTitleClassName?: string;
-  navButtonClassName?: string;
-  iconClassName?: string;
-  labelClassName?: string;
-  badgeClassName?: string;
   renderNavItem?: SidebarProps['renderNavItem'];
   toggleSection: (id: string) => void;
   isExpanded: boolean;
   renderDefaultNavItem: (item: NavItem) => React.ReactNode;
+  collapsible?: boolean;
+  shouldRenderItems?: boolean;
 }
 
 const SidebarSection = ({
@@ -25,58 +22,71 @@ const SidebarSection = ({
   collapsed,
   sectionClassName,
   sectionTitleClassName,
-  navButtonClassName,
-  iconClassName,
-  labelClassName,
-  badgeClassName,
   renderNavItem,
   toggleSection,
   isExpanded,
   renderDefaultNavItem,
+  collapsible = true,
+  shouldRenderItems = true,
 }: SidebarSectionProps) => {
   const contentId = `section-${section.id}`;
+  const hasTitle = section.title && !collapsed;
+  const canToggle = hasTitle && collapsible;
+
+  const renderSectionItems = () => {
+    if (!shouldRenderItems) return null;
+
+    return section.items.map((item) => {
+      const defaultRender = renderDefaultNavItem(item);
+      if (section.renderItem) {
+        return <React.Fragment key={item.id}>{section.renderItem(item, defaultRender)}</React.Fragment>;
+      }
+      if (renderNavItem) {
+        return <React.Fragment key={item.id}>{renderNavItem(item, defaultRender)}</React.Fragment>;
+      }
+      return <React.Fragment key={item.id}>{defaultRender}</React.Fragment>;
+    });
+  };
 
   return (
-    <nav className={clsx(styles.sidebarSection, sectionClassName, section.className)}>
-      {section.title && !collapsed && (
+    <nav
+      className={clsx(styles.sidebarSection, sectionClassName, section.className)}
+      role="navigation"
+      aria-labelledby={hasTitle ? `${section.id}-title` : undefined}
+    >
+      {hasTitle && (
         <button
-          className={clsx(styles.sectionHeader)}
-          onClick={() => toggleSection(section.id)}
-          aria-expanded={isExpanded}
-          aria-controls={contentId}
+          id={`${section.id}-title`}
+          className={clsx(styles.sectionHeader, { [styles.sectionHeaderCollapsible]: canToggle })}
+          onClick={canToggle ? () => toggleSection(section.id) : undefined}
+          aria-expanded={canToggle ? isExpanded : undefined}
+          aria-controls={canToggle ? contentId : undefined}
+          disabled={!canToggle}
+          type="button"
         >
           <h3 className={clsx(styles.sectionTitle, sectionTitleClassName)}>{section.title}</h3>
-          <Icon icon={isExpanded ? 'mdi:chevron-down' : 'mdi:chevron-right'} />
+          {canToggle && (
+            <Icon
+              icon={isExpanded ? 'mdi:chevron-down' : 'mdi:chevron-right'}
+              className={clsx(styles.sectionToggleIcon)}
+              aria-hidden="true"
+            />
+          )}
         </button>
       )}
 
-      <AnimatePresence initial={false}>
-        {isExpanded && (
-          <motion.div
-            id={contentId}
-            layout
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className={clsx(styles.sectionContent)}
-            style={{ overflow: 'hidden' }}
-          >
-            <div>
-              {section.items.map((item) => {
-                const defaultRender = renderDefaultNavItem(item);
-                if (section.renderItem) {
-                  return <React.Fragment key={item.id}>{section.renderItem(item, defaultRender)}</React.Fragment>;
-                }
-                if (renderNavItem) {
-                  return <React.Fragment key={item.id}>{renderNavItem(item, defaultRender)}</React.Fragment>;
-                }
-                return <React.Fragment key={item.id}>{defaultRender}</React.Fragment>;
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {!hasTitle && <div className={clsx(styles.sectionContent)}>{renderSectionItems()}</div>}
+
+      {hasTitle && (
+        <div
+          id={contentId}
+          className={clsx(styles.sectionContent, styles.sectionContentAnimated, {
+            [styles.sectionContentExpanded]: isExpanded || !canToggle,
+          })}
+        >
+          <div className={styles.sectionContentItems}>{renderSectionItems()}</div>
+        </div>
+      )}
     </nav>
   );
 };

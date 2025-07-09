@@ -126,14 +126,14 @@ describe('Sidebar Component', () => {
 
   describe('Navigation Sections', () => {
     it('renders navigation sections with titles', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       expect(screen.getByText('Main Navigation')).toBeInTheDocument();
       expect(screen.getByText('Settings')).toBeInTheDocument();
     });
 
     it('renders navigation items with labels', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       expect(screen.getByText('Home')).toBeInTheDocument();
       expect(screen.getByText('Dashboard')).toBeInTheDocument();
@@ -142,7 +142,7 @@ describe('Sidebar Component', () => {
     });
 
     it('renders navigation items with icons', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       expect(screen.getByTestId('home-icon')).toBeInTheDocument();
       expect(screen.getByTestId('dashboard-icon')).toBeInTheDocument();
@@ -150,14 +150,14 @@ describe('Sidebar Component', () => {
     });
 
     it('renders badges when provided', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       const messagesButton = screen.getByRole('link', { name: /messages/i });
       expect(within(messagesButton).getByText('3')).toBeInTheDocument();
     });
 
     it('renders links for items with href', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       const homeLink = screen.getByRole('link', { name: /home/i });
       expect(homeLink).toHaveAttribute('href', '/');
@@ -167,7 +167,7 @@ describe('Sidebar Component', () => {
     });
 
     it('renders buttons for items with onClick', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       const dashboardButton = screen.getByRole('button', { name: /dashboard/i });
       expect(dashboardButton).toBeInTheDocument();
@@ -176,14 +176,14 @@ describe('Sidebar Component', () => {
 
   describe('Item States', () => {
     it('applies active class to active items', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       const homeLink = screen.getByRole('link', { name: /home/i });
       expect(homeLink).toHaveClass('active');
     });
 
     it('applies disabled state to disabled items', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       const profileButton = screen.getByRole('button', { name: /profile/i });
       expect(profileButton).toBeDisabled();
@@ -192,7 +192,7 @@ describe('Sidebar Component', () => {
 
     it('handles click events on navigation items', async () => {
       const user = userEvent.setup();
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       const dashboardButton = screen.getByRole('button', { name: /dashboard/i });
       await user.click(dashboardButton);
@@ -236,7 +236,7 @@ describe('Sidebar Component', () => {
     });
 
     it('hides section titles when collapsed', () => {
-      render(<Sidebar sections={mockSections} collapsed />);
+      render(<Sidebar sections={mockSections} collapsed defaultExpandedSections={{ main: true, settings: true }} />);
 
       // Section titles should not be rendered when collapsed
       expect(screen.queryByText('Main Navigation')).not.toBeInTheDocument();
@@ -286,7 +286,13 @@ describe('Sidebar Component', () => {
     });
 
     it('applies custom className to navigation buttons', () => {
-      render(<Sidebar sections={mockSections} navButtonClassName="custom-button" />);
+      render(
+        <Sidebar
+          sections={mockSections}
+          navButtonClassName="custom-button"
+          defaultExpandedSections={{ main: true, settings: true }}
+        />,
+      );
 
       const homeLink = screen.getByRole('link', { name: /home/i });
       expect(homeLink).toHaveClass('custom-button');
@@ -328,7 +334,13 @@ describe('Sidebar Component', () => {
         <div automation-id={`custom-${item.id}`}>{defaultRender}</div>
       ));
 
-      render(<Sidebar sections={mockSections} renderNavItem={renderNavItem} />);
+      render(
+        <Sidebar
+          sections={mockSections}
+          renderNavItem={renderNavItem}
+          defaultExpandedSections={{ main: true, settings: true }}
+        />,
+      );
 
       expect(screen.getByTestId('custom-home')).toBeInTheDocument();
       expect(renderNavItem).toHaveBeenCalledWith(expect.objectContaining({ id: 'home' }), expect.any(Object));
@@ -360,7 +372,9 @@ describe('Sidebar Component', () => {
     });
 
     it('renders navigation items with custom element', () => {
-      render(<Sidebar sections={mockSections} navItemAs="div" />);
+      render(
+        <Sidebar sections={mockSections} navItemAs="div" defaultExpandedSections={{ main: true, settings: true }} />,
+      );
 
       // Items with onClick should render as custom element instead of button
       const dashboardItem = screen.getByText('Dashboard').closest('div');
@@ -377,14 +391,14 @@ describe('Sidebar Component', () => {
     });
 
     it('uses semantic navigation elements', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       const navElements = screen.getAllByRole('navigation');
-      expect(navElements).toHaveLength(3); // Main sidebar + two sections
+      expect(navElements).toHaveLength(3);
     });
 
     it('maintains focus management for keyboard navigation', () => {
-      render(<Sidebar sections={mockSections} />);
+      render(<Sidebar sections={mockSections} defaultExpandedSections={{ main: true, settings: true }} />);
 
       const firstButton = screen.getByRole('link', { name: /home/i });
       firstButton.focus();
