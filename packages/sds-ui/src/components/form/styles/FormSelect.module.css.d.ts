@@ -13,8 +13,22 @@ const requiredLabel: string;
 const select: string;
 const invalid: string;
 const errorMessage: string;
+const selectContainer: string;
+const menu: string;
+const customChevronWrapper: string;
 
-export { selectOuterWrapper, labelWrapper, label, requiredLabel, select, invalid, errorMessage };
+export {
+  selectOuterWrapper,
+  labelWrapper,
+  label,
+  requiredLabel,
+  select,
+  invalid,
+  errorMessage,
+  selectContainer,
+  menu,
+  customChevronWrapper,
+};
 
 export default {
   selectOuterWrapper,
@@ -24,4 +38,7 @@ export default {
   select,
   invalid,
   errorMessage,
+  selectContainer,
+  menu,
+  customChevronWrapper,
 };

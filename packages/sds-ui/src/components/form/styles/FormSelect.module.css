@@ -28,7 +28,7 @@
 .select {
   width: 100%;
   height: var(--theme-select-trigger-height);
-  padding: 0 8px;
+  padding: 0 40px 0 8px; /* Extra padding on right for custom arrow */
   font-size: var(--font-size-body);
   font-family: var(--font-family-body);
   border: 1px solid var(--theme-select-trigger-border-color);
@@ -36,7 +36,10 @@
   background-color: var(--theme-color-component);
   color: var(--theme-select-input-value-color);
   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   cursor: pointer;
+  position: relative;
 }
 
 .select:focus {
@@ -61,4 +64,44 @@
   margin-top: 8px;
   font-size: var(--font-size-body);
   color: var(--theme-input-error-text-color);
+}
+
+.selectContainer {
+  position: relative;
+  width: 100%;
+}
+
+/* Remove triangle arrow CSS, always use custom chevron */
+
+.menu {
+  /* This class is for targeting the <select> element for menu styling. */
+  /* Note: Styling the native dropdown menu is limited by browsers. */
+  /* You can style the <select> box, but not the dropdown list itself in most browsers. */
+  /* For full control, use a custom select implementation. */
+}
+
+.customChevronWrapper {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 150ms ease-in-out;
+  color: var(--theme-icon-base);
+}
+
+/* Rotate custom chevron on focus/hover */
+.selectContainer:has(.select:focus) .customChevronWrapper,
+.selectContainer:has(.select:hover) .customChevronWrapper {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Fallback for browsers that don't support :has() */
+.select:focus + .selectContainer::after,
+.select:hover + .selectContainer::after {
+  transform: translateY(-50%) rotate(180deg);
 }

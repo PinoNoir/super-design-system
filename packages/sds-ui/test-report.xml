@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/toggle-group/__tests__/ToggleGroup.test.tsx">
-    <testCase name="ToggleGroup renders with default value" duration="89"/>
-    <testCase name="ToggleGroup calls onValueChange when clicking on a toggle item" duration="24"/>
-    <testCase name="ToggleGroup shows correct selected state based on value prop" duration="17"/>
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/form/__tests__/FormSelect.test.tsx">
+    <testCase name="FormSelect renders with label and required indicator" duration="237"/>
+    <testCase name="FormSelect renders without label" duration="28"/>
+    <testCase name="FormSelect displays error message when error prop is provided" duration="23"/>
+    <testCase name="FormSelect applies invalid class when error is present" duration="48"/>
+    <testCase name="FormSelect calls onChange when selection changes" duration="19"/>
+    <testCase name="FormSelect renders chevron icon by default" duration="18"/>
+    <testCase name="FormSelect applies correct classes to select element" duration="22"/>
+    <testCase name="FormSelect forwards ref correctly" duration="11"/>
   </file>
 </testExecutions>

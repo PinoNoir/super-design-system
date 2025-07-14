@@ -8,125 +8,88 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as WrapperExamplesRouteImport } from './routes/WrapperExamples'
+import { Route as IndexRouteImport } from './routes/index'
 
-import { Route as rootRoute } from './routes/__root';
-import { Route as AboutImport } from './routes/about';
-import { Route as WrapperExamplesImport } from './routes/WrapperExamples';
-import { Route as IndexImport } from './routes/index';
-
-// Create/Update Routes
-
-const AboutRoute = AboutImport.update({
+const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRoute,
-} as any);
-
-const WrapperExamplesRoute = WrapperExamplesImport.update({
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WrapperExamplesRoute = WrapperExamplesRouteImport.update({
   id: '/WrapperExamples',
   path: '/WrapperExamples',
-  getParentRoute: () => rootRoute,
-} as any);
-
-const IndexRoute = IndexImport.update({
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any);
+  getParentRoute: () => rootRouteImport,
+} as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/WrapperExamples': typeof WrapperExamplesRoute
+  '/about': typeof AboutRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/WrapperExamples': typeof WrapperExamplesRoute
+  '/about': typeof AboutRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/WrapperExamples': typeof WrapperExamplesRoute
+  '/about': typeof AboutRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/WrapperExamples' | '/about'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/WrapperExamples' | '/about'
+  id: '__root__' | '/' | '/WrapperExamples' | '/about'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  WrapperExamplesRoute: typeof WrapperExamplesRoute
+  AboutRoute: typeof AboutRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    '/WrapperExamples': {
-      id: '/WrapperExamples';
-      path: '/WrapperExamples';
-      fullPath: '/WrapperExamples';
-      preLoaderRoute: typeof WrapperExamplesImport;
-      parentRoute: typeof rootRoute;
-    };
     '/about': {
-      id: '/about';
-      path: '/about';
-      fullPath: '/about';
-      preLoaderRoute: typeof AboutImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/WrapperExamples': {
+      id: '/WrapperExamples'
+      path: '/WrapperExamples'
+      fullPath: '/WrapperExamples'
+      preLoaderRoute: typeof WrapperExamplesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
-}
-
-// Create and export the route tree
-
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute;
-  '/WrapperExamples': typeof WrapperExamplesRoute;
-  '/about': typeof AboutRoute;
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute;
-  '/WrapperExamples': typeof WrapperExamplesRoute;
-  '/about': typeof AboutRoute;
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  '/': typeof IndexRoute;
-  '/WrapperExamples': typeof WrapperExamplesRoute;
-  '/about': typeof AboutRoute;
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '/WrapperExamples' | '/about';
-  fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '/WrapperExamples' | '/about';
-  id: '__root__' | '/' | '/WrapperExamples' | '/about';
-  fileRoutesById: FileRoutesById;
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  WrapperExamplesRoute: typeof WrapperExamplesRoute;
-  AboutRoute: typeof AboutRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   WrapperExamplesRoute: WrapperExamplesRoute,
   AboutRoute: AboutRoute,
-};
-
-export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/WrapperExamples",
-        "/about"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/WrapperExamples": {
-      "filePath": "WrapperExamples.tsx"
-    },
-    "/about": {
-      "filePath": "about.tsx"
-    }
-  }
 }
-ROUTE_MANIFEST_END */
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
