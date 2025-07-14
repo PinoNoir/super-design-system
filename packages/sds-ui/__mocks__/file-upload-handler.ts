@@ -3,6 +3,11 @@ import { http, HttpResponse } from 'msw';
 export const handlers = [
   http.post('/upload', async ({ request }) => {
     try {
+      // Validate request exists
+      if (!request) {
+        return new HttpResponse('Invalid request', { status: 400 });
+      }
+
       const data = await request.formData();
       const files = data.get('files');
 
@@ -44,6 +49,7 @@ export const handlers = [
         },
       );
     } catch (error) {
+      console.warn('MSW handler error:', error);
       return new HttpResponse('Internal Server Error', { status: 500 });
     }
   }),

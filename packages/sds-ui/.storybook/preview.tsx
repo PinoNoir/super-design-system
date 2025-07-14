@@ -1,6 +1,5 @@
 import { Preview, ReactRenderer } from '@storybook/react-vite';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
-import '../__mocks__/initialize'; // MSW Config
 
 // Load Global CSS
 import '../../sds-styles/lib/bcc/global.min.css';
