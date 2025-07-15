@@ -6,6 +6,7 @@ describe('FormSelect', () => {
   const defaultProps = {
     name: 'test-select',
     value: '',
+    onChange: jest.fn(), // Add mock onChange handler
     children: (
       <>
         <option value="">Select an option</option>

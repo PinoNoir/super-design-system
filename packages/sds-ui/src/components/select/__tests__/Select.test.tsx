@@ -172,8 +172,8 @@ describe('Select', () => {
       // Trigger a window resize to update the menu width
       fireEvent(window, new Event('resize'));
 
-      // Add a small delay to allow for the animation frame to complete
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      // Wait for the next animation frame to allow setPosition to run
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       await waitFor(() => {
         const newWidth = screen.getByRole('listbox').style.width;

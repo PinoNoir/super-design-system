@@ -97,6 +97,16 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       };
     }, [updateMenuPosition]);
 
+    // Add scroll event listener to reposition menu on scroll
+    useEffect(() => {
+      if (!isOpen) return;
+      const handleScroll = () => updateMenuPosition();
+      window.addEventListener('scroll', handleScroll, true); // capture phase
+      return () => {
+        window.removeEventListener('scroll', handleScroll, true);
+      };
+    }, [isOpen, updateMenuPosition]);
+
     useEffect(() => {
       const handleOutsideClick = (event: MouseEvent) => {
         if (

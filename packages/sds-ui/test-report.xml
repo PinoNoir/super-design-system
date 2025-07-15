@@ -1,13 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/form/__tests__/FormSelect.test.tsx">
-    <testCase name="FormSelect renders with label and required indicator" duration="237"/>
-    <testCase name="FormSelect renders without label" duration="28"/>
-    <testCase name="FormSelect displays error message when error prop is provided" duration="23"/>
-    <testCase name="FormSelect applies invalid class when error is present" duration="48"/>
+    <testCase name="FormSelect renders with label and required indicator" duration="41"/>
+    <testCase name="FormSelect renders without label" duration="4"/>
+    <testCase name="FormSelect displays error message when error prop is provided" duration="4"/>
+    <testCase name="FormSelect applies invalid class when error is present" duration="45"/>
     <testCase name="FormSelect calls onChange when selection changes" duration="19"/>
-    <testCase name="FormSelect renders chevron icon by default" duration="18"/>
-    <testCase name="FormSelect applies correct classes to select element" duration="22"/>
-    <testCase name="FormSelect forwards ref correctly" duration="11"/>
+    <testCase name="FormSelect renders chevron icon by default" duration="12"/>
+    <testCase name="FormSelect applies correct classes to select element" duration="11"/>
+    <testCase name="FormSelect forwards ref correctly" duration="4"/>
+  </file>
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/select/__tests__/Select.test.tsx">
+    <testCase name="Select renders with a placeholder" duration="24"/>
+    <testCase name="Select opens dropdown when clicked" duration="87"/>
+    <testCase name="Select selects an option when clicked" duration="24"/>
+    <testCase name="Select displays selected value" duration="3"/>
+    <testCase name="Select renders label when provided" duration="9"/>
+    <testCase name="Select disables the select when disabled prop is true" duration="34"/>
+    <testCase name="Select shows error message when invalid" duration="4"/>
+    <testCase name="Select handles keyboard navigation" duration="242"/>
+    <testCase name="Select Select and SelectMenu renders all options in the SelectMenu when opened" duration="15"/>
+    <testCase name="Select Select and SelectMenu closes the SelectMenu when an option is selected" duration="222"/>
+    <testCase name="Select Select and SelectMenu highlights the selected option in the SelectMenu" duration="13"/>
+    <testCase name="Select Select and SelectMenu closes the SelectMenu when clicking outside" duration="24"/>
+    <testCase name="Select Select and SelectMenu updates the SelectMenu width when the Select button width changes" duration="37"/>
+  </file>
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/hooks/__tests__/useRowSelection.test.tsx">
+    <testCase name="useRowSelection Hook Initialization should initialize with default values" duration="3"/>
+    <testCase name="useRowSelection Hook Initialization should initialize with provided initial selected IDs" duration="5"/>
+    <testCase name="useRowSelection Hook Initialization should initialize with correct multipleSelect setting" duration="3"/>
+    <testCase name="useRowSelection Hook Single Row Selection Multiple Select Mode should select a single row" duration="2"/>
+    <testCase name="useRowSelection Hook Single Row Selection Multiple Select Mode should select multiple rows" duration="1"/>
+    <testCase name="useRowSelection Hook Single Row Selection Multiple Select Mode should deselect a row" duration="2"/>
+    <testCase name="useRowSelection Hook Single Row Selection Single Select Mode should select only one row at a time" duration="2"/>
+    <testCase name="useRowSelection Hook Single Row Selection Single Select Mode should deselect the current row when selecting false" duration="1"/>
+    <testCase name="useRowSelection Hook Select All Functionality Multiple Select Mode should select all selectable rows" duration="2"/>
+    <testCase name="useRowSelection Hook Select All Functionality Multiple Select Mode should deselect all rows" duration="1"/>
+    <testCase name="useRowSelection Hook Select All Functionality Multiple Select Mode should merge with existing selections" duration="1"/>
+    <testCase name="useRowSelection Hook Select All Functionality Single Select Mode should select only the first selectable row" duration="2"/>
+    <testCase name="useRowSelection Hook Select All Functionality Single Select Mode should handle empty data gracefully" duration="2"/>
+    <testCase name="useRowSelection Hook Selection State Checks should correctly identify when all visible rows are selected" duration="3"/>
+    <testCase name="useRowSelection Hook Selection State Checks should correctly identify when some rows are selected" duration="1"/>
+    <testCase name="useRowSelection Hook Selection State Checks should correctly identify when no rows are selected" duration="1"/>
+    <testCase name="useRowSelection Hook Selection State Checks should handle data with all disabled rows" duration="1"/>
+    <testCase name="useRowSelection Hook Utility Methods Batch Operations should select multiple rows with selectRows" duration="1"/>
+    <testCase name="useRowSelection Hook Utility Methods Batch Operations should deselect multiple rows with deselectRows" duration="1"/>
+    <testCase name="useRowSelection Hook Utility Methods Batch Operations should handle duplicate IDs in batch operations" duration="1"/>
+    <testCase name="useRowSelection Hook Utility Methods Single Row Operations should select single row with selectRow" duration="1"/>
+    <testCase name="useRowSelection Hook Utility Methods Single Row Operations should deselect single row with deselectRow" duration="1"/>
+    <testCase name="useRowSelection Hook Utility Methods Single Row Operations should toggle row selection with toggleRow" duration="1"/>
+    <testCase name="useRowSelection Hook Utility Methods Data Utilities should return selected rows data with getSelectedRows" duration="4"/>
+    <testCase name="useRowSelection Hook Utility Methods Data Utilities should clear all selections with clearSelection" duration="2"/>
+    <testCase name="useRowSelection Hook Utility Methods Data Utilities should select all visible rows with selectAllRows" duration="1"/>
+    <testCase name="useRowSelection Hook Utility Methods Data Utilities should deselect all rows with deselectAllRows" duration="1"/>
+    <testCase name="useRowSelection Hook External Callbacks should call onSelectionChange callback when provided" duration="1"/>
+    <testCase name="useRowSelection Hook External Callbacks should call onSelectionChange for bulk selectAll operation" duration="1"/>
+    <testCase name="useRowSelection Hook External Callbacks should work without external callback" duration="4"/>
+    <testCase name="useRowSelection Hook Edge Cases should handle selecting non-existent row IDs" duration="1"/>
+    <testCase name="useRowSelection Hook Edge Cases should handle deselecting non-selected rows" duration="2"/>
+    <testCase name="useRowSelection Hook Edge Cases should maintain selection order" duration="2"/>
+    <testCase name="useRowSelection Hook Edge Cases should handle single select mode with batch operations" duration="1"/>
+    <testCase name="useRowSelection Hook Edge Cases should handle different source types" duration="2"/>
+    <testCase name="useRowSelection Hook Performance and Stability should maintain referential stability of handlers" duration="1"/>
+    <testCase name="useRowSelection Hook Performance and Stability should handle rapid selection changes" duration="1"/>
+    <testCase name="useRowSelection Hook Performance and Stability should work with custom row ID extraction" duration="2"/>
+  </file>
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/select/__tests__/MenuItem.test.tsx">
+    <testCase name="MenuItem renders children correctly" duration="4"/>
+    <testCase name="MenuItem calls onClick when clicked and not disabled" duration="4"/>
+    <testCase name="MenuItem does not call onClick when clicked and disabled" duration="2"/>
+    <testCase name="MenuItem renders as selected when isSelected is true" duration="5"/>
+    <testCase name="MenuItem renders icon when selected and iconSelected is provided" duration="2"/>
+    <testCase name="MenuItem applies correct ARIA attributes" duration="3"/>
   </file>
 </testExecutions>
