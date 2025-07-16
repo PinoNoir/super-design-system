@@ -156,7 +156,7 @@ const TableHeader = <T,>({
         key={column.key}
         scope={defaultScope}
         ref={widthRef}
-        style={{ width: index === 0 && enableSelectAll ? 20 : column.width }}
+        style={{ width: index === 0 && enableSelectAll ? 38 : column.width }}
         colSpan={colSpan}
         automation-id={testId ? `${testId}-header-${column.key}` : undefined}
         {...thProps}

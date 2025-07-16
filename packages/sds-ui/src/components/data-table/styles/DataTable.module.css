@@ -44,6 +44,7 @@
 
 .dataTable {
   width: 100%;
+  min-width: 500px;
   border-collapse: collapse;
   table-layout: fixed;
   border-spacing: 0;
@@ -63,23 +64,25 @@
   border-block-end: 1px solid var(--theme-border-base);
   font-size: var(--font-size-body);
   color: var(--theme-text-base);
-  padding-inline-start: 1rem;
-  padding-inline-end: 1rem;
+  padding-inline: 1rem;
   height: 40px;
   box-sizing: border-box;
 }
 
 .dataTable thead th {
-  padding-inline-start: 1rem;
-  padding-inline-end: 1rem;
+  padding-inline: 1rem;
   height: 40px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  box-sizing: border-box;
+  min-width: fit-content;
 }
 
 .dataTable thead th .checkboxColumn {
   min-inline-size: 2.5rem;
-  padding-inline-end: 0.25rem;
-  padding-inline-start: 1rem;
+  padding-inline: 1rem;
   width: 60px;
   height: 60px;
 }
@@ -103,6 +106,18 @@
   position: static;
   inline-size: 2rem;
   transition: background-color 70ms cubic-bezier(0, 0, 0.38, 0.9);
+}
+
+.dataTable th:first-child {
+  padding-inline-start: 1rem;
+}
+
+/* Ensure non-checkbox columns show ellipsis properly */
+.dataTable th:not(.checkboxColumn),
+.dataTableCell:not(.checkboxColumn) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sort {
@@ -225,7 +240,7 @@ tbody tr:first-of-type {
 }
 
 tbody a {
-  color: var(--color-blue-50, #3b82f6);
+  color: var(--color-blue-50);
 }
 
 /* Drag and Drop States */
@@ -246,19 +261,15 @@ tbody a {
 .dataTableCell {
   min-height: 52px;
   height: 52px;
-}
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  padding-inline: 1rem;
 
-.dataTable .dataTableCell {
-  padding-inline-end: 1rem;
-  padding-inline-start: 1rem;
-}
-
-.dataTableCell:last-child {
-  margin-inline-end: var(--space-24);
-}
-
-.dataTableCell:first-child {
-  margin-inline-start: var(--space-0);
+  &:last-child {
+    margin-inline-end: var(--space-24);
+  }
 }
 
 /* Special Cell Types */
@@ -293,32 +304,36 @@ tbody a {
 }
 
 .errorIcon {
-  color: var(--color-red-50, #ef4444);
+  color: var(--color-red-50);
   width: 24px;
 }
 
 .errorMessage {
-  color: var(--color-red-50, #ef4444);
+  color: var(--color-red-50);
   margin: 0;
 }
 
 /* Cell Content Elements */
-.dataTableRow > .dataTableCell > button {
+.dataTableRow:not(.selected) > .dataTableCell > button {
   background-color: var(--color-white);
   border: 1px solid var(--color-neutral-40);
   color: var(--color-neutral-100);
+  width: 100px;
+  min-width: 80px;
 }
 
-.dataTableRow.selected > .dataTableCell > button {
-  background-color: var(--theme-color-primary);
-  border-color: var(--theme-color-primary);
-  color: var(--color-white);
+/* Selected state - match CSS module specificity */
+.dataTableRow.selected .dataTableCell > button {
+  background-color: var(--theme-color-primary) !important;
+  border-color: var(--theme-color-primary) !important;
+  color: var(--color-white) !important;
 }
 
-.dataTableRow.disabled > .dataTableCell > button:disabled {
-  background-color: var(--color-neutral-30);
-  border-color: var(--color-neutral-30);
-  color: var(--color-neutral-60);
+/* Disabled state - match CSS module specificity */
+.dataTableRow.disabled .dataTableCell > button:disabled {
+  background-color: var(--color-neutral-30) !important;
+  border-color: var(--color-neutral-30) !important;
+  color: var(--color-neutral-60) !important;
 }
 
 .dataTableRow.disabled > .dataTableCell > input {
@@ -368,8 +383,103 @@ tbody a {
 
 .dataTable tbody .dataTableCell .checkboxColumn {
   min-inline-size: 2.5rem;
-  padding-inline-end: 0.25rem;
-  padding-inline-start: 1rem;
+  padding-inline: 1rem;
   width: 60px;
   height: 60px;
+}
+
+/**********************************************
+                RESPONSIVE DESIGN
+**********************************************/
+
+/* Tablet and smaller desktop screens */
+@media (max-width: var(--breakpoint-md)) {
+  .dataTable thead th,
+  .dataTableCell {
+    max-width: 120px;
+  }
+
+  /* Keep first column more stable */
+  .dataTable thead th:first-child,
+  .dataTableCell:first-child {
+    min-width: 40px;
+    max-width: 150px;
+    width: 40px;
+  }
+
+  /* Align first column header with checkbox styling when it contains checkboxes */
+  .dataTable thead th:first-child.checkboxColumn {
+    min-width: 50px;
+    max-width: 50px;
+    width: 50px;
+  }
+
+  .dataTable thead th .checkboxColumn,
+  .dataTable tbody .dataTableCell .checkboxColumn {
+    width: 50px;
+    min-inline-size: 2rem;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: var(--breakpoint-sm)) {
+  .dataTable thead th,
+  .dataTableCell {
+    max-width: 80px;
+  }
+
+  /* Keep first column more stable */
+  .dataTable thead th:first-child,
+  .dataTableCell:first-child {
+    min-width: 40px;
+    max-width: 120px;
+    width: 40px;
+  }
+
+  /* Align first column header with checkbox styling when it contains checkboxes */
+  .dataTable thead th:first-child.checkboxColumn {
+    min-width: 40px;
+    max-width: 40px;
+    width: 40px;
+  }
+
+  .dataTable thead th .checkboxColumn,
+  .dataTable tbody .dataTableCell .checkboxColumn {
+    width: 40px;
+    min-inline-size: 1.5rem;
+  }
+}
+
+/* Very small screens - allow text wrapping */
+@media (max-width: var(--breakpoint-xs)) {
+  .dataTable thead th:not(.checkboxColumn),
+  .dataTableCell:not(.checkboxColumn) {
+    white-space: normal;
+    word-break: break-word;
+    max-width: 60px;
+  }
+
+  /* Keep first column more stable */
+  .dataTable thead th:first-child,
+  .dataTableCell:first-child {
+    min-width: 40px;
+    max-width: 100px;
+    width: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Align first column header with checkbox styling when it contains checkboxes */
+  .dataTable thead th:first-child.checkboxColumn {
+    min-width: 35px;
+    max-width: 35px;
+    width: 35px;
+  }
+
+  .dataTable thead th .checkboxColumn,
+  .dataTable tbody .dataTableCell .checkboxColumn {
+    width: 35px;
+    min-inline-size: 1.25rem;
+  }
 }
