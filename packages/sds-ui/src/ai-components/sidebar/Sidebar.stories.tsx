@@ -1,8 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Sidebar, SidebarItem, SidebarSectionStatic } from './';
-import { Button, Flex } from '../../components';
-import { LucideHome, Settings, User, MessageCircle, LogOut, CircleHelp, Search, FilePlus2 } from 'lucide-react';
+import { Button, Flex, IconButton, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '../../components';
+import {
+  LucideHome,
+  Settings,
+  User,
+  MessageCircle,
+  LogOut,
+  CircleHelp,
+  Search,
+  FilePlus2,
+  MoreVertical,
+  Edit,
+  Trash2,
+  Star,
+} from 'lucide-react';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'AI Components/Sidebar',
@@ -191,6 +204,73 @@ export const Collapsible: Story = {
         }
       />
     );
+  },
+};
+
+export const WithCustomMenu: Story = {
+  render: function WithCustomMenu() {
+    const sectionsWithCustomMenu = [
+      {
+        id: 'main',
+        title: 'Pinned',
+        items: [
+          {
+            id: 'chat-1',
+            label: 'Chapter 7 Filing Strategy Analysis',
+            icon: <MessageCircle />,
+            href: '#',
+            customMenu: (
+              <Dropdown>
+                <DropdownTrigger>
+                  <IconButton fill="none" ariaLabel="More options">
+                    <MoreVertical size={16} />
+                  </IconButton>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem icon={<Edit size={16} />} onClick={() => alert('Rename clicked!')}>
+                    Rename
+                  </DropdownItem>
+                  <DropdownItem icon={<Star size={16} />} onClick={() => alert('Pin clicked!')}>
+                    Pin Conversation
+                  </DropdownItem>
+                  <DropdownItem icon={<Trash2 size={16} />} onClick={() => alert('Delete clicked!')}>
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            ),
+          },
+          {
+            id: 'chat-2',
+            label: 'Asset Protection Research',
+            icon: <MessageCircle />,
+            href: '#',
+            customMenu: (
+              <Dropdown>
+                <DropdownTrigger>
+                  <IconButton fill="none" ariaLabel="More options">
+                    <MoreVertical size={16} />
+                  </IconButton>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem icon={<Edit size={16} />} onClick={() => alert('Rename clicked!')}>
+                    Rename
+                  </DropdownItem>
+                  <DropdownItem icon={<Star size={16} />} onClick={() => alert('Pin clicked!')}>
+                    Pin Conversation
+                  </DropdownItem>
+                  <DropdownItem icon={<Trash2 size={16} />} onClick={() => alert('Delete clicked!')}>
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            ),
+          },
+        ],
+      },
+    ];
+
+    return <Sidebar sections={sectionsWithCustomMenu} />;
   },
 };
 

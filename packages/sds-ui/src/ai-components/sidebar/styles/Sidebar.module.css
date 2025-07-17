@@ -232,7 +232,7 @@
   align-items: center;
   width: 100%;
   gap: var(--space-8);
-  padding: var(--space-16) var(--space-32);
+  padding: var(--space-16) var(--space-16) var(--space-16) var(--space-32);
   border-radius: var(--border-radius-0);
   color: var(--theme-text-base);
   font-size: var(--font-size-body);
@@ -352,6 +352,20 @@
 
 .collapsed .navBadge {
   opacity: 0;
+  pointer-events: none;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.collapsed .navActions {
+  display: none;
   pointer-events: none;
 }
 

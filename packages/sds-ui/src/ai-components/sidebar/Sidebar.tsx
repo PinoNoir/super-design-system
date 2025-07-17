@@ -15,6 +15,7 @@ export interface NavItem {
   active?: boolean;
   disabled?: boolean;
   badge?: React.ReactNode;
+  customMenu?: React.ReactNode;
 }
 
 export interface NavSection {
@@ -167,6 +168,7 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
               <>
                 <span className={clsx(styles.navLabel, labelClassName)}>{item.label}</span>
                 {item.badge && <span className={clsx(styles.navBadge, badgeClassName)}>{item.badge}</span>}
+                {item.customMenu && <span className={styles.navActions}>{item.customMenu}</span>}
               </>
             )}
           </ItemComponent>

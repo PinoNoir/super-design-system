@@ -10,6 +10,7 @@ export interface SidebarItemProps {
   className?: string;
   collapsed?: boolean;
   as?: React.ElementType;
+  customMenu?: React.ReactNode;
   [key: string]: any;
 }
 
@@ -22,6 +23,7 @@ const SidebarItem = ({
   className,
   collapsed = false,
   as: Component = 'button',
+  customMenu,
   ...props
 }: SidebarItemProps) => (
   <Component
@@ -41,6 +43,7 @@ const SidebarItem = ({
       <>
         <span className={styles.navLabel}>{label}</span>
         {badge && <span className={styles.navBadge}>{badge}</span>}
+        {customMenu && <span className={styles.navActions}>{customMenu}</span>}
       </>
     )}
   </Component>

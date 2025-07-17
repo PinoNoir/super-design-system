@@ -74,6 +74,8 @@ export interface TableProps<T> {
 
   // Advanced customization
   renderRow?: RowRenderer<T>;
+  emptyState?: React.ReactNode;
+  renderEmpty?: () => React.ReactNode;
 
   // Testing
   ['automation-id']?: string;
@@ -162,6 +164,8 @@ const Table = <T,>({
 
   // Advanced
   renderRow,
+  emptyState,
+  renderEmpty,
 
   // Testing
   'automation-id': automationId,
@@ -380,10 +384,16 @@ const Table = <T,>({
       return (
         <tr>
           <td colSpan={totalColumns} className={styles.emptyCell}>
-            <div className={styles.emptyMessageContainer}>
-              <Icon icon="mdi:database-outline" width="24px" color="var(--theme-icon-muted)" />
-              <p className={styles.emptyMessage}>No data available</p>
-            </div>
+            {renderEmpty ? (
+              renderEmpty()
+            ) : emptyState ? (
+              emptyState
+            ) : (
+              <div className={styles.emptyMessageContainer}>
+                <Icon icon="mdi:database-outline" width="24px" color="var(--theme-icon-muted)" />
+                <p className={styles.emptyMessage}>No data available</p>
+              </div>
+            )}
           </td>
         </tr>
       );
@@ -409,7 +419,16 @@ const Table = <T,>({
       // Default row renderer
       return <TableRows key={rowId} {...defaultRowProps} />;
     });
-  }, [serverSide, columnsWithDragHandle, data, createDefaultRowProps, determineRowState, renderRow]);
+  }, [
+    serverSide,
+    columnsWithDragHandle,
+    data,
+    createDefaultRowProps,
+    determineRowState,
+    renderRow,
+    emptyState,
+    renderEmpty,
+  ]);
 
   // Don't render pagination if disabled or no data in server-side mode
   const shouldShowPagination = enablePagination && (!serverSide?.enabled || activeTotalItems > 0);
