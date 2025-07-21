@@ -360,8 +360,14 @@
   align-items: center;
   justify-content: center;
   margin-left: auto;
-  opacity: 1;
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 300ms ease-in-out;
+}
+
+.navButton:hover .navActions {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .collapsed .navActions {
