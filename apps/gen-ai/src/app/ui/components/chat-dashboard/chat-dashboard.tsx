@@ -1,21 +1,10 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { Button } from 'sds-ui';
+import { Button, Sidebar } from 'sds-ui';
 import ChatDetails from '../chat-details';
 import { logout } from '@/app/actions';
-import {
-  LayoutGrid,
-  Settings,
-  Users,
-  SettingsIcon as Functions,
-  Layers,
-  Eye,
-  BarChart2,
-  LogOut,
-  FileText,
-} from 'lucide-react';
-import clsx from 'clsx';
+import { Settings, LogOut, FileText, Home as LucideHome, Search, MessageCircle, User } from 'lucide-react';
 import styles from './styles/chat-layout.module.css';
 
 // Create a PDF context to share pdf state across components
@@ -63,8 +52,8 @@ export default function ChatDashboard({ children }: { readonly children: React.R
   return (
     <PdfContext.Provider value={contextValue}>
       <div className={styles.appContainer}>
-        <div className={styles.sidebar}>
-          <div className={styles.sidebarHeader}>
+        <Sidebar
+          header={
             <div className={styles.brand}>
               <svg width="32" height="32" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -78,48 +67,85 @@ export default function ChatDashboard({ children }: { readonly children: React.R
                 />
               </svg>
             </div>
-          </div>
-          <div className={styles.sidebarContent}>
-            <div className={styles.sidebarNav}>
-              <nav className={styles.navSection}>
-                <button className={styles.navButton}>
-                  <LayoutGrid className={styles.iconButton} />
-                  Tasks
-                </button>
-                <button className={styles.navButton}>
-                  <Functions className={styles.iconButton} />
-                  Functions
-                </button>
-                <button className={styles.navButton}>
-                  <Layers className={styles.iconButton} />
-                  Integrations
-                </button>
-                <button className={styles.navButton}>
-                  <Users className={styles.iconButton} />
-                  Users
-                </button>
-                <button className={styles.navButton}>
-                  <Settings className={styles.iconButton} />
-                  Settings
-                </button>
-              </nav>
-              <div className={clsx(styles.navSection, styles.secondaryNav)}>
-                <button className={styles.navButton}>
-                  <Eye className={styles.iconButton} />
-                  Live preview
-                </button>
-                <button className={styles.navButton}>
-                  <BarChart2 className={styles.iconButton} />
-                  Performance
-                </button>
-                <button className={styles.navButton} onClick={logout}>
-                  <LogOut className={styles.iconButton} />
-                  Logout
-                </button>
-              </div>
+          }
+          sections={[
+            {
+              id: 'main',
+              title: 'Main Navigation',
+              items: [
+                {
+                  id: 'home',
+                  label: 'Home',
+                  icon: <LucideHome />,
+                  isActive: true,
+                  onClick: () => console.log('Home clicked'),
+                },
+                {
+                  id: 'dashboard',
+                  label: 'Dashboard',
+                  icon: <Search />,
+                  onClick: () => console.log('Dashboard clicked'),
+                },
+                {
+                  id: 'messages',
+                  label: 'Messages',
+                  icon: <MessageCircle />,
+                  badge: '3',
+                  onClick: () => console.log('Messages clicked'),
+                },
+              ],
+            },
+            {
+              id: 'history',
+              title: 'History',
+              items: [
+                {
+                  id: 'recent-1',
+                  label: 'Recent Chat 1',
+                  icon: <MessageCircle />,
+                  onClick: () => console.log('Recent Chat 1 clicked'),
+                },
+                {
+                  id: 'recent-2',
+                  label: 'Recent Chat 2',
+                  icon: <MessageCircle />,
+                  onClick: () => console.log('Recent Chat 2 clicked'),
+                },
+                {
+                  id: 'recent-3',
+                  label: 'Recent Chat 3',
+                  icon: <MessageCircle />,
+                  onClick: () => console.log('Recent Chat 3 clicked'),
+                },
+              ],
+            },
+            {
+              id: 'settings',
+              title: 'Settings',
+              items: [
+                {
+                  id: 'profile',
+                  label: 'Profile',
+                  icon: <User />,
+                  onClick: () => console.log('Profile clicked'),
+                },
+                {
+                  id: 'preferences',
+                  label: 'Preferences',
+                  icon: <Settings />,
+                  onClick: () => console.log('Preferences clicked'),
+                },
+              ],
+            },
+          ]}
+          footer={
+            <div className={styles.sidebarFooter}>
+              <Button variant="secondary" onClick={logout} icon={<LogOut />}>
+                Logout
+              </Button>
             </div>
-          </div>
-        </div>
+          }
+        />
 
         <div className={styles.mainContent}>
           <div className={styles.headerContainer}>

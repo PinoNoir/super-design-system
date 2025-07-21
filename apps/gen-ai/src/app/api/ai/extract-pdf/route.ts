@@ -3,6 +3,12 @@ import { readFile, readdir } from 'fs/promises';
 import path from 'path';
 import Anthropic from '@anthropic-ai/sdk';
 import { z } from 'zod';
+import { pdfStorage } from '../../../lib/pdf-storage';
+
+// Simple in-memory rate limiting (in production, use Redis or similar)
+const requestCounts = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 5; // Max 5 requests per minute
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute in milliseconds
 
 // Define the schema for PDF extraction
 const pdfSchema = z.object({
@@ -28,6 +34,29 @@ const anthropic = new Anthropic();
 export async function POST(request: NextRequest) {
   try {
     console.log('PDF Extraction API called');
+
+    // Simple rate limiting
+    const clientId = request.headers.get('x-forwarded-for') || 'unknown';
+    const now = Date.now();
+    const clientData = requestCounts.get(clientId);
+
+    if (clientData && now < clientData.resetTime) {
+      if (clientData.count >= RATE_LIMIT) {
+        return new Response(
+          JSON.stringify({
+            error: 'Rate limit exceeded',
+            message: `Too many requests. Please wait ${Math.ceil((clientData.resetTime - now) / 1000)} seconds before trying again.`,
+          }),
+          {
+            status: 429,
+            headers: { 'Content-Type': 'application/json' },
+          },
+        );
+      }
+      clientData.count++;
+    } else {
+      requestCounts.set(clientId, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    }
 
     const body = await request.json();
     console.log('Request body:', body);
@@ -83,12 +112,12 @@ export async function POST(request: NextRequest) {
         console.log('Calling Anthropic API directly...');
 
         const response = await anthropic.messages.create({
-          model: 'claude-3-7-sonnet-20250219',
-          max_tokens: 4000,
-          system: `You are an expert document analyzer. Extract content from the PDF into a structured format.
-                  If it appears to be an invoice, extract values like total amount, currency, invoice number, etc.
-                  For other documents, extract title, author, date, and summarize the key content.
-                  Format your response as valid JSON matching this schema: ${JSON.stringify(pdfSchema.shape)}`,
+          model: 'claude-3-5-sonnet-20241022', // Use the model from your models.ts
+          max_tokens: 1500, // Reduced from 4000 to avoid rate limits
+          system: `You are an expert document analyzer. Extract key content from the PDF into a structured format.
+                  Keep responses concise. For invoices, extract: total amount, currency, invoice number.
+                  For other documents, extract: title, author, date, key summary.
+                  Format as valid JSON matching this schema: ${JSON.stringify(pdfSchema.shape)}`,
           messages: [
             {
               role: 'user',
@@ -126,6 +155,10 @@ export async function POST(request: NextRequest) {
             // Otherwise try to parse the whole response as JSON
             extractedJson = JSON.parse(assistantMessage);
           }
+
+          // Store the analysis results for the chat API to access
+          pdfStorage.storeAnalysis(filename, extractedJson);
+          console.log('PDF analysis stored for:', filename);
 
           return new Response(JSON.stringify(extractedJson), {
             status: 200,

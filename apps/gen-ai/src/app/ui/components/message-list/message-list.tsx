@@ -8,19 +8,17 @@ import MessageItem from '../message-item';
 import { Square } from 'lucide-react';
 
 interface MessageListProps {
-  readonly messages: Message[];
-  readonly isLoading: boolean;
-  readonly onRetryAction: () => void;
-  readonly onStopAction: () => void;
+  messages: Message[];
+  isLoading: boolean;
+  onRetryAction: () => void;
+  onStopAction: () => void;
 }
 
 export default function MessageList({ messages, isLoading, onRetryAction, onStopAction }: MessageListProps) {
   return (
     <div className={styles.messagesContainer}>
       <div className={styles.messagesWrapper}>
-        {messages.length === 0 && (
-          <MessageItem role="assistant" content="Hi, I'm a Best Case assistant. How can I help you today?" />
-        )}
+        {messages.length === 0 && <MessageItem role="assistant" content="Hi, how can I help you today?" />}
 
         {messages.map((message) => {
           // Extract PDF info if available in this message

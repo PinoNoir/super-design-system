@@ -1,6 +1,5 @@
 import React from 'react';
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
-import { MoonIcon, SunIcon } from 'lucide-react';
 import styles from './styles/ToggleGroup.module.css';
 
 interface ToggleGroupProps {

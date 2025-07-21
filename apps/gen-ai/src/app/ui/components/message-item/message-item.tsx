@@ -107,7 +107,7 @@ export default function MessageItem({ role, content, pdfName }: MessageItemProps
 
       <div className={styles.messageContent}>
         <div className={styles.messageHeader}>
-          <span className={styles.senderName}>{isAssistant ? 'Best Case Assisstant' : 'Nicholas Pino'}</span>
+          <span className={styles.senderName}>{isAssistant ? 'Legal Assisstant' : 'Nicholas Pino'}</span>
           {timeString && <span className={styles.timestamp}>{timeString}</span>}
         </div>
         <div className={styles.messageBubble}>
