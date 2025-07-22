@@ -16,6 +16,7 @@ import {
   Trash2,
   Star,
 } from 'lucide-react';
+import SidebarMenu from './SidebarMenu';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'AI Components/Sidebar',
@@ -220,24 +221,17 @@ export const WithCustomMenu: Story = {
             icon: <MessageCircle />,
             href: '#',
             customMenu: (
-              <Dropdown>
-                <DropdownTrigger>
-                  <IconButton fill="none" ariaLabel="More options">
-                    <MoreVertical size={16} />
-                  </IconButton>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem icon={<Edit size={16} />} onClick={() => alert('Rename clicked!')}>
-                    Rename
-                  </DropdownItem>
-                  <DropdownItem icon={<Star size={16} />} onClick={() => alert('Pin clicked!')}>
-                    Pin Conversation
-                  </DropdownItem>
-                  <DropdownItem icon={<Trash2 size={16} />} onClick={() => alert('Delete clicked!')}>
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+              <SidebarMenu trigger={<MoreVertical size={20} />}>
+                <SidebarMenu.Item icon={<Edit size={20} />} onClick={() => console.log('Rename clicked!')}>
+                  Rename
+                </SidebarMenu.Item>
+                <SidebarMenu.Item icon={<Star size={20} />} onClick={() => console.log('Pin clicked!')}>
+                  Pin Conversation
+                </SidebarMenu.Item>
+                <SidebarMenu.Item icon={<Trash2 size={20} />} onClick={() => console.log('Delete clicked!')}>
+                  Delete
+                </SidebarMenu.Item>
+              </SidebarMenu>
             ),
           },
           {
@@ -246,24 +240,17 @@ export const WithCustomMenu: Story = {
             icon: <MessageCircle />,
             href: '#',
             customMenu: (
-              <Dropdown>
-                <DropdownTrigger>
-                  <IconButton fill="none" ariaLabel="More options">
-                    <MoreVertical size={16} />
-                  </IconButton>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem icon={<Edit size={16} />} onClick={() => alert('Rename clicked!')}>
-                    Rename
-                  </DropdownItem>
-                  <DropdownItem icon={<Star size={16} />} onClick={() => alert('Pin clicked!')}>
-                    Pin Conversation
-                  </DropdownItem>
-                  <DropdownItem icon={<Trash2 size={16} />} onClick={() => alert('Delete clicked!')}>
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+              <SidebarMenu trigger={<MoreVertical size={20} />}>
+                <SidebarMenu.Item icon={<Edit size={16} />} onClick={() => alert('Rename clicked!')}>
+                  Rename
+                </SidebarMenu.Item>
+                <SidebarMenu.Item icon={<Star size={16} />} onClick={() => alert('Pin clicked!')}>
+                  Pin Conversation
+                </SidebarMenu.Item>
+                <SidebarMenu.Item icon={<Trash2 size={16} />} onClick={() => alert('Delete clicked!')}>
+                  Delete
+                </SidebarMenu.Item>
+              </SidebarMenu>
             ),
           },
         ],

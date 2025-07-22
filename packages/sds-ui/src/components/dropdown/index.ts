@@ -14,3 +14,4 @@ export type { DropdownItemProps } from './DropdownItem';
 export type { DropdownTriggerProps } from './DropdownTrigger';
 export type { DropdownSubmenuProps } from './DropdownSubmenu';
 export type { SubMenuContentProps } from './SubMenuContent';
+export type { DropdownProps } from './Dropdown';

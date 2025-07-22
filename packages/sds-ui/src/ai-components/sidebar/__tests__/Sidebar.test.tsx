@@ -431,8 +431,8 @@ describe('Sidebar Component', () => {
         />,
       );
 
-      const item = screen.getByRole('button', { name: /test item/i });
-      expect(item).toHaveClass('active');
+      const item = screen.getByRole('menuitem', { name: /test item/i });
+      expect(item.parentElement).toHaveClass('active');
       expect(screen.getByTestId('item-icon')).toBeInTheDocument();
       expect(screen.getByText('Badge')).toBeInTheDocument();
     });
@@ -440,7 +440,7 @@ describe('Sidebar Component', () => {
     it('renders SidebarItem as custom element', () => {
       render(<SidebarItem label="Link Item" as="a" href="/test" />);
 
-      const item = screen.getByRole('link', { name: /link item/i });
+      const item = screen.getByRole('menuitem', { name: /link item/i });
       expect(item).toHaveAttribute('href', '/test');
     });
   });

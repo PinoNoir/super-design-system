@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import DropdownContext from './DropdownContext';
 
-interface DropdownProps {
+export interface DropdownProps {
   children: React.ReactNode;
 }
 
@@ -20,5 +20,7 @@ const Dropdown: React.FC<DropdownProps> = ({ children }) => {
 
   return <DropdownContext.Provider value={contextValues}>{children}</DropdownContext.Provider>;
 };
+
+Dropdown.displayName = 'Dropdown';
 
 export default Dropdown;
