@@ -18,7 +18,8 @@
     "noImplicitAny": false,
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "apps/*": ["apps/react-sandbox/src/*"],
+      "apps/react-sandbox/*": ["react-sandbox/src/*"],
+      "apps/gen-ai/": ["gen-ai/src/*"],
       "packages/mui-themes/*": ["mui-themes/src/*"],
       "packages/sds-ui/*": ["sds-ui/src/*"],
       "packages/sds-tokens/*": ["sds-tokens/src/*"],

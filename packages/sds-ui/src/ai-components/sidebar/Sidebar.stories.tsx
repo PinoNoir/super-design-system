@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Sidebar, SidebarItem, SidebarSectionStatic } from './';
-import { Button, Flex, IconButton, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '../../components';
+import { Button, Flex } from '../../components';
 import {
   LucideHome,
   Settings,
@@ -47,19 +47,8 @@ const meta: Meta<typeof Sidebar> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '100vh', display: 'flex' }}>
+      <div style={{ height: '100vh', display: 'flex', backgroundColor: 'var(--theme-color-background)' }}>
         <Story />
-        <div
-          style={{
-            color: 'var(--theme-text-base)',
-            flex: 1,
-            padding: '2rem',
-            backgroundColor: 'var(--theme-color-background)',
-          }}
-        >
-          <h2>Main Content Area</h2>
-          <p>This simulates the main application content alongside the sidebar.</p>
-        </div>
       </div>
     ),
   ],

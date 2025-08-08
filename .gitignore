@@ -10,7 +10,8 @@ storybook-static
 chromatic-diagnostics.json
 chromatic.config.json
 chromatic.log
-css.d.ts
+.icloud/
+
 
 # testing
 coverage/

@@ -438,7 +438,7 @@
   align-items: center;
   width: 100%;
   gap: var(--space-8);
-  padding: var(--space-16) var(--space-16) var(--space-16) var(--space-32);
+  padding: var(--space-16);
   border-radius: var(--border-radius-0);
   color: var(--theme-text-base);
   font-size: var(--font-size-body);
@@ -604,16 +604,418 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .sidebar {
-    width: -webkit-fill-available;
+@media (max-width: var(--breakpoint-lg)) {
+  .sidebar:not(.collapsed) {
+    width: 240px;
+  }
+
+  .base:not(.collapsed) {
+    width: 240px;
+  }
+
+  .compact:not(.collapsed) {
+    width: 200px;
+  }
+
+  .minimal:not(.collapsed) {
+    width: 160px;
+  }
+
+  /* Ensure collapsed state is respected */
+  .collapsed,
+  .base.collapsed,
+  .compact.collapsed,
+  .minimal.collapsed {
+    width: 70px;
+  }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+  .sidebar:not(.collapsed) {
+    width: 220px;
+  }
+
+  .base:not(.collapsed) {
+    width: 220px;
+  }
+
+  .compact:not(.collapsed) {
+    width: 180px;
+  }
+
+  .minimal:not(.collapsed) {
+    width: 140px;
+  }
+
+  /* Ensure collapsed state is respected */
+  .collapsed,
+  .base.collapsed,
+  .compact.collapsed,
+  .minimal.collapsed {
+    width: 70px;
+  }
+
+  .navButton {
+    padding: var(--space-12) var(--space-12) var(--space-12) var(--space-24);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-xs);
+    padding: var(--space-6) var(--space-12);
+  }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+  .sidebar:not(.collapsed) {
+    width: 200px;
     position: fixed;
     z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-right-4);
+  }
+
+  .base:not(.collapsed) {
+    width: 200px;
+  }
+
+  .compact:not(.collapsed) {
+    width: 160px;
+  }
+
+  .minimal:not(.collapsed) {
+    width: 120px;
+  }
+
+  /* Ensure collapsed state is respected */
+  .collapsed,
+  .base.collapsed,
+  .compact.collapsed,
+  .minimal.collapsed {
+    width: 70px;
+    position: fixed;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-right-4);
+  }
+
+  .navButton {
+    padding: var(--space-10) var(--space-10) var(--space-10) var(--space-20);
+    font-size: var(--font-size-sm);
+  }
+
+  .navLabel {
+    font-size: var(--font-size-sm);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-xs);
+    padding: var(--space-4) var(--space-10);
+  }
+
+  .sidebarHeader {
+    padding: 6px 12px 2px 12px;
+    height: 50px;
+  }
+
+  .logoButton svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: var(--breakpoint-xs)) {
+  .sidebar:not(.collapsed) {
+    width: 180px;
+  }
+
+  .base:not(.collapsed) {
+    width: 180px;
+  }
+
+  .compact:not(.collapsed) {
+    width: 140px;
+  }
+
+  .minimal:not(.collapsed) {
+    width: 100px;
+  }
+
+  /* Ensure collapsed state is respected */
+  .collapsed,
+  .base.collapsed,
+  .compact.collapsed,
+  .minimal.collapsed {
+    width: 70px;
+  }
+
+  .navButton {
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+    font-size: var(--font-size-xs);
+  }
+
+  .navLabel {
+    font-size: var(--font-size-xs);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-xs);
+    padding: var(--space-3) var(--space-8);
+  }
+
+  .sidebarHeader {
+    padding: 4px 8px 0px 8px;
+    height: 45px;
+  }
+
+  .logoButton svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .iconButton {
+    height: var(--size-28);
+    width: var(--size-28);
+  }
+
+  .iconButton svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Mobile overlay behavior */
+@media (max-width: var(--breakpoint-sm)) {
+  .sidebar {
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sidebar.mobileOpen {
     transform: translateX(0);
   }
 
-  .collapsed {
+  /* Remove conflicting collapsed transform rule */
+  /* .collapsed {
     transform: translateX(-100%);
+  } */
+
+  /* Add backdrop when sidebar is open on mobile */
+  .sidebarBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 300ms ease-in-out,
+      visibility 300ms ease-in-out;
+  }
+
+  .sidebarBackdrop.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Tablet landscape adjustments */
+@media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) and (orientation: landscape) {
+  .sidebar:not(.collapsed) {
+    width: 200px;
+  }
+
+  .base:not(.collapsed) {
+    width: 200px;
+  }
+
+  .compact:not(.collapsed) {
+    width: 160px;
+  }
+
+  .minimal:not(.collapsed) {
+    width: 120px;
+  }
+
+  /* Ensure collapsed state is respected */
+  .collapsed,
+  .base.collapsed,
+  .compact.collapsed,
+  .minimal.collapsed {
+    width: 70px;
+  }
+}
+
+/* Auto-collapse on tablet portrait - only when not manually collapsed */
+@media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) and (orientation: portrait) {
+  .sidebar:not(.collapsed) {
+    width: 70px;
+  }
+
+  .base:not(.collapsed) {
+    width: 70px;
+  }
+
+  .compact:not(.collapsed) {
+    width: 70px;
+  }
+
+  .minimal:not(.collapsed) {
+    width: 70px;
+  }
+
+  /* Apply collapsed styles only when auto-collapsed (not manually collapsed) */
+  .sidebar:not(.collapsed) .navButton {
+    justify-content: center;
+    padding: var(--space-16) var(--space-4);
+  }
+
+  .sidebar:not(.collapsed) .navLabel {
+    display: none;
+    pointer-events: none;
+  }
+
+  .sidebar:not(.collapsed) .navBadge {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar:not(.collapsed) .sectionTitle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar:not(.collapsed) .navActions {
+    display: none;
+  }
+
+  .sidebar:not(.collapsed) .sidebarHeader {
+    padding: 8px 12px 4px 12px;
+  }
+
+  /* Show tooltips on hover for auto-collapsed state */
+  .sidebar:not(.collapsed) .navButton:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--theme-color-foreground);
+    color: var(--theme-text-base);
+    padding: var(--space-8) var(--space-12);
+    border-radius: var(--border-radius-4);
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: var(--shadow-bottom-4);
+    border: 1px solid var(--theme-border-base);
+    margin-left: var(--space-8);
+    pointer-events: none;
+  }
+}
+
+/* Auto-collapse on smaller tablets - only when not manually collapsed */
+@media (min-width: var(--breakpoint-xs)) and (max-width: var(--breakpoint-sm)) {
+  .sidebar:not(.collapsed) {
+    width: 70px;
+  }
+
+  .base:not(.collapsed) {
+    width: 70px;
+  }
+
+  .compact:not(.collapsed) {
+    width: 70px;
+  }
+
+  .minimal:not(.collapsed) {
+    width: 70px;
+  }
+
+  /* Apply collapsed styles only when auto-collapsed (not manually collapsed) */
+  .sidebar:not(.collapsed) .navButton {
+    justify-content: center;
+    padding: var(--space-12) var(--space-4);
+  }
+
+  .sidebar:not(.collapsed) .navLabel {
+    display: none;
+    pointer-events: none;
+  }
+
+  .sidebar:not(.collapsed) .navBadge {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar:not(.collapsed) .sectionTitle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar:not(.collapsed) .navActions {
+    display: none;
+  }
+
+  .sidebar:not(.collapsed) .sidebarHeader {
+    padding: 6px 8px 2px 8px;
+  }
+
+  /* Show tooltips on hover for auto-collapsed state */
+  .sidebar:not(.collapsed) .navButton:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--theme-color-foreground);
+    color: var(--theme-text-base);
+    padding: var(--space-6) var(--space-10);
+    border-radius: var(--border-radius-4);
+    font-size: var(--font-size-xs);
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: var(--shadow-bottom-4);
+    border: 1px solid var(--theme-border-base);
+    margin-left: var(--space-6);
+    pointer-events: none;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: var(--breakpoint-xl)) {
+  .sidebar:not(.collapsed) {
+    width: 280px;
+  }
+
+  .base:not(.collapsed) {
+    width: 280px;
+  }
+
+  .compact:not(.collapsed) {
+    width: 220px;
+  }
+
+  .minimal:not(.collapsed) {
+    width: 200px;
+  }
+
+  /* Ensure collapsed state is respected */
+  .collapsed,
+  .base.collapsed,
+  .compact.collapsed,
+  .minimal.collapsed {
+    width: 70px;
+  }
+
+  .navButton {
+    padding: var(--space-18) var(--space-18) var(--space-18) var(--space-36);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-sm);
+    padding: var(--space-10) var(--space-18);
   }
 }
 
@@ -635,5 +1037,66 @@
 
   .sidebarMenuPanel {
     transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .sidebar {
+    border-right: 2px solid var(--theme-border-base);
+  }
+
+  .navButton.active::before {
+    width: 4px;
+  }
+
+  .sidebarFooter {
+    border-top: 2px solid var(--theme-border-base);
+  }
+}
+
+/* Dark mode adjustments for mobile */
+@media (prefers-color-scheme: dark) and (max-width: var(--breakpoint-sm)) {
+  .sidebarBackdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .navButton {
+    min-height: 44px; /* Minimum touch target size */
+  }
+
+  .logoButton {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .sidebarMenuTrigger {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .sidebarMenuItem {
+    min-height: 44px;
+  }
+
+  /* Increase spacing for better touch interaction */
+  .navButton {
+    padding: var(--space-16) var(--space-16) var(--space-16) var(--space-32);
+  }
+
+  @media (max-width: var(--breakpoint-sm)) {
+    .navButton {
+      padding: var(--space-14) var(--space-14) var(--space-14) var(--space-28);
+    }
+  }
+}
+
+/* Print styles */
+@media print {
+  .sidebar {
+    display: none;
   }
 }

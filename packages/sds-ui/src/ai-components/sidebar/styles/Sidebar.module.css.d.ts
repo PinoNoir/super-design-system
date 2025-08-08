@@ -45,6 +45,9 @@ const sidebarMenuPanelSlide: string;
 const sidebarMenuSlideOut: string;
 const sidebarMenuItem: string;
 const sidebarMenuItemIcon: string;
+const mobileOpen: string;
+const sidebarBackdrop: string;
+const visible: string;
 
 export {
   sidebar,
@@ -86,6 +89,9 @@ export {
   sidebarMenuSlideOut,
   sidebarMenuItem,
   sidebarMenuItemIcon,
+  mobileOpen,
+  sidebarBackdrop,
+  visible,
 };
 
 export default {
@@ -128,4 +134,7 @@ export default {
   sidebarMenuSlideOut,
   sidebarMenuItem,
   sidebarMenuItemIcon,
+  mobileOpen,
+  sidebarBackdrop,
+  visible,
 };
