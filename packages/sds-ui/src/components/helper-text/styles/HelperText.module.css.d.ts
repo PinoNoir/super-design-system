@@ -9,12 +9,9 @@
 const formHelperTextDisabled: string;
 const formHelperText: string;
 
-export {
-	formHelperTextDisabled,
-	formHelperText
-};
+export { formHelperTextDisabled, formHelperText };
 
 export default {
-	formHelperTextDisabled,
-	formHelperText
+  formHelperTextDisabled,
+  formHelperText,
 };

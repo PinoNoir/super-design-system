@@ -14,22 +14,14 @@ const md: string;
 const lg: string;
 const xl: string;
 
-export {
-	avatar,
-	avatarPlaceholder,
-	placeholderText,
-	sm,
-	md,
-	lg,
-	xl
-};
+export { avatar, avatarPlaceholder, placeholderText, sm, md, lg, xl };
 
 export default {
-	avatar,
-	avatarPlaceholder,
-	placeholderText,
-	sm,
-	md,
-	lg,
-	xl
+  avatar,
+  avatarPlaceholder,
+  placeholderText,
+  sm,
+  md,
+  lg,
+  xl,
 };

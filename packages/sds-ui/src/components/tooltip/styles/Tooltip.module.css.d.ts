@@ -15,24 +15,15 @@ const slideLeft: string;
 const slideUp: string;
 const slideRight: string;
 
-export {
-	trigger,
-	content,
-	arrow,
-	fadeOut,
-	slideDown,
-	slideLeft,
-	slideUp,
-	slideRight
-};
+export { trigger, content, arrow, fadeOut, slideDown, slideLeft, slideUp, slideRight };
 
 export default {
-	trigger,
-	content,
-	arrow,
-	fadeOut,
-	slideDown,
-	slideLeft,
-	slideUp,
-	slideRight
+  trigger,
+  content,
+  arrow,
+  fadeOut,
+  slideDown,
+  slideLeft,
+  slideUp,
+  slideRight,
 };

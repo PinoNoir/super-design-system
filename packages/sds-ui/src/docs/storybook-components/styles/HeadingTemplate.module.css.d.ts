@@ -9,12 +9,9 @@
 const container: string;
 const content: string;
 
-export {
-	container,
-	content
-};
+export { container, content };
 
 export default {
-	container,
-	content
+  container,
+  content,
 };

@@ -18,27 +18,27 @@ const footerDivider: string;
 const errorContainer: string;
 
 export {
-	panel,
-	base,
-	none,
-	panelHeader,
-	panelHeaderText,
-	panelHeaderIcon,
-	panelContent,
-	panelFooter,
-	footerDivider,
-	errorContainer
+  panel,
+  base,
+  none,
+  panelHeader,
+  panelHeaderText,
+  panelHeaderIcon,
+  panelContent,
+  panelFooter,
+  footerDivider,
+  errorContainer,
 };
 
 export default {
-	panel,
-	base,
-	none,
-	panelHeader,
-	panelHeaderText,
-	panelHeaderIcon,
-	panelContent,
-	panelFooter,
-	footerDivider,
-	errorContainer
+  panel,
+  base,
+  none,
+  panelHeader,
+  panelHeaderText,
+  panelHeaderIcon,
+  panelContent,
+  panelFooter,
+  footerDivider,
+  errorContainer,
 };

@@ -18,27 +18,27 @@ const menu: string;
 const customChevronWrapper: string;
 
 export {
-	selectOuterWrapper,
-	labelWrapper,
-	label,
-	requiredLabel,
-	select,
-	invalid,
-	errorMessage,
-	selectContainer,
-	menu,
-	customChevronWrapper
+  selectOuterWrapper,
+  labelWrapper,
+  label,
+  requiredLabel,
+  select,
+  invalid,
+  errorMessage,
+  selectContainer,
+  menu,
+  customChevronWrapper,
 };
 
 export default {
-	selectOuterWrapper,
-	labelWrapper,
-	label,
-	requiredLabel,
-	select,
-	invalid,
-	errorMessage,
-	selectContainer,
-	menu,
-	customChevronWrapper
+  selectOuterWrapper,
+  labelWrapper,
+  label,
+  requiredLabel,
+  select,
+  invalid,
+  errorMessage,
+  selectContainer,
+  menu,
+  customChevronWrapper,
 };

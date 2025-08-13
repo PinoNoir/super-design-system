@@ -17,25 +17,25 @@ const hideArrow: string;
 const popoverClose: string;
 
 export {
-	popoverTrigger,
-	popoverContent,
-	slideDownAndFade,
-	slideLeftAndFade,
-	slideUpAndFade,
-	slideRightAndFade,
-	popoverArrow,
-	hideArrow,
-	popoverClose
+  popoverTrigger,
+  popoverContent,
+  slideDownAndFade,
+  slideLeftAndFade,
+  slideUpAndFade,
+  slideRightAndFade,
+  popoverArrow,
+  hideArrow,
+  popoverClose,
 };
 
 export default {
-	popoverTrigger,
-	popoverContent,
-	slideDownAndFade,
-	slideLeftAndFade,
-	slideUpAndFade,
-	slideRightAndFade,
-	popoverArrow,
-	hideArrow,
-	popoverClose
+  popoverTrigger,
+  popoverContent,
+  slideDownAndFade,
+  slideLeftAndFade,
+  slideUpAndFade,
+  slideRightAndFade,
+  popoverArrow,
+  hideArrow,
+  popoverClose,
 };
