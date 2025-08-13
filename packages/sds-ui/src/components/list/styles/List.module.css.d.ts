@@ -15,15 +15,24 @@ const listItemFormButtons: string;
 const draggable: string;
 const dragging: string;
 
-export { list, listItem, innerContent, actionBarWrapper, listItemForm, listItemFormButtons, draggable, dragging };
+export {
+	list,
+	listItem,
+	innerContent,
+	actionBarWrapper,
+	listItemForm,
+	listItemFormButtons,
+	draggable,
+	dragging
+};
 
 export default {
-  list,
-  listItem,
-  innerContent,
-  actionBarWrapper,
-  listItemForm,
-  listItemFormButtons,
-  draggable,
-  dragging,
+	list,
+	listItem,
+	innerContent,
+	actionBarWrapper,
+	listItemForm,
+	listItemFormButtons,
+	draggable,
+	dragging
 };

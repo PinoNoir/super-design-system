@@ -75,7 +75,11 @@ const SidebarSection = ({
         </button>
       )}
 
-      {!hasTitle && <ul className={clsx(styles.sectionContent, styles.sectionContentItems)}>{renderSectionItems()}</ul>}
+      {!hasTitle && (
+        <ul className={clsx(styles.sectionContent, styles.sectionContentItems)}>
+          <li>{renderSectionItems()}</li>
+        </ul>
+      )}
 
       {hasTitle && (
         <div
@@ -84,7 +88,9 @@ const SidebarSection = ({
             [styles.sectionContentExpanded]: isExpanded || !canToggle,
           })}
         >
-          <ul className={styles.sectionContentItems}>{renderSectionItems()}</ul>
+          <ul className={styles.sectionContentItems}>
+            <li>{renderSectionItems()}</li>
+          </ul>
         </div>
       )}
     </nav>

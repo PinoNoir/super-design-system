@@ -13,13 +13,20 @@ const headerTitle: string;
 const headerDescription: string;
 const stickyHeaderMaxWidth: string;
 
-export { container, containerStatic, header, headerTitle, headerDescription, stickyHeaderMaxWidth };
+export {
+	container,
+	containerStatic,
+	header,
+	headerTitle,
+	headerDescription,
+	stickyHeaderMaxWidth
+};
 
 export default {
-  container,
-  containerStatic,
-  header,
-  headerTitle,
-  headerDescription,
-  stickyHeaderMaxWidth,
+	container,
+	containerStatic,
+	header,
+	headerTitle,
+	headerDescription,
+	stickyHeaderMaxWidth
 };

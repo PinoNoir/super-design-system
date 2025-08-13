@@ -9,9 +9,12 @@
 const toggleGroup: string;
 const toggleItem: string;
 
-export { toggleGroup, toggleItem };
+export {
+	toggleGroup,
+	toggleItem
+};
 
 export default {
-  toggleGroup,
-  toggleItem,
+	toggleGroup,
+	toggleItem
 };

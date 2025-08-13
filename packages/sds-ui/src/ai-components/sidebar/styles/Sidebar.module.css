@@ -38,17 +38,23 @@
 
 /* Header Styles */
 .sidebarHeader {
-  padding: 8px 16px 4px 16px;
+  padding: var(--space-12);
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   background-color: var(--theme-color-foreground);
   margin-block-end: var(--space-40);
+  transition: all 200ms ease-in-out;
 }
 
 .collapsed .sidebarHeader {
-  padding: 8px 12px 4px 12px;
+  padding: var(--space-12);
+  margin-block-end: var(--space-8);
+}
+
+.withHeaderHidden {
+  margin-block-start: var(--space-16);
 }
 
 .brand {
@@ -454,7 +460,6 @@
   max-width: 100%;
   box-sizing: border-box;
   flex: 1;
-  min-width: 0;
 }
 
 .sidebarMenuTrigger {
@@ -793,11 +798,6 @@
     transform: translateX(0);
   }
 
-  /* Remove conflicting collapsed transform rule */
-  /* .collapsed {
-    transform: translateX(-100%);
-  } */
-
   /* Add backdrop when sidebar is open on mobile */
   .sidebarBackdrop {
     position: fixed;
@@ -1080,11 +1080,6 @@
 
   .sidebarMenuItem {
     min-height: 44px;
-  }
-
-  /* Increase spacing for better touch interaction */
-  .navButton {
-    padding: var(--space-16) var(--space-16) var(--space-16) var(--space-32);
   }
 
   @media (max-width: var(--breakpoint-sm)) {

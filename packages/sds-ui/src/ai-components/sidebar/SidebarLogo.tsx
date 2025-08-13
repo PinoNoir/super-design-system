@@ -5,10 +5,19 @@ export interface SidebarLogoProps {
   collapsible?: boolean;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
+  hidden?: boolean;
   className?: string;
 }
 
-const SidebarLogo = ({ collapsible = false, collapsed = false, onToggleCollapse, className }: SidebarLogoProps) => {
+const SidebarLogo = ({
+  collapsible = false,
+  collapsed = false,
+  onToggleCollapse,
+  className,
+  hidden = false,
+}: SidebarLogoProps) => {
+  if (hidden) return null; // <-- Bail out early
+
   const logoContent = (
     <svg viewBox="0 0 50 50" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
       <path d="M11.491 17.8175L17.7472 11.6667H44.6489L39.0183 17.8175H11.491Z" />

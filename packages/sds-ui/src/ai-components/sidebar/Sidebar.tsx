@@ -1,6 +1,6 @@
 import styles from './styles/Sidebar.module.css';
 import clsx from 'clsx';
-import React, { forwardRef, useState, useCallback, useMemo } from 'react';
+import React, { forwardRef, useState, useCallback } from 'react';
 import SidebarLogo from './SidebarLogo';
 import SidebarSection from './SidebarSection';
 
@@ -49,6 +49,8 @@ export interface SidebarProps {
   collapsible?: boolean;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
+  hidden?: boolean;
+  hideHeader?: boolean;
   variant?: 'base' | 'compact' | 'minimal';
   renderHeader?: (defaultHeader: React.ReactNode) => React.ReactNode;
   renderNavItem?: (item: NavItem, defaultRender: React.ReactNode) => React.ReactNode;
@@ -83,6 +85,8 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       iconClassName,
       labelClassName,
       badgeClassName,
+      hidden = false,
+      hideHeader = false,
       collapsible = false,
       collapsed = false,
       onToggleCollapse,
@@ -179,7 +183,14 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
 
     const defaultHeader = header || (
       <div className={styles.brand}>
-        {logo || <SidebarLogo collapsible={collapsible} collapsed={collapsed} onToggleCollapse={onToggleCollapse} />}
+        {logo || (
+          <SidebarLogo
+            collapsible={collapsible}
+            collapsed={collapsed}
+            onToggleCollapse={onToggleCollapse}
+            hidden={hidden}
+          />
+        )}
       </div>
     );
 
@@ -200,11 +211,11 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
         aria-label="Sidebar navigation"
         {...props}
       >
-        <div className={clsx(styles.sidebarHeader, headerClassName)}>
-          {renderHeader ? renderHeader(defaultHeader) : defaultHeader}
-        </div>
+        {!hideHeader && (
+          <div className={styles.sidebarHeader}>{renderHeader ? renderHeader(defaultHeader) : defaultHeader}</div>
+        )}
         <div className={clsx(styles.sidebarContent, contentClassName)}>
-          <div className={clsx(styles.sidebarNav, navClassName)}>
+          <div className={clsx(styles.sidebarNav, navClassName, { [styles.withHeaderHidden]: hideHeader })}>
             {sections.map((section) => {
               const isExpanded = expandedSections[section.id] ?? false;
               const isSectionCollapsible = sectionsCollapsible && section.collapsible !== false;

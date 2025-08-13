@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import styles from './styles/Sidebar.module.css';
 import { MoreVertical } from 'lucide-react';
 
-interface SidebarMenuProps {
+export interface SidebarMenuProps {
   trigger?: React.ReactNode;
   children: React.ReactNode;
   className?: string;

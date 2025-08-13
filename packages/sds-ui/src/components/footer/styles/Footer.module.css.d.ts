@@ -18,27 +18,27 @@ const footerIcons: string;
 const socialLinks: string;
 
 export {
-  footer,
-  footerLinks,
-  footerList,
-  footerLink,
-  LogoSection as logoSection,
-  appSection,
-  contactSection,
-  copyrightSection,
-  footerIcons,
-  socialLinks,
+	footer,
+	footerLinks,
+	footerList,
+	footerLink,
+	LogoSection as logoSection,
+	appSection,
+	contactSection,
+	copyrightSection,
+	footerIcons,
+	socialLinks
 };
 
 export default {
-  footer,
-  footerLinks,
-  footerList,
-  footerLink,
-  logoSection: LogoSection,
-  appSection,
-  contactSection,
-  copyrightSection,
-  footerIcons,
-  socialLinks,
+	footer,
+	footerLinks,
+	footerList,
+	footerLink,
+	logoSection: LogoSection,
+	appSection,
+	contactSection,
+	copyrightSection,
+	footerIcons,
+	socialLinks
 };

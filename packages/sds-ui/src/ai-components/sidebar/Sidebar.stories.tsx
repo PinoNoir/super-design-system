@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { Sidebar, SidebarItem, SidebarSectionStatic } from './';
+import { Sidebar, SidebarItem, SidebarSectionStatic, SidebarMenu } from './';
 import { Button, Flex } from '../../components';
 import {
   LucideHome,
@@ -16,7 +16,6 @@ import {
   Trash2,
   Star,
 } from 'lucide-react';
-import SidebarMenu from './SidebarMenu';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'AI Components/Sidebar',
@@ -47,8 +46,19 @@ const meta: Meta<typeof Sidebar> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '100vh', display: 'flex', backgroundColor: 'var(--theme-color-background)' }}>
+      <div style={{ height: '100vh', display: 'flex' }}>
         <Story />
+        <div
+          style={{
+            color: 'var(--theme-text-base)',
+            flex: 1,
+            padding: '2rem',
+            backgroundColor: 'var(--theme-color-background)',
+          }}
+        >
+          <h2>Main Content Area</h2>
+          <p>This simulates the main application content alongside the sidebar.</p>
+        </div>
       </div>
     ),
   ],
@@ -67,7 +77,6 @@ const defaultSections = [
         label: 'Search Chat',
         icon: <Search />,
         href: '#',
-        active: true,
       },
       {
         id: 'new-conversation',
@@ -180,13 +189,25 @@ export const Variants: Story = {
 export const Collapsible: Story = {
   render: function Collapsible() {
     const [collapsed, setCollapsed] = useState(false);
+    const [activeId, setActiveId] = useState('search'); // default active
+
+    // map in the active flag + click handler
+    const sections = defaultSections.map((section) => ({
+      ...section,
+      items: section.items.map((item) => ({
+        ...item,
+        isActive: item.id === activeId,
+        onClick: () => setActiveId(item.id),
+      })),
+    }));
 
     return (
       <Sidebar
+        hideHeader
         collapsible
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(!collapsed)}
-        sections={defaultSections}
+        sections={sections}
         footer={
           <SidebarSectionStatic>
             <SidebarItem icon={<LogOut />} label="Sign Out" onClick={() => alert('Sign Out clicked!')} as="a" />

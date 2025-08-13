@@ -10,10 +10,14 @@ const suggestionList: string;
 const suggestionItem: string;
 const highlighted: string;
 
-export { suggestionList, suggestionItem, highlighted };
+export {
+	suggestionList,
+	suggestionItem,
+	highlighted
+};
 
 export default {
-  suggestionList,
-  suggestionItem,
-  highlighted,
+	suggestionList,
+	suggestionItem,
+	highlighted
 };

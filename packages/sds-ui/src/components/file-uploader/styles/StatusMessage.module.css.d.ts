@@ -11,11 +11,16 @@ const errorMessageContainer: string;
 const iconContainer: string;
 const dismissButton: string;
 
-export { successMessageContainer, errorMessageContainer, iconContainer, dismissButton };
+export {
+	successMessageContainer,
+	errorMessageContainer,
+	iconContainer,
+	dismissButton
+};
 
 export default {
-  successMessageContainer,
-  errorMessageContainer,
-  iconContainer,
-  dismissButton,
+	successMessageContainer,
+	errorMessageContainer,
+	iconContainer,
+	dismissButton
 };

@@ -18,27 +18,27 @@ const alertContainer: string;
 const alertBadge: string;
 
 export {
-  nav,
-  navLogo,
-  navLinks,
-  additionalContentContainer,
-  activeLink,
-  navAvatar,
-  avatarTrigger,
-  logoutButtonWrapper,
-  alertContainer,
-  alertBadge,
+	nav,
+	navLogo,
+	navLinks,
+	additionalContentContainer,
+	activeLink,
+	navAvatar,
+	avatarTrigger,
+	logoutButtonWrapper,
+	alertContainer,
+	alertBadge
 };
 
 export default {
-  nav,
-  navLogo,
-  navLinks,
-  additionalContentContainer,
-  activeLink,
-  navAvatar,
-  avatarTrigger,
-  logoutButtonWrapper,
-  alertContainer,
-  alertBadge,
+	nav,
+	navLogo,
+	navLinks,
+	additionalContentContainer,
+	activeLink,
+	navAvatar,
+	avatarTrigger,
+	logoutButtonWrapper,
+	alertContainer,
+	alertBadge
 };

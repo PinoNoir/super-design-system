@@ -13,13 +13,20 @@ const title: string;
 const content: string;
 const footer: string;
 
-export { wrapper, flyoutPanel, header, title, content, footer };
+export {
+	wrapper,
+	flyoutPanel,
+	header,
+	title,
+	content,
+	footer
+};
 
 export default {
-  wrapper,
-  flyoutPanel,
-  header,
-  title,
-  content,
-  footer,
+	wrapper,
+	flyoutPanel,
+	header,
+	title,
+	content,
+	footer
 };

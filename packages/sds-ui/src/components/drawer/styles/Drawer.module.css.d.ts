@@ -10,10 +10,14 @@ const drawerContainer: string;
 const drawerContent: string;
 const closeButton: string;
 
-export { drawerContainer, drawerContent, closeButton };
+export {
+	drawerContainer,
+	drawerContent,
+	closeButton
+};
 
 export default {
-  drawerContainer,
-  drawerContent,
-  closeButton,
+	drawerContainer,
+	drawerContent,
+	closeButton
 };

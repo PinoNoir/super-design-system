@@ -8,8 +8,10 @@
 
 const stack: string;
 
-export { stack };
+export {
+	stack
+};
 
 export default {
-  stack,
+	stack
 };
