@@ -19,6 +19,7 @@ const logoButton: string;
 const sectionHeader: string;
 const sectionHeaderCollapsible: string;
 const sectionToggleIcon: string;
+const rotate: string;
 const sectionContent: string;
 const sectionContentAnimated: string;
 const sectionContentExpanded: string;
@@ -46,9 +47,9 @@ const sidebarMenuPanelSlide: string;
 const sidebarMenuSlideOut: string;
 const sidebarMenuItem: string;
 const sidebarMenuItemIcon: string;
+const isMobile: string;
 const mobileOpen: string;
 const sidebarBackdrop: string;
-const visible: string;
 
 export {
   sidebar,
@@ -64,6 +65,7 @@ export {
   sectionHeader,
   sectionHeaderCollapsible,
   sectionToggleIcon,
+  rotate,
   sectionContent,
   sectionContentAnimated,
   sectionContentExpanded,
@@ -91,9 +93,9 @@ export {
   sidebarMenuSlideOut,
   sidebarMenuItem,
   sidebarMenuItemIcon,
+  isMobile,
   mobileOpen,
   sidebarBackdrop,
-  visible,
 };
 
 export default {
@@ -110,6 +112,7 @@ export default {
   sectionHeader,
   sectionHeaderCollapsible,
   sectionToggleIcon,
+  rotate,
   sectionContent,
   sectionContentAnimated,
   sectionContentExpanded,
@@ -137,7 +140,7 @@ export default {
   sidebarMenuSlideOut,
   sidebarMenuItem,
   sidebarMenuItemIcon,
+  isMobile,
   mobileOpen,
   sidebarBackdrop,
-  visible,
 };

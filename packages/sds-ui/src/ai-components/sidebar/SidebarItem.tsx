@@ -7,6 +7,7 @@ export interface SidebarItemProps {
   label: string;
   badge?: React.ReactNode;
   active?: boolean;
+  isActive?: boolean;
   disabled?: boolean;
   className?: string;
   collapsed?: boolean;
@@ -21,6 +22,7 @@ const SidebarItem = ({
   label,
   badge,
   active,
+  isActive,
   disabled,
   className,
   collapsed = false,
@@ -33,12 +35,12 @@ const SidebarItem = ({
   const [isHovered, setIsHovered] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Show actions when item is hovered OR menu is open
+  const isItemActive = isActive !== undefined ? isActive : active;
+
   const showActions = (isHovered || menuOpen) && !collapsed && !disabled;
 
   const handleMouseEnter = () => {
     if (!disabled) {
-      // Clear any pending hide timeout
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
         hoverTimeoutRef.current = null;
@@ -48,16 +50,14 @@ const SidebarItem = ({
   };
 
   const handleMouseLeave = () => {
-    // Only hide after a small delay if menu is not open
     if (!menuOpen) {
       hoverTimeoutRef.current = setTimeout(() => {
         setIsHovered(false);
-      }, 150); // Small delay to allow moving to the menu trigger
+      }, 150);
     }
   };
 
   const handleActionsMouseEnter = () => {
-    // Keep actions visible when hovering over them
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
       hoverTimeoutRef.current = null;
@@ -66,7 +66,6 @@ const SidebarItem = ({
   };
 
   const handleActionsMouseLeave = () => {
-    // Hide actions when leaving the actions area (unless menu is open)
     if (!menuOpen) {
       hoverTimeoutRef.current = setTimeout(() => {
         setIsHovered(false);
@@ -76,13 +75,11 @@ const SidebarItem = ({
 
   const handleMenuOpenChange = (open: boolean) => {
     setMenuOpen(open);
-    // If menu closes, allow hiding after a delay
     if (!open) {
       hoverTimeoutRef.current = setTimeout(() => {
         setIsHovered(false);
       }, 100);
     } else {
-      // If menu opens, ensure actions stay visible
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
         hoverTimeoutRef.current = null;
@@ -91,7 +88,6 @@ const SidebarItem = ({
     }
   };
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (hoverTimeoutRef.current) {
@@ -108,7 +104,6 @@ const SidebarItem = ({
     onClick?.(e);
   };
 
-  // Enhanced menu cloning with proper props
   let enhancedMenu = customMenu;
   if (customMenu && React.isValidElement(customMenu)) {
     const menuProps: any = {
@@ -116,7 +111,6 @@ const SidebarItem = ({
       onOpenChange: handleMenuOpenChange,
     };
 
-    // Handle different menu component types
     const componentType = (customMenu.type as any)?.displayName || customMenu.type;
     if (componentType === 'SidebarMenu' || componentType === 'Dropdown') {
       menuProps.isOpen = menuOpen;
@@ -130,7 +124,7 @@ const SidebarItem = ({
       className={clsx(
         styles.navButton,
         {
-          [styles.active]: active,
+          [styles.active]: isItemActive,
           [styles.disabled]: disabled,
         },
         className,

@@ -30,67 +30,88 @@ const SidebarSection = ({
   shouldRenderItems = true,
 }: SidebarSectionProps) => {
   const contentId = `section-${section.id}`;
-  const hasTitle = section.title && !collapsed;
-  const canToggle = hasTitle && collapsible;
+
+  // Use section's own collapsible setting if provided, otherwise use global setting
+  const sectionIsCollapsible = section.collapsible !== undefined ? section.collapsible : collapsible;
+  const hasTitle = section.title;
+  const canToggle = hasTitle && sectionIsCollapsible;
+  const showContent = !canToggle || isExpanded;
+  const showHeader = hasTitle;
 
   const renderSectionItems = () => {
-    if (!shouldRenderItems) return null;
+    if (!shouldRenderItems || !showContent) return null;
 
     return section.items.map((item) => {
       const defaultRender = renderDefaultNavItem(item);
+      let renderedItem;
+
       if (section.renderItem) {
-        return <React.Fragment key={item.id}>{section.renderItem(item, defaultRender)}</React.Fragment>;
+        renderedItem = section.renderItem(item, defaultRender);
+      } else if (renderNavItem) {
+        renderedItem = renderNavItem(item, defaultRender);
+      } else {
+        renderedItem = defaultRender;
       }
-      if (renderNavItem) {
-        return <React.Fragment key={item.id}>{renderNavItem(item, defaultRender)}</React.Fragment>;
-      }
-      return <React.Fragment key={item.id}>{defaultRender}</React.Fragment>;
+
+      return <li key={item.id}>{renderedItem}</li>;
     });
+  };
+
+  const renderSectionHeader = () => {
+    if (!showHeader) return null;
+
+    if (canToggle) {
+      return (
+        <button
+          id={`${section.id}-title`}
+          automation-id="section-title"
+          className={clsx(styles.sectionHeader, styles.sectionHeaderCollapsible)}
+          onClick={() => toggleSection(section.id)}
+          aria-expanded={isExpanded}
+          aria-controls={contentId}
+          type="button"
+        >
+          {!collapsed && <h3 className={clsx(styles.sectionTitle, sectionTitleClassName)}>{section.title}</h3>}
+          <Icon
+            icon="mdi:chevron-right"
+            className={clsx(styles.sectionToggleIcon, {
+              [styles.rotate]: !isExpanded,
+            })}
+            automation-id="section-toggle-icon"
+            aria-hidden="true"
+          />
+        </button>
+      );
+    }
+
+    return (
+      <h3
+        id={`${section.id}-title`}
+        automation-id="section-title"
+        className={clsx(styles.sectionTitle, styles.sectionHeader, sectionTitleClassName)}
+      >
+        {!collapsed && section.title}
+      </h3>
+    );
   };
 
   return (
     <nav
-      className={clsx(styles.sidebarSection, sectionClassName, section.className)}
+      className={clsx(styles.sidebarSection, styles.navSection, sectionClassName, section.className)}
       role="navigation"
       aria-labelledby={hasTitle ? `${section.id}-title` : undefined}
     >
-      {hasTitle && (
-        <button
-          id={`${section.id}-title`}
-          className={clsx(styles.sectionHeader, { [styles.sectionHeaderCollapsible]: canToggle })}
-          onClick={canToggle ? () => toggleSection(section.id) : undefined}
-          aria-expanded={canToggle ? isExpanded : undefined}
-          aria-controls={canToggle ? contentId : undefined}
-          disabled={!canToggle}
-          type="button"
-        >
-          <h3 className={clsx(styles.sectionTitle, sectionTitleClassName)}>{section.title}</h3>
-          {canToggle && (
-            <Icon
-              icon={isExpanded ? 'mdi:chevron-down' : 'mdi:chevron-right'}
-              className={clsx(styles.sectionToggleIcon)}
-              aria-hidden="true"
-            />
-          )}
-        </button>
-      )}
+      {renderSectionHeader()}
 
-      {!hasTitle && (
-        <ul className={clsx(styles.sectionContent, styles.sectionContentItems)}>
-          <li>{renderSectionItems()}</li>
-        </ul>
-      )}
-
-      {hasTitle && (
+      {showContent && (
         <div
           id={contentId}
-          className={clsx(styles.sectionContent, styles.sectionContentAnimated, {
+          className={clsx(styles.sectionContent, {
+            [styles.sectionContentAnimated]: canToggle,
             [styles.sectionContentExpanded]: isExpanded || !canToggle,
           })}
         >
-          <ul className={styles.sectionContentItems}>
-            <li>{renderSectionItems()}</li>
-          </ul>
+          <ul className={styles.sectionContentItems}>{renderSectionItems()}</ul>
         </div>
       )}
     </nav>

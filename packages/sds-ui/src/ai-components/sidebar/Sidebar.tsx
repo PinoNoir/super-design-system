@@ -1,6 +1,6 @@
 import styles from './styles/Sidebar.module.css';
 import clsx from 'clsx';
-import React, { forwardRef, useState, useCallback } from 'react';
+import React, { forwardRef, useState, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import SidebarLogo from './SidebarLogo';
 import SidebarSection from './SidebarSection';
 
@@ -65,9 +65,23 @@ export interface SidebarProps {
   onSectionToggle?: (sectionId: string, expanded: boolean) => void;
   sectionsCollapsible?: boolean;
   lazyLoadSections?: boolean;
+
+  // Mobile responsive props
+  mobileOpen?: boolean;
+  onMobileToggle?: (open: boolean) => void;
+  mobileBreakpoint?: number;
+  showBackdrop?: boolean;
+  backdropClassName?: string;
 }
 
-const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
+export interface SidebarRef {
+  toggleMobile: () => void;
+  openMobile: () => void;
+  closeMobile: () => void;
+  isMobileOpen: boolean;
+}
+
+const Sidebar = forwardRef<SidebarRef, SidebarProps>(
   (
     {
       header,
@@ -102,10 +116,22 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       onSectionToggle,
       sectionsCollapsible = true,
       lazyLoadSections = false,
+      mobileOpen,
+      onMobileToggle,
+      mobileBreakpoint = 768, // Default to 768px (tablet)
+      showBackdrop = true,
+      backdropClassName,
       ...props
     },
     ref,
   ) => {
+    // Mobile state management
+    const [internalMobileOpen, setInternalMobileOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Use controlled mobile state if provided, otherwise use internal state
+    const isMobileOpen = mobileOpen !== undefined ? mobileOpen : internalMobileOpen;
+
     // Initialize expanded sections based on props or defaults
     const [internalExpandedSections, setInternalExpandedSections] = useState<Record<string, boolean>>(() => {
       if (controlledExpandedSections) {
@@ -121,6 +147,74 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
 
     // Use controlled state if provided, otherwise use internal state
     const expandedSections = controlledExpandedSections || internalExpandedSections;
+
+    // Sync internal state when controlled state changes
+    useEffect(() => {
+      if (controlledExpandedSections) {
+        setInternalExpandedSections(controlledExpandedSections);
+      }
+    }, [controlledExpandedSections]);
+
+    // Handle mobile toggle
+    const handleMobileToggle = useCallback(
+      (open: boolean) => {
+        if (onMobileToggle) {
+          onMobileToggle(open);
+        } else {
+          setInternalMobileOpen(open);
+        }
+      },
+      [onMobileToggle],
+    );
+
+    // Mobile detection and responsive behavior
+    useEffect(() => {
+      const checkMobile = () => {
+        const isMobileView = window.innerWidth <= mobileBreakpoint;
+        setIsMobile(isMobileView);
+
+        // Auto-close mobile sidebar when switching to desktop view
+        if (!isMobileView && isMobileOpen) {
+          handleMobileToggle(false);
+        }
+      };
+
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+
+      return () => window.removeEventListener('resize', checkMobile);
+    }, [mobileBreakpoint, isMobileOpen, handleMobileToggle]);
+
+    // Close mobile sidebar when clicking backdrop
+    const handleBackdropClick = useCallback(() => {
+      handleMobileToggle(false);
+    }, [handleMobileToggle]);
+
+    // Close mobile sidebar on escape key
+    useEffect(() => {
+      const handleEscape = (event: KeyboardEvent) => {
+        if (event.key === 'Escape' && isMobileOpen) {
+          handleMobileToggle(false);
+        }
+      };
+
+      if (isMobileOpen) {
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+      }
+    }, [isMobileOpen, handleMobileToggle]);
+
+    // Expose mobile functionality through ref
+    useImperativeHandle(
+      ref,
+      () => ({
+        toggleMobile: () => handleMobileToggle(!isMobileOpen),
+        openMobile: () => handleMobileToggle(true),
+        closeMobile: () => handleMobileToggle(false),
+        isMobileOpen,
+      }),
+      [isMobileOpen, handleMobileToggle],
+    );
 
     const toggleSection = useCallback(
       (id: string) => {
@@ -165,6 +259,8 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
               item.className,
             )}
             disabled={item.disabled}
+            aria-disabled={item.disabled}
+            role="menuitem"
             {...itemProps}
           >
             {item.icon && <span className={clsx(styles.iconButton, iconClassName)}>{item.icon}</span>}
@@ -189,6 +285,9 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
             collapsed={collapsed}
             onToggleCollapse={onToggleCollapse}
             hidden={hidden}
+            isMobile={isMobile}
+            mobileOpen={isMobileOpen}
+            onMobileToggle={handleMobileToggle}
           />
         )}
       </div>
@@ -197,58 +296,71 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
     const defaultFooter = footer && <div className={clsx(styles.sidebarFooter, footerClassName)}>{footer}</div>;
 
     return (
-      <Component
-        ref={ref}
-        className={clsx(
-          styles.sidebar,
-          styles[variant],
-          {
-            [styles.collapsed]: collapsed,
-          },
-          className,
+      <>
+        {/* Mobile backdrop */}
+        {showBackdrop && isMobile && isMobileOpen && (
+          <div
+            className={clsx(styles.sidebarBackdrop, backdropClassName)}
+            onClick={handleBackdropClick}
+            aria-hidden="true"
+          />
         )}
-        role="navigation"
-        aria-label="Sidebar navigation"
-        {...props}
-      >
-        {!hideHeader && (
-          <div className={styles.sidebarHeader}>{renderHeader ? renderHeader(defaultHeader) : defaultHeader}</div>
-        )}
-        <div className={clsx(styles.sidebarContent, contentClassName)}>
-          <div className={clsx(styles.sidebarNav, navClassName, { [styles.withHeaderHidden]: hideHeader })}>
-            {sections.map((section) => {
-              const isExpanded = expandedSections[section.id] ?? false;
-              const isSectionCollapsible = sectionsCollapsible && section.collapsible !== false;
 
-              // Lazy loading: only render section content if expanded or lazy loading is disabled
-              const shouldRenderItems = !lazyLoadSections || isExpanded;
+        <Component
+          className={clsx(
+            styles.sidebar,
+            styles[variant],
+            {
+              [styles.collapsed]: collapsed,
+              [styles.mobileOpen]: isMobile && isMobileOpen,
+            },
+            className,
+          )}
+          role="navigation"
+          aria-label="Sidebar navigation"
+          data-mobile={isMobile}
+          data-mobile-open={isMobileOpen}
+          data-collapsed={collapsed}
+          {...props}
+        >
+          {!hideHeader && (
+            <div className={styles.sidebarHeader}>{renderHeader ? renderHeader(defaultHeader) : defaultHeader}</div>
+          )}
+          <div className={clsx(styles.sidebarContent, contentClassName)}>
+            <div className={clsx(styles.sidebarNav, navClassName, { [styles.withHeaderHidden]: hideHeader })}>
+              {sections.map((section) => {
+                const isExpanded = expandedSections[section.id] ?? false;
+                const isSectionCollapsible = sectionsCollapsible && section.collapsible !== false;
 
-              const defaultRender = (
-                <SidebarSection
-                  key={section.id}
-                  section={section}
-                  collapsed={collapsed}
-                  sectionClassName={sectionClassName}
-                  sectionTitleClassName={sectionTitleClassName}
-                  renderNavItem={renderNavItem}
-                  toggleSection={toggleSection}
-                  isExpanded={isExpanded}
-                  renderDefaultNavItem={renderDefaultNavItem}
-                  collapsible={isSectionCollapsible}
-                  shouldRenderItems={shouldRenderItems}
-                />
-              );
+                const shouldRenderItems = !lazyLoadSections || isExpanded;
 
-              return (
-                <React.Fragment key={section.id}>
-                  {renderSection ? renderSection(section, defaultRender) : defaultRender}
-                </React.Fragment>
-              );
-            })}
+                const defaultRender = (
+                  <SidebarSection
+                    key={section.id}
+                    section={section}
+                    collapsed={collapsed}
+                    sectionClassName={sectionClassName}
+                    sectionTitleClassName={sectionTitleClassName}
+                    renderNavItem={renderNavItem}
+                    toggleSection={toggleSection}
+                    isExpanded={isExpanded}
+                    renderDefaultNavItem={renderDefaultNavItem}
+                    collapsible={isSectionCollapsible}
+                    shouldRenderItems={shouldRenderItems}
+                  />
+                );
+
+                return (
+                  <React.Fragment key={section.id}>
+                    {renderSection ? renderSection(section, defaultRender) : defaultRender}
+                  </React.Fragment>
+                );
+              })}
+            </div>
           </div>
-        </div>
-        {renderFooter ? renderFooter(defaultFooter) : defaultFooter}
-      </Component>
+          {renderFooter ? renderFooter(defaultFooter) : defaultFooter}
+        </Component>
+      </>
     );
   },
 );

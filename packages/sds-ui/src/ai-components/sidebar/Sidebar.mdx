@@ -5,21 +5,147 @@ import * as SidebarStories from './Sidebar.stories';
 
 # Sidebar Component
 
-A flexible sidebar component with support for navigation sections, collapsing, and extensive customization options.
+A flexible sidebar component with support for navigation sections, collapsing, and extensive customization options. The component automatically adapts its behavior based on screen size, providing a push layout on desktop and an overlay layout on mobile devices.
 
 ## Features
 
 - **Navigation Sections**: Organize navigation items into collapsible sections
 - **Section Control**: Control which sections are expanded/collapsed
-- **Responsive Design**: Adapts to different screen sizes
+- **Responsive Design**: Automatically switches between push (desktop) and overlay (mobile) behavior
+- **Mobile-First**: Optimized for touch devices with proper backdrop and gesture support
 - **Customization**: Extensive styling and rendering options
-- **Performance**: Optimized with pure CSS transitions
+- **Performance**: Optimized with pure CSS transitions and lazy loading support
+- **Accessibility**: Full keyboard navigation and screen reader support
+
+## Responsive Behavior
+
+The Sidebar component automatically adapts its behavior based on screen size to provide the best user experience across all devices.
+
+### Desktop (>768px)
+
+- **Push Layout**: Sidebar pushes main content to the right
+- **Persistent**: Always visible, can be collapsed to icon-only view
+- **Smooth Transitions**: Width changes are animated smoothly
+
+### Mobile/Tablet (≤768px)
+
+- **Overlay Layout**: Sidebar overlays main content
+- **Toggleable**: Can be opened/closed with a menu button
+- **Backdrop**: Semi-transparent backdrop when open
+- **Touch Optimized**: Proper touch targets and gesture support
 
 ## Basic Usage
 
 <Canvas of={SidebarStories.Default} />
 
 The Sidebar component provides a flexible navigation structure with support for sections, icons, badges, and various interaction patterns.
+
+## Responsive Usage with useSidebar Hook
+
+The Sidebar component provides a seamless responsive experience through the `useSidebar` hook and intelligent `SidebarLogo` component.
+
+<Canvas of={SidebarStories.Responsive} />
+
+### Unified Logo Control
+
+The `SidebarLogo` component automatically adapts its behavior based on the viewport:
+
+- **Desktop (>768px)**: Toggles between collapsed/expanded states
+- **Mobile (≤768px)**: Toggles mobile overlay (regardless of collapsed state)
+
+This eliminates the need for separate mobile toggle buttons and provides a consistent user experience.
+
+```tsx
+import { Sidebar, SidebarLogo, useSidebar } from './';
+
+function MyApp() {
+  const { mobileProps, isMobile } = useSidebar();
+
+  return (
+    <div>
+      <header>
+        {/* Unified control that works on both desktop and mobile */}
+        <SidebarLogo
+          collapsible={true}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed(!collapsed)}
+          isMobile={isMobile}
+          mobileOpen={mobileProps.mobileOpen}
+          onMobileToggle={handleMobileToggle}
+        />
+      </header>
+
+      <Sidebar
+        {...mobileProps}
+        showBackdrop={true}
+        // ... other props
+      />
+    </div>
+  );
+}
+```
+
+<Canvas of={SidebarStories.useSidebarHook} />
+
+### Benefits of Unified Logo Control
+
+- **Simplified Implementation**: No need for separate mobile toggle buttons
+- **Consistent UX**: Same control element works across all viewports
+- **Automatic Adaptation**: Logo behavior changes based on context
+- **Reduced Complexity**: Fewer components and state management
+- **Better Accessibility**: Single, predictable control for sidebar interaction
+
+### Hook Usage Example
+
+<Canvas of={SidebarStories.useSidebarHook} />
+
+```tsx
+import { Sidebar, useSidebar } from '@your-org/sds-ui';
+
+const MyLayout = () => {
+  const { mobileProps, isMobile, toggleMobile } = useSidebar();
+
+  return (
+    <div style={{ display: 'flex', height: '100vh' }}>
+      {/* Mobile toggle button - only show on mobile */}
+      {isMobile && (
+        <button onClick={toggleMobile}>
+          <MenuIcon />
+        </button>
+      )}
+
+      {/* Responsive sidebar */}
+      <Sidebar sections={navigationSections} variant="base" collapsible={true} {...mobileProps} showBackdrop={true} />
+
+      {/* Main content */}
+      <main style={{ flex: 1 }}>Your content here</main>
+    </div>
+  );
+};
+```
+
+### useSidebar Hook
+
+The `useSidebar` hook provides a clean API for managing mobile sidebar state:
+
+```tsx
+const { isMobileOpen, isMobile, openMobile, closeMobile, toggleMobile, mobileProps } = useSidebar({
+  defaultMobileOpen: false,
+  mobileBreakpoint: 768,
+  onMobileToggle: (open) => console.log('Mobile sidebar:', open),
+});
+```
+
+**Hook Return Values:**
+
+| Property       | Type         | Description                          |
+| -------------- | ------------ | ------------------------------------ |
+| `isMobileOpen` | `boolean`    | Current mobile open state            |
+| `isMobile`     | `boolean`    | Whether current viewport is mobile   |
+| `openMobile`   | `() => void` | Function to open mobile sidebar      |
+| `closeMobile`  | `() => void` | Function to close mobile sidebar     |
+| `toggleMobile` | `() => void` | Function to toggle mobile sidebar    |
+| `mobileProps`  | `object`     | Props to spread to Sidebar component |
 
 ## Section Control
 
@@ -160,6 +286,29 @@ function CollapsibleSidebar() {
 }
 ```
 
+## Mobile Responsive Props
+
+The Sidebar component includes several props for fine-tuning mobile behavior:
+
+| Prop                | Type                      | Default     | Description                              |
+| ------------------- | ------------------------- | ----------- | ---------------------------------------- |
+| `mobileOpen`        | `boolean`                 | `undefined` | Controlled mobile open state             |
+| `onMobileToggle`    | `(open: boolean) => void` | `undefined` | Callback when mobile state changes       |
+| `mobileBreakpoint`  | `number`                  | `768`       | Breakpoint in pixels for mobile behavior |
+| `showBackdrop`      | `boolean`                 | `true`      | Whether to show backdrop on mobile       |
+| `backdropClassName` | `string`                  | `undefined` | Custom CSS class for backdrop            |
+
+### Custom Breakpoints
+
+You can customize the mobile breakpoint by setting the `mobileBreakpoint` prop:
+
+```tsx
+<Sidebar
+  mobileBreakpoint={1024} // Use 1024px as mobile breakpoint
+  // ... other props
+/>
+```
+
 ## Customization
 
 ### Custom Header and Footer
@@ -192,6 +341,19 @@ This comprehensive example shows a real-world admin panel sidebar with:
 - Custom header with branding
 - Footer with help section
 
+## Complete Responsive Example
+
+<Canvas of={SidebarStories.CompleteExample} />
+
+This example demonstrates the complete SidebarExample component with all responsive features:
+
+- Automatic responsive behavior switching
+- Mobile toggle button with backdrop
+- useSidebar hook for state management
+- Ref-based programmatic control
+- Working controls for mobile sidebar
+- Proper layout structure for all screen sizes
+
 ## Accessibility
 
 The Sidebar component includes comprehensive accessibility features:
@@ -200,6 +362,8 @@ The Sidebar component includes comprehensive accessibility features:
 - **ARIA Labels**: Proper ARIA attributes for screen readers
 - **Focus Management**: Maintains focus state during interactions
 - **Semantic HTML**: Uses appropriate HTML elements for navigation
+- **Mobile Accessibility**: Proper touch targets and gesture support
+- **Screen Reader**: Compatible with major screen readers
 
 ## Use Cases
 
@@ -208,6 +372,7 @@ The Sidebar component includes comprehensive accessibility features:
 - **Chat Applications**: Group conversations by category or status
 - **E-commerce**: Organize product categories and filters
 - **Dashboards**: Section-based navigation for complex dashboards
+- **Mobile Apps**: Responsive navigation that works on all devices
 
 ## Best Practices
 
@@ -216,3 +381,13 @@ The Sidebar component includes comprehensive accessibility features:
 3. **Accessibility**: Ensure proper ARIA labels and keyboard navigation
 4. **State Management**: Choose between controlled and uncontrolled based on your needs
 5. **Responsive Design**: Test the sidebar across different screen sizes
+6. **Mobile Experience**: Always provide a mobile toggle button
+7. **Touch Targets**: Ensure proper touch target sizes for mobile devices
+8. **Performance**: Use the `useSidebar` hook for simpler state management
+
+## Browser Support
+
+- **Modern Browsers**: Full support for all features
+- **IE11+**: Basic functionality with polyfills
+- **Mobile Browsers**: Full touch and gesture support
+- **Screen Readers**: Compatible with major screen readers

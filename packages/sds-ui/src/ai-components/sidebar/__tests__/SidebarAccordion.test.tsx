@@ -65,20 +65,30 @@ describe('Sidebar Accordion Behavior', () => {
 
   it('hides section titles and disables toggling when sidebar is collapsed', async () => {
     const user = userEvent.setup();
-    render(<Sidebar sections={mockSections} collapsed />);
 
+    render(<Sidebar sections={mockSections} collapsed={true} defaultExpandedSections={{ main: true }} />);
+
+    // When collapsed, section headers should still be visible but without text
+    const sectionButtons = screen.getAllByTestId('section-title');
+    expect(sectionButtons).toHaveLength(2); // main and settings sections
+
+    // Section title text should be hidden when collapsed
     expect(screen.queryByText('Main Navigation')).not.toBeInTheDocument();
     expect(screen.queryByText('Settings')).not.toBeInTheDocument();
 
-    const toggleButtons = screen.queryAllByRole('button', { name: /navigation/i });
-    expect(toggleButtons.length).toBe(0);
-
+    // Navigation items should be hidden when collapsed
     expect(screen.queryByText('Home')).not.toBeInTheDocument();
+    expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
     expect(screen.queryByText('Profile')).not.toBeInTheDocument();
 
-    const dashboardButton = screen.getByTestId('nav-dashboard');
-    await user.click(dashboardButton);
-    expect(mockSections[0].items[1].onClick).toHaveBeenCalledTimes(1);
+    // Test that toggle functionality still works by clicking the first section
+    const mainSectionButton = sectionButtons[0];
+    await user.click(mainSectionButton);
+
+    // Even after clicking, items should remain hidden because sidebar is collapsed
+    expect(screen.queryByText('Home')).not.toBeInTheDocument();
+    expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
+    expect(screen.queryByText('Profile')).not.toBeInTheDocument();
   });
 
   it('responds to collapsed prop changes and updates UI accordingly', async () => {

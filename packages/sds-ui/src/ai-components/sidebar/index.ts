@@ -1,15 +1,15 @@
 export { default as Sidebar } from './Sidebar';
-export { default as SidebarItem } from './SidebarItem';
 export { default as SidebarSection } from './SidebarSection';
-export { default as SidebarSectionStatic } from './SidebarSectionStatic';
 export { default as SidebarLogo } from './SidebarLogo';
+export { default as SidebarItem } from './SidebarItem';
 export { default as SidebarMenu } from './SidebarMenu';
+export { default as SidebarSectionStatic } from './SidebarSectionStatic';
+export { useSidebar } from './useSidebar';
 
-export type { NavItem } from './Sidebar';
-export type { NavSection } from './Sidebar';
-export type { SidebarProps } from './Sidebar';
-export type { SidebarMenuProps } from './SidebarMenu';
-export type { SidebarItemProps } from './SidebarItem';
-export type { SidebarLogoProps } from './SidebarLogo';
+export type { SidebarProps, SidebarRef } from './Sidebar';
 export type { SidebarSectionProps } from './SidebarSection';
+export type { SidebarLogoProps } from './SidebarLogo';
+export type { SidebarItemProps } from './SidebarItem';
+export type { SidebarMenuProps } from './SidebarMenu';
 export type { SidebarSectionStaticProps } from './SidebarSectionStatic';
+export type { UseSidebarOptions, UseSidebarReturn } from './useSidebar';

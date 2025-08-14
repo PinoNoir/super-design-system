@@ -44,7 +44,7 @@
   align-items: center;
   justify-content: flex-start;
   background-color: var(--theme-color-foreground);
-  margin-block-end: var(--space-40);
+  margin-block-end: var(--space-24);
   transition: all 200ms ease-in-out;
 }
 
@@ -138,11 +138,20 @@
   cursor: pointer;
 }
 
+.collapsed .sectionHeaderCollapsible {
+  justify-content: center;
+}
+
 .sectionToggleIcon {
   width: 20px;
   height: 20px;
   color: var(--theme-icon-base);
   transition: transform 0.2s ease-in-out;
+  transform: rotate(90deg);
+
+  &.rotate {
+    transform: rotate(0deg);
+  }
 }
 
 .sectionContent {
@@ -278,9 +287,9 @@
 .navActions:hover,
 .navActions:focus-within {
   /* Show actions on navButton hover/focus OR when hovering/focusing the actions themselves */
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: scale(1) !important;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
 }
 
 /* Alternative approach - keep parent nav item highlighted when menu is open */
@@ -290,9 +299,9 @@
 }
 
 .navButton[data-menu-open='true'] .navActions {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: scale(1) !important;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
 }
 
 .collapsed .navButton {
@@ -444,7 +453,6 @@
   align-items: center;
   width: 100%;
   gap: var(--space-8);
-  padding: var(--space-16);
   border-radius: var(--border-radius-0);
   color: var(--theme-text-base);
   font-size: var(--font-size-body);
@@ -670,127 +678,44 @@
   }
 }
 
-@media (max-width: var(--breakpoint-sm)) {
-  .sidebar:not(.collapsed) {
-    width: 200px;
-    position: fixed;
-    z-index: 1000;
-    transform: translateX(-100%);
-    box-shadow: var(--shadow-right-4);
-  }
-
-  .base:not(.collapsed) {
-    width: 200px;
-  }
-
-  .compact:not(.collapsed) {
-    width: 160px;
-  }
-
-  .minimal:not(.collapsed) {
-    width: 120px;
-  }
-
-  /* Ensure collapsed state is respected */
-  .collapsed,
-  .base.collapsed,
-  .compact.collapsed,
-  .minimal.collapsed {
-    width: 70px;
-    position: fixed;
-    z-index: 1000;
-    transform: translateX(-100%);
-    box-shadow: var(--shadow-right-4);
-  }
-
-  .navButton {
-    padding: var(--space-10) var(--space-10) var(--space-10) var(--space-20);
-    font-size: var(--font-size-sm);
-  }
-
-  .navLabel {
-    font-size: var(--font-size-sm);
-  }
-
-  .sectionTitle {
-    font-size: var(--font-size-xs);
-    padding: var(--space-4) var(--space-10);
-  }
-
-  .sidebarHeader {
-    padding: 6px 12px 2px 12px;
-    height: 50px;
-  }
-
-  .logoButton svg {
-    width: 32px;
-    height: 32px;
-  }
+/* Mobile responsive classes */
+.isMobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  transform: translateX(-100%);
+  box-shadow: var(--shadow-right-4);
 }
 
-@media (max-width: var(--breakpoint-xs)) {
-  .sidebar:not(.collapsed) {
-    width: 180px;
-  }
-
-  .base:not(.collapsed) {
-    width: 180px;
-  }
-
-  .compact:not(.collapsed) {
-    width: 140px;
-  }
-
-  .minimal:not(.collapsed) {
-    width: 100px;
-  }
-
-  /* Ensure collapsed state is respected */
-  .collapsed,
-  .base.collapsed,
-  .compact.collapsed,
-  .minimal.collapsed {
-    width: 70px;
-  }
-
-  .navButton {
-    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
-    font-size: var(--font-size-xs);
-  }
-
-  .navLabel {
-    font-size: var(--font-size-xs);
-  }
-
-  .sectionTitle {
-    font-size: var(--font-size-xs);
-    padding: var(--space-3) var(--space-8);
-  }
-
-  .sidebarHeader {
-    padding: 4px 8px 0px 8px;
-    height: 45px;
-  }
-
-  .logoButton svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  .iconButton {
-    height: var(--size-28);
-    width: var(--size-28);
-  }
-
-  .iconButton svg {
-    width: 16px;
-    height: 16px;
-  }
+.isMobile.mobileOpen {
+  transform: translateX(0);
 }
 
-/* Mobile overlay behavior */
-@media (max-width: var(--breakpoint-sm)) {
+/* Desktop behavior - push content */
+@media (min-width: 769px) {
   .sidebar {
+    position: relative;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .sidebar.collapsed {
+    width: 70px;
+  }
+}
+
+/* Tablet and mobile behavior - overlay content */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-right-4);
     transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -798,7 +723,18 @@
     transform: translateX(0);
   }
 
-  /* Add backdrop when sidebar is open on mobile */
+  /* Ensure collapsed state is respected on mobile but doesn't interfere with mobileOpen */
+  .sidebar.collapsed {
+    width: 70px;
+  }
+
+  /* When mobile is open, ensure the sidebar is visible regardless of collapsed state */
+  .sidebar.mobileOpen.collapsed {
+    transform: translateX(0);
+    width: 70px;
+  }
+
+  /* Backdrop styles */
   .sidebarBackdrop {
     position: fixed;
     top: 0;
@@ -807,179 +743,11 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
+    visibility: visible;
     transition:
       opacity 300ms ease-in-out,
       visibility 300ms ease-in-out;
-  }
-
-  .sidebarBackdrop.visible {
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
-/* Tablet landscape adjustments */
-@media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) and (orientation: landscape) {
-  .sidebar:not(.collapsed) {
-    width: 200px;
-  }
-
-  .base:not(.collapsed) {
-    width: 200px;
-  }
-
-  .compact:not(.collapsed) {
-    width: 160px;
-  }
-
-  .minimal:not(.collapsed) {
-    width: 120px;
-  }
-
-  /* Ensure collapsed state is respected */
-  .collapsed,
-  .base.collapsed,
-  .compact.collapsed,
-  .minimal.collapsed {
-    width: 70px;
-  }
-}
-
-/* Auto-collapse on tablet portrait - only when not manually collapsed */
-@media (min-width: var(--breakpoint-sm)) and (max-width: var(--breakpoint-md)) and (orientation: portrait) {
-  .sidebar:not(.collapsed) {
-    width: 70px;
-  }
-
-  .base:not(.collapsed) {
-    width: 70px;
-  }
-
-  .compact:not(.collapsed) {
-    width: 70px;
-  }
-
-  .minimal:not(.collapsed) {
-    width: 70px;
-  }
-
-  /* Apply collapsed styles only when auto-collapsed (not manually collapsed) */
-  .sidebar:not(.collapsed) .navButton {
-    justify-content: center;
-    padding: var(--space-16) var(--space-4);
-  }
-
-  .sidebar:not(.collapsed) .navLabel {
-    display: none;
-    pointer-events: none;
-  }
-
-  .sidebar:not(.collapsed) .navBadge {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .sidebar:not(.collapsed) .sectionTitle {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .sidebar:not(.collapsed) .navActions {
-    display: none;
-  }
-
-  .sidebar:not(.collapsed) .sidebarHeader {
-    padding: 8px 12px 4px 12px;
-  }
-
-  /* Show tooltips on hover for auto-collapsed state */
-  .sidebar:not(.collapsed) .navButton:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--theme-color-foreground);
-    color: var(--theme-text-base);
-    padding: var(--space-8) var(--space-12);
-    border-radius: var(--border-radius-4);
-    font-size: var(--font-size-sm);
-    white-space: nowrap;
-    z-index: 1000;
-    box-shadow: var(--shadow-bottom-4);
-    border: 1px solid var(--theme-border-base);
-    margin-left: var(--space-8);
-    pointer-events: none;
-  }
-}
-
-/* Auto-collapse on smaller tablets - only when not manually collapsed */
-@media (min-width: var(--breakpoint-xs)) and (max-width: var(--breakpoint-sm)) {
-  .sidebar:not(.collapsed) {
-    width: 70px;
-  }
-
-  .base:not(.collapsed) {
-    width: 70px;
-  }
-
-  .compact:not(.collapsed) {
-    width: 70px;
-  }
-
-  .minimal:not(.collapsed) {
-    width: 70px;
-  }
-
-  /* Apply collapsed styles only when auto-collapsed (not manually collapsed) */
-  .sidebar:not(.collapsed) .navButton {
-    justify-content: center;
-    padding: var(--space-12) var(--space-4);
-  }
-
-  .sidebar:not(.collapsed) .navLabel {
-    display: none;
-    pointer-events: none;
-  }
-
-  .sidebar:not(.collapsed) .navBadge {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .sidebar:not(.collapsed) .sectionTitle {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .sidebar:not(.collapsed) .navActions {
-    display: none;
-  }
-
-  .sidebar:not(.collapsed) .sidebarHeader {
-    padding: 6px 8px 2px 8px;
-  }
-
-  /* Show tooltips on hover for auto-collapsed state */
-  .sidebar:not(.collapsed) .navButton:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--theme-color-foreground);
-    color: var(--theme-text-base);
-    padding: var(--space-6) var(--space-10);
-    border-radius: var(--border-radius-4);
-    font-size: var(--font-size-xs);
-    white-space: nowrap;
-    z-index: 1000;
-    box-shadow: var(--shadow-bottom-4);
-    border: 1px solid var(--theme-border-base);
-    margin-left: var(--space-6);
-    pointer-events: none;
   }
 }
 

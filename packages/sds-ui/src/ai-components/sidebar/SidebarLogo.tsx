@@ -7,6 +7,9 @@ export interface SidebarLogoProps {
   onToggleCollapse?: () => void;
   hidden?: boolean;
   className?: string;
+  isMobile?: boolean;
+  mobileOpen?: boolean;
+  onMobileToggle?: (open: boolean) => void;
 }
 
 const SidebarLogo = ({
@@ -15,8 +18,11 @@ const SidebarLogo = ({
   onToggleCollapse,
   className,
   hidden = false,
+  isMobile = false,
+  mobileOpen = false,
+  onMobileToggle,
 }: SidebarLogoProps) => {
-  if (hidden) return null; // <-- Bail out early
+  if (hidden) return null;
 
   const logoContent = (
     <svg viewBox="0 0 50 50" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -26,12 +32,48 @@ const SidebarLogo = ({
     </svg>
   );
 
-  if (collapsible) {
+  // Determine if we should render as a button
+  // Priority: mobile behavior > collapsible behavior
+  const shouldRenderAsButton = () => {
+    if (isMobile && onMobileToggle) {
+      return true;
+    }
+    if (!isMobile && collapsible && onToggleCollapse) {
+      return true;
+    }
+    return false;
+  };
+
+  // Determine the click handler and aria label based on context
+  const getClickHandler = () => {
+    if (isMobile && onMobileToggle) {
+      // On mobile, toggle mobile overlay
+      return () => onMobileToggle(!mobileOpen);
+    } else if (!isMobile && collapsible && onToggleCollapse) {
+      // On desktop, toggle collapsed state
+      return onToggleCollapse;
+    }
+    return undefined;
+  };
+
+  const getAriaLabel = () => {
+    if (isMobile && onMobileToggle) {
+      return mobileOpen ? 'Close mobile sidebar' : 'Open mobile sidebar';
+    } else if (!isMobile && collapsible && onToggleCollapse) {
+      return collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+    }
+    return 'Sidebar logo';
+  };
+
+  if (shouldRenderAsButton()) {
+    const clickHandler = getClickHandler();
+    const ariaLabel = getAriaLabel();
+
     return (
       <button
         className={clsx(styles.logoButton, className)}
-        onClick={onToggleCollapse}
-        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        onClick={clickHandler}
+        aria-label={ariaLabel}
         type="button"
       >
         {logoContent}

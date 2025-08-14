@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
-import { Sidebar, SidebarItem, SidebarSectionStatic, SidebarMenu } from './';
-import { Button, Flex } from '../../components';
+import { useState, useEffect } from 'react';
+import { Sidebar, SidebarItem, SidebarSectionStatic, SidebarMenu, useSidebar, SidebarLogo } from './';
+import { Button, Flex, IconButton } from '../../components';
+import SidebarExample from './SidebarExample';
 import {
   LucideHome,
   Settings,
@@ -15,6 +16,7 @@ import {
   Edit,
   Trash2,
   Star,
+  Menu,
 } from 'lucide-react';
 
 const meta: Meta<typeof Sidebar> = {
@@ -25,16 +27,19 @@ const meta: Meta<typeof Sidebar> = {
     docs: {
       description: {
         component:
-          'A flexible sidebar component with support for navigation sections, collapsing, and extensive customization options. See the documentation for detailed usage examples and API reference.',
+          'A flexible sidebar component with support for navigation sections, collapsing, and extensive customization options. The component automatically adapts its behavior based on screen size, providing a push layout on desktop and an overlay layout on mobile devices.',
       },
     },
   },
   argTypes: {
+    // Visual variants
     variant: {
       control: { type: 'select' },
       options: ['base', 'compact', 'minimal'],
       description: 'Visual variant of the sidebar',
     },
+
+    // Collapsible functionality
     collapsible: {
       control: 'boolean',
       description: 'Whether the sidebar can be collapsed',
@@ -43,25 +48,141 @@ const meta: Meta<typeof Sidebar> = {
       control: 'boolean',
       description: 'Whether the sidebar is currently collapsed',
     },
+
+    // Function props - these prevent the "can't convert symbol to string" error
+    onToggleCollapse: {
+      action: 'collapsed',
+      description: 'Called when the sidebar collapse state changes',
+    },
+    onSectionToggle: {
+      action: 'section toggled',
+      description: 'Called when a section expansion state changes',
+    },
+    onMobileToggle: {
+      action: 'mobile toggled',
+      description: 'Called when the mobile sidebar state changes',
+    },
+
+    // Section and item function props
+    renderHeader: {
+      control: false,
+      description: 'Custom header render function',
+    },
+    renderNavItem: {
+      control: false,
+      description: 'Custom navigation item render function',
+    },
+    renderSection: {
+      control: false,
+      description: 'Custom section render function',
+    },
+    renderFooter: {
+      control: false,
+      description: 'Custom footer render function',
+    },
+
+    // Mobile responsive props
+    mobileOpen: {
+      control: 'boolean',
+      description: 'Whether the mobile sidebar is open',
+    },
+    mobileBreakpoint: {
+      control: { type: 'number' },
+      description: 'Breakpoint for mobile behavior (in pixels)',
+    },
+    showBackdrop: {
+      control: 'boolean',
+      description: 'Whether to show backdrop on mobile',
+    },
+
+    // Section management
+    defaultExpandedSections: {
+      control: 'object',
+      description: 'Default expanded sections configuration',
+    },
+    expandedSections: {
+      control: 'object',
+      description: 'Controlled expanded sections configuration',
+    },
+    sectionsCollapsible: {
+      control: 'boolean',
+      description: 'Whether sections can be collapsed by default',
+    },
+    lazyLoadSections: {
+      control: 'boolean',
+      description: 'Whether to lazy load section content',
+    },
+
+    // Styling props
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes for the sidebar',
+    },
+    headerClassName: {
+      control: 'text',
+      description: 'CSS classes for the header',
+    },
+    contentClassName: {
+      control: 'text',
+      description: 'CSS classes for the content area',
+    },
+    navClassName: {
+      control: 'text',
+      description: 'CSS classes for the navigation area',
+    },
+    footerClassName: {
+      control: 'text',
+      description: 'CSS classes for the footer',
+    },
+    sectionClassName: {
+      control: 'text',
+      description: 'CSS classes for sections',
+    },
+    sectionTitleClassName: {
+      control: 'text',
+      description: 'CSS classes for section titles',
+    },
+    navButtonClassName: {
+      control: 'text',
+      description: 'CSS classes for navigation buttons',
+    },
+    iconClassName: {
+      control: 'text',
+      description: 'CSS classes for icons',
+    },
+    labelClassName: {
+      control: 'text',
+      description: 'CSS classes for labels',
+    },
+    badgeClassName: {
+      control: 'text',
+      description: 'CSS classes for badges',
+    },
+    backdropClassName: {
+      control: 'text',
+      description: 'CSS classes for the backdrop',
+    },
+
+    // Other props
+    hidden: {
+      control: 'boolean',
+      description: 'Whether the sidebar is hidden',
+    },
+    hideHeader: {
+      control: 'boolean',
+      description: 'Whether to hide the header',
+    },
+    as: {
+      control: { type: 'select' },
+      options: ['div', 'nav', 'aside'],
+      description: 'HTML element to render as',
+    },
+    navItemAs: {
+      control: { type: 'select' },
+      options: ['button', 'a'],
+      description: 'HTML element for navigation items',
+    },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: '100vh', display: 'flex' }}>
-        <Story />
-        <div
-          style={{
-            color: 'var(--theme-text-base)',
-            flex: 1,
-            padding: '2rem',
-            backgroundColor: 'var(--theme-color-background)',
-          }}
-        >
-          <h2>Main Content Area</h2>
-          <p>This simulates the main application content alongside the sidebar.</p>
-        </div>
-      </div>
-    ),
-  ],
 };
 
 export default meta;
@@ -106,34 +227,13 @@ const defaultSections = [
   },
 ];
 
+// ============================================================================
+// BASIC USAGE STORIES
+// ============================================================================
+
 export const Default: Story = {
   args: {
     sections: defaultSections,
-  },
-};
-
-export const WithCustomHeader: Story = {
-  args: {
-    header: (
-      <div>
-        <h2 style={{ margin: 0, fontSize: '1rem', color: 'var(--theme-text-base)' }}>My App</h2>
-        <p style={{ margin: '0.5rem 0 0', fontSize: '0.675rem', color: 'var(--theme-text-muted)' }}>v2.0.1</p>
-      </div>
-    ),
-    sections: defaultSections,
-  },
-};
-
-export const WithCustomFooter: Story = {
-  args: {
-    sections: defaultSections,
-    footer: (
-      <div style={{ display: 'flex', flexDirection: 'column', padding: '1rem' }}>
-        <Button variant="secondary" icon={<LogOut />} iconPosition="right">
-          Sign Out
-        </Button>
-      </div>
-    ),
   },
 };
 
@@ -186,12 +286,23 @@ export const Variants: Story = {
   ),
 };
 
+// ============================================================================
+// COLLAPSIBLE FUNCTIONALITY STORIES
+// ============================================================================
+
 export const Collapsible: Story = {
   render: function Collapsible() {
     const [collapsed, setCollapsed] = useState(false);
-    const [activeId, setActiveId] = useState('search'); // default active
+    const [activeId, setActiveId] = useState('search');
+    const { mobileProps, isMobile, toggleMobile, openMobile, closeMobile } = useSidebar();
 
-    // map in the active flag + click handler
+    // Auto-expand sidebar when switching to mobile view
+    useEffect(() => {
+      if (isMobile && collapsed) {
+        setCollapsed(false);
+      }
+    }, [isMobile, collapsed]);
+
     const sections = defaultSections.map((section) => ({
       ...section,
       items: section.items.map((item) => ({
@@ -202,19 +313,784 @@ export const Collapsible: Story = {
     }));
 
     return (
-      <Sidebar
-        hideHeader
-        collapsible
-        collapsed={collapsed}
-        onToggleCollapse={() => setCollapsed(!collapsed)}
-        sections={sections}
-        footer={
-          <SidebarSectionStatic>
-            <SidebarItem icon={<LogOut />} label="Sign Out" onClick={() => alert('Sign Out clicked!')} as="a" />
-          </SidebarSectionStatic>
-        }
-      />
+      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        {/* Top Header Bar */}
+        <header
+          style={{
+            height: '60px',
+            width: '100%',
+            padding: '0 var(--space-16)',
+            backgroundColor: 'var(--theme-color-foreground)',
+            borderBlockEnd: '1px solid var(--theme-border-base)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            zIndex: 100,
+          }}
+        >
+          {/* Left side - Sidebar toggle and branding */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-16)' }}>
+            <IconButton
+              fill="none"
+              size="large"
+              aria-label="Toggle Sidebar"
+              shape="bevel"
+              onClick={() => {
+                if (isMobile) {
+                  // Auto-expand when opening mobile sidebar
+                  if (!mobileProps.mobileOpen) {
+                    setCollapsed(false);
+                  }
+                  toggleMobile();
+                } else {
+                  setCollapsed(!collapsed);
+                }
+              }}
+            >
+              <Menu />
+            </IconButton>
+          </div>
+
+          {/* Right side - User actions */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
+            <Button variant="secondary" size="small">
+              <Search size={16} />
+              Search
+            </Button>
+            <Button variant="secondary" size="small">
+              <Settings size={16} />
+              Settings
+            </Button>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                backgroundColor: 'var(--theme-color-component)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                border: '2px solid var(--theme-border-base)',
+              }}
+            >
+              <User size={16} />
+            </div>
+          </div>
+        </header>
+
+        {/* Main content area with sidebar and content */}
+        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+          <Sidebar
+            collapsible
+            collapsed={collapsed}
+            onToggleCollapse={() => setCollapsed(!collapsed)}
+            sections={sections}
+            footer={
+              <SidebarSectionStatic>
+                <SidebarItem icon={<LogOut />} label="Sign Out" onClick={() => alert('Sign Out clicked!')} as="a" />
+              </SidebarSectionStatic>
+            }
+            {...mobileProps}
+            showBackdrop={true}
+          />
+          <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)', overflow: 'auto' }}>
+            <h2>Collapsible Sidebar</h2>
+            <p>
+              This example demonstrates the collapsible functionality of the Sidebar component with a realistic app
+              layout.
+            </p>
+
+            <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+              <h3>Controls:</h3>
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <Button variant="base" onClick={() => setCollapsed(!collapsed)}>
+                  {collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+                </Button>
+                <Button variant="secondary" onClick={() => setCollapsed(false)}>
+                  Force Expand
+                </Button>
+                <Button variant="secondary" onClick={() => setCollapsed(true)}>
+                  Force Collapse
+                </Button>
+              </div>
+            </div>
+
+            {/* Mobile Controls - Only show on mobile */}
+            {isMobile && (
+              <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+                <h3>Mobile Controls:</h3>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  <Button variant="base" onClick={toggleMobile}>
+                    {mobileProps.mobileOpen ? 'Close Mobile Sidebar' : 'Open Mobile Sidebar'}
+                  </Button>
+                  <Button variant="secondary" onClick={openMobile}>
+                    Open Mobile
+                  </Button>
+                  <Button variant="secondary" onClick={closeMobile}>
+                    Close Mobile
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+              <h3>Current State:</h3>
+              <pre
+                style={{
+                  backgroundColor: 'var(--theme-color-component)',
+                  padding: '1rem',
+                  borderRadius: '4px',
+                  color: 'var(--theme-text-base)',
+                }}
+              >
+                {JSON.stringify(
+                  {
+                    collapsed,
+                    activeId,
+                    isMobile,
+                    mobileOpen: mobileProps.mobileOpen,
+                    breakpoint: mobileProps.mobileBreakpoint,
+                  },
+                  null,
+                  2,
+                )}
+              </pre>
+            </div>
+
+            <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+              <h3>Features:</h3>
+              <ul>
+                <li>Toggle between expanded and collapsed states</li>
+                <li>Icon-only view when collapsed</li>
+                <li>Maintains functionality in both states</li>
+                <li>Custom footer with sign-out button</li>
+                <li>Top header bar with unified sidebar control</li>
+                <li>Realistic app layout and branding</li>
+                <li>Mobile responsive behavior</li>
+                <li>
+                  <strong>Unified Control:</strong> SidebarLogo handles both collapsed and mobile states
+                </li>
+              </ul>
+            </div>
+
+            <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+              <h3>Layout Behavior:</h3>
+              <ul>
+                <li>
+                  <strong>Expanded:</strong> Sidebar takes up space, content adjusts accordingly
+                </li>
+                <li>
+                  <strong>Collapsed:</strong> Sidebar becomes narrow, more space for content
+                </li>
+                <li>
+                  <strong>Header:</strong> Always visible at top, contains unified sidebar control
+                </li>
+                <li>
+                  <strong>Responsive:</strong> Works well on different screen sizes
+                </li>
+                <li>
+                  <strong>Mobile:</strong> Below 768px, sidebar overlays content
+                </li>
+              </ul>
+            </div>
+
+            <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+              <h3>Mobile Behavior:</h3>
+              <p>
+                <strong>💡 Tip:</strong> Resize your browser window to be narrower than 768px to see the mobile
+                behavior. On mobile, the sidebar will overlay content and can be toggled with the unified logo control.
+              </p>
+              <ul>
+                <li>
+                  <strong>Desktop (&gt;768px):</strong> Sidebar pushes content (push layout)
+                </li>
+                <li>
+                  <strong>Mobile (≤768px):</strong> Sidebar overlays content (overlay layout)
+                </li>
+                <li>
+                  <strong>Collapsed State:</strong> Works on both desktop and mobile
+                </li>
+                <li>
+                  <strong>Unified Control:</strong> SidebarLogo automatically adapts to context
+                </li>
+                <li>
+                  <strong>Smart Behavior:</strong> Desktop = toggle collapse, Mobile = toggle overlay
+                </li>
+              </ul>
+            </div>
+
+            {/* Sample content to demonstrate layout */}
+            <div style={{ marginTop: '2rem' }}>
+              <h3>Sample Content</h3>
+              <p>This area demonstrates how your main content will look alongside the sidebar.</p>
+
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: '1rem',
+                    margin: '1rem 0',
+                    backgroundColor: 'var(--theme-color-component)',
+                    borderRadius: '8px',
+                    border: '1px solid var(--theme-border-base)',
+                  }}
+                >
+                  <h4>Content Section {i + 1}</h4>
+                  <p>
+                    This is sample content to help you visualize the layout. Notice how the content area adjusts when
+                    you toggle the sidebar.
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     );
+  },
+};
+
+// ============================================================================
+// RESPONSIVE BEHAVIOR STORIES
+// ============================================================================
+
+export const Responsive: Story = {
+  render: function Responsive() {
+    const { mobileProps, isMobile, toggleMobile, openMobile, closeMobile } = useSidebar();
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        {/* Mobile toggle button - only show on mobile */}
+        {isMobile && (
+          <button
+            onClick={toggleMobile}
+            style={{
+              position: 'fixed',
+              top: '1rem',
+              left: '1rem',
+              zIndex: 1001,
+              padding: '0.5rem',
+              background: 'var(--theme-color-primary)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            ☰ Menu
+          </button>
+        )}
+
+        {/* Responsive sidebar */}
+        <Sidebar sections={defaultSections} variant="base" collapsible={true} {...mobileProps} showBackdrop={true} />
+
+        {/* Main content */}
+        <main
+          style={{
+            flex: 1,
+            padding: '2rem',
+            background: 'var(--theme-color-background)',
+            overflow: 'auto',
+          }}
+        >
+          <h1>Responsive Sidebar</h1>
+          <p>
+            This example demonstrates the responsive behavior of the Sidebar component. The sidebar automatically adapts
+            its behavior based on screen size.
+          </p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Responsive Behavior:</h3>
+            <ul>
+              <li>
+                <strong>Desktop (&gt;768px):</strong> Sidebar pushes content to the right
+              </li>
+              <li>
+                <strong>Mobile/Tablet (≤768px):</strong> Sidebar overlays content and can be toggled
+              </li>
+              <li>
+                <strong>Collapsed state:</strong> Sidebar collapses to icon-only view
+              </li>
+            </ul>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Mobile Controls:</h3>
+            <p>These controls only work on mobile/tablet screens (≤768px):</p>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+              <Button variant="base" onClick={openMobile}>
+                Open Mobile Sidebar
+              </Button>
+              <Button variant="secondary" onClick={closeMobile}>
+                Close Mobile Sidebar
+              </Button>
+              <Button variant="secondary" onClick={toggleMobile}>
+                Toggle Mobile Sidebar
+              </Button>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Current State:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+              }}
+            >
+              {JSON.stringify(
+                {
+                  isMobile,
+                  mobileOpen: mobileProps.mobileOpen,
+                  breakpoint: mobileProps.mobileBreakpoint,
+                },
+                null,
+                2,
+              )}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Try it:</h3>
+            <p>
+              Resize your browser window to see the responsive behavior in action. On mobile-sized screens, the sidebar
+              will overlay content and can be controlled with the buttons above.
+            </p>
+            <p
+              style={{
+                marginTop: '1rem',
+                padding: '1rem',
+                backgroundColor: 'var(--theme-color-component)',
+                borderRadius: '4px',
+              }}
+            >
+              <strong>💡 Tip:</strong> Resize your browser window to be narrower than 768px to see the mobile behavior.
+              You'll see a mobile menu button appear in the top-left corner, and the sidebar will overlay content
+              instead of pushing it.
+            </p>
+          </div>
+        </main>
+      </div>
+    );
+  },
+};
+
+export const useSidebarHook: Story = {
+  render: function UseSidebarHook() {
+    const { mobileProps, isMobile, toggleMobile } = useSidebar();
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        {/* Mobile toggle button - only show on mobile */}
+        {isMobile && (
+          <button
+            onClick={toggleMobile}
+            style={{
+              position: 'fixed',
+              top: '1rem',
+              left: '1rem',
+              zIndex: 1001,
+              padding: '0.5rem',
+              background: 'var(--theme-color-primary)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            ☰ Menu
+          </button>
+        )}
+
+        {/* Responsive sidebar */}
+        <Sidebar sections={defaultSections} variant="base" collapsible={true} {...mobileProps} showBackdrop={true} />
+
+        {/* Main content */}
+        <main
+          style={{
+            flex: 1,
+            padding: '2rem',
+            background: 'var(--theme-color-background)',
+            overflow: 'auto',
+          }}
+        >
+          <h1>useSidebar Hook Example</h1>
+          <p>
+            This example demonstrates how to use the <code>useSidebar</code> hook for responsive behavior:
+          </p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Hook Usage:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+                overflow: 'auto',
+              }}
+            >
+              {`const { mobileProps, isMobile, toggleMobile } = useSidebar();
+
+// mobileProps automatically provides:
+// - mobileOpen: boolean
+// - onMobileToggle: (open: boolean) => void
+// - mobileBreakpoint: number
+
+// Spread into Sidebar component
+<Sidebar {...mobileProps} showBackdrop={true} />`}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Current State:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+              }}
+            >
+              {JSON.stringify({ isMobile, mobileOpen: mobileProps.mobileOpen }, null, 2)}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Benefits:</h3>
+            <ul>
+              <li>Automatic mobile detection</li>
+              <li>Simplified state management</li>
+              <li>Built-in responsive behavior</li>
+              <li>Clean, declarative API</li>
+            </ul>
+          </div>
+        </main>
+      </div>
+    );
+  },
+};
+
+// ============================================================================
+// SECTION CONTROL STORIES
+// ============================================================================
+
+export const ControlledSections: Story = {
+  render: function ControlledSections() {
+    const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+      main: true,
+      history: false,
+    });
+
+    const handleSectionToggle = (sectionId: string, expanded: boolean) => {
+      setExpandedSections((prev) => ({
+        ...prev,
+        [sectionId]: expanded,
+      }));
+      console.log(`Section ${sectionId} ${expanded ? 'expanded' : 'collapsed'}`);
+    };
+
+    const sections = [
+      {
+        id: 'main',
+        title: 'Main Navigation',
+        items: [
+          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
+          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
+          { id: 'messages', label: 'Messages', icon: <MessageCircle />, badge: '3' },
+        ],
+      },
+      {
+        id: 'history',
+        title: 'History',
+        items: [
+          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
+          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
+          { id: 'recent-3', label: 'Recent Chat 3', icon: <MessageCircle /> },
+        ],
+      },
+      {
+        id: 'settings',
+        title: 'Settings',
+        items: [
+          { id: 'profile', label: 'Profile', icon: <User /> },
+          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
+        ],
+      },
+    ];
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <Sidebar
+          sections={sections}
+          expandedSections={expandedSections}
+          onSectionToggle={handleSectionToggle}
+          sectionsCollapsible={true}
+        />
+        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
+          <h2>Controlled Sections</h2>
+          <p>This example demonstrates how to control which sections are expanded/collapsed.</p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Current State:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+              }}
+            >
+              {JSON.stringify(expandedSections, null, 2)}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Controls:</h3>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              {Object.keys(expandedSections).map((sectionId) => (
+                <Button
+                  key={sectionId}
+                  variant="secondary"
+                  onClick={() => handleSectionToggle(sectionId, !expandedSections[sectionId])}
+                >
+                  {expandedSections[sectionId] ? 'Collapse' : 'Expand'} {sectionId}
+                </Button>
+              ))}
+              <Button variant="base" onClick={() => setExpandedSections({ main: true, history: true, settings: true })}>
+                Expand All
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setExpandedSections({ main: false, history: false, settings: false })}
+              >
+                Collapse All
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const DefaultExpandedSections: Story = {
+  render: function DefaultExpandedSections() {
+    const sections = [
+      {
+        id: 'main',
+        title: 'Main Navigation',
+        items: [
+          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
+          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
+        ],
+      },
+      {
+        id: 'history',
+        title: 'History',
+        items: [
+          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
+          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
+        ],
+      },
+      {
+        id: 'settings',
+        title: 'Settings',
+        items: [
+          { id: 'profile', label: 'Profile', icon: <User /> },
+          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
+        ],
+      },
+    ];
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <Sidebar
+          sections={sections}
+          defaultExpandedSections={{
+            main: true, // Main section expanded by default
+            history: false, // History section collapsed by default
+            settings: true, // Settings section expanded by default
+          }}
+        />
+        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
+          <h2>Default Expanded Sections</h2>
+          <p>
+            This example shows how to set default expanded states for sections using the \`defaultExpandedSections\`
+            prop.
+          </p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Configuration:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+              }}
+            >
+              {`defaultExpandedSections={{
+                main: true,     // Main section expanded by default
+                history: false, // History section collapsed by default
+                settings: true, // Settings section expanded by default
+              }}`}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Benefits:</h3>
+            <ul>
+              <li>Control initial state without managing controlled state</li>
+              <li>Improve performance by not expanding all sections by default</li>
+              <li>Provide better UX by showing most important sections first</li>
+              <li>Reduce content loading issues in complex applications</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const LazyLoadingSections: Story = {
+  render: function LazyLoadingSections() {
+    const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+      main: true,
+      history: false,
+      settings: false,
+    });
+
+    const handleSectionToggle = (sectionId: string, expanded: boolean) => {
+      setExpandedSections((prev) => ({
+        ...prev,
+        [sectionId]: expanded,
+      }));
+    };
+
+    const sections = [
+      {
+        id: 'main',
+        title: 'Main Navigation',
+        items: [
+          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
+          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
+          { id: 'messages', label: 'Messages', icon: <MessageCircle />, badge: '3' },
+        ],
+      },
+      {
+        id: 'history',
+        title: 'History (Lazy Loaded)',
+        items: [
+          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
+          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
+          { id: 'recent-3', label: 'Recent Chat 3', icon: <MessageCircle /> },
+          { id: 'recent-4', label: 'Recent Chat 4', icon: <MessageCircle /> },
+          { id: 'recent-5', label: 'Recent Chat 5', icon: <MessageCircle /> },
+        ],
+      },
+      {
+        id: 'settings',
+        title: 'Settings (Lazy Loaded)',
+        items: [
+          { id: 'profile', label: 'Profile', icon: <User /> },
+          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
+          { id: 'security', label: 'Security', icon: <Settings /> },
+          { id: 'notifications', label: 'Notifications', icon: <Settings /> },
+        ],
+      },
+    ];
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <Sidebar
+          sections={sections}
+          expandedSections={expandedSections}
+          onSectionToggle={handleSectionToggle}
+          lazyLoadSections={true}
+          sectionsCollapsible={true}
+        />
+        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
+          <h2>Lazy Loading Sections</h2>
+          <p>
+            This example demonstrates lazy loading of section content. Content is only rendered when sections are
+            expanded.
+          </p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Performance Benefits:</h3>
+            <ul>
+              <li>
+                <strong>Faster Initial Load:</strong> Only render visible content
+              </li>
+              <li>
+                <strong>Reduced Memory Usage:</strong> DOM elements created on-demand
+              </li>
+              <li>
+                <strong>Better Performance:</strong> Fewer components to manage
+              </li>
+              <li>
+                <strong>Scalable:</strong> Works well with large numbers of sections
+              </li>
+            </ul>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Current State:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+              }}
+            >
+              {JSON.stringify(expandedSections, null, 2)}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Try it:</h3>
+            <p>
+              Expand the "History" or "Settings" sections to see lazy loading in action. The content will only be
+              rendered when you expand the section.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+// ============================================================================
+// CUSTOMIZATION STORIES
+// ============================================================================
+
+export const WithCustomHeader: Story = {
+  args: {
+    header: (
+      <div>
+        <h2 style={{ margin: 0, fontSize: '1rem', color: 'var(--theme-text-base)' }}>My App</h2>
+        <p style={{ margin: '0.5rem 0 0', fontSize: '0.675rem', color: 'var(--theme-text-muted)' }}>v2.0.1</p>
+      </div>
+    ),
+    sections: defaultSections,
+  },
+};
+
+export const WithCustomFooter: Story = {
+  args: {
+    sections: defaultSections,
+    footer: (
+      <div style={{ display: 'flex', flexDirection: 'column', padding: '1rem' }}>
+        <Button variant="secondary" icon={<LogOut />} iconPosition="right">
+          Sign Out
+        </Button>
+      </div>
+    ),
   },
 };
 
@@ -372,6 +1248,10 @@ export const CompoundComponents: Story = {
   },
 };
 
+// ============================================================================
+// REAL-WORLD EXAMPLE STORIES
+// ============================================================================
+
 export const RealWorldExample: Story = {
   render: function RealWorldExample() {
     const [collapsed, setCollapsed] = useState(false);
@@ -474,343 +1354,33 @@ export const RealWorldExample: Story = {
   },
 };
 
-export const ControlledSidebar: Story = {
-  render: function ControlledSidebar() {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-        <Button variant="base" onClick={() => setIsOpen(true)} style={{ margin: '1rem' }}>
-          Open Sidebar
-        </Button>
-
-        {/* Overlay */}
-        {isOpen && (
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyDown={() => {}}
-            onClick={() => setIsOpen(false)}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: 999,
-            }}
-          />
-        )}
-
-        {/* Sidebar */}
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: isOpen ? 0 : '-260px',
-            height: '100vh',
-            width: '260px',
-            backgroundColor: 'var(--theme-color-foreground)',
-            boxShadow: '2px 0 8px rgba(0,0,0,0.2)',
-            transition: 'left 300ms ease-in-out',
-            zIndex: 1000,
-          }}
-        >
-          <Sidebar
-            sections={defaultSections}
-            footer={
-              <SidebarSectionStatic>
-                <SidebarItem icon={<LogOut />} label="Close Sidebar" onClick={() => setIsOpen(false)} as="button" />
-              </SidebarSectionStatic>
-            }
-          />
-        </div>
-      </div>
-    );
-  },
-};
-
-export const ControlledSections: Story = {
-  render: function ControlledSections() {
-    const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-      main: true,
-      history: false,
-    });
-
-    const handleSectionToggle = (sectionId: string, expanded: boolean) => {
-      setExpandedSections((prev) => ({
-        ...prev,
-        [sectionId]: expanded,
-      }));
-      console.log(`Section ${sectionId} ${expanded ? 'expanded' : 'collapsed'}`);
-    };
-
-    const sections = [
-      {
-        id: 'main',
-        title: 'Main Navigation',
-        items: [
-          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
-          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
-          { id: 'messages', label: 'Messages', icon: <MessageCircle />, badge: '3' },
-        ],
-      },
-      {
-        id: 'history',
-        title: 'History',
-        items: [
-          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
-          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
-          { id: 'recent-3', label: 'Recent Chat 3', icon: <MessageCircle /> },
-        ],
-      },
-      {
-        id: 'settings',
-        title: 'Settings',
-        items: [
-          { id: 'profile', label: 'Profile', icon: <User /> },
-          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
-        ],
-      },
-    ];
-
+export const CompleteExample: Story = {
+  render: function CompleteExample() {
     return (
       <div style={{ display: 'flex', height: '100vh' }}>
-        <Sidebar
-          sections={sections}
-          expandedSections={expandedSections}
-          onSectionToggle={handleSectionToggle}
-          sectionsCollapsible={true}
-        />
+        <SidebarExample />
         <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
-          <h2>Controlled Sections Example</h2>
-          <p>This example demonstrates how to control which sections are expanded/collapsed.</p>
+          <h2>Complete Responsive Example</h2>
+          <p>This is the complete SidebarExample component that demonstrates all the responsive features:</p>
 
           <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
-            <h3>Current State:</h3>
-            <pre
-              style={{
-                backgroundColor: 'var(--theme-color-component)',
-                padding: '1rem',
-                borderRadius: '4px',
-                color: 'var(--theme-text-base)',
-              }}
-            >
-              {JSON.stringify(expandedSections, null, 2)}
-            </pre>
-          </div>
-
-          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
-            <h3>Controls:</h3>
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              {Object.keys(expandedSections).map((sectionId) => (
-                <Button
-                  key={sectionId}
-                  variant="secondary"
-                  onClick={() => handleSectionToggle(sectionId, !expandedSections[sectionId])}
-                >
-                  {expandedSections[sectionId] ? 'Collapse' : 'Expand'} {sectionId}
-                </Button>
-              ))}
-              <Button variant="base" onClick={() => setExpandedSections({ main: true, history: true, settings: true })}>
-                Expand All
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => setExpandedSections({ main: false, history: false, settings: false })}
-              >
-                Collapse All
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  },
-};
-
-export const LazyLoadingSections: Story = {
-  render: function LazyLoadingSections() {
-    const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-      main: true,
-      history: false,
-      settings: false,
-    });
-
-    const handleSectionToggle = (sectionId: string, expanded: boolean) => {
-      setExpandedSections((prev) => ({
-        ...prev,
-        [sectionId]: expanded,
-      }));
-    };
-
-    const sections = [
-      {
-        id: 'main',
-        title: 'Main Navigation',
-        items: [
-          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
-          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
-          { id: 'messages', label: 'Messages', icon: <MessageCircle />, badge: '3' },
-        ],
-      },
-      {
-        id: 'history',
-        title: 'History (Lazy Loaded)',
-        items: [
-          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
-          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
-          { id: 'recent-3', label: 'Recent Chat 3', icon: <MessageCircle /> },
-          { id: 'recent-4', label: 'Recent Chat 4', icon: <MessageCircle /> },
-          { id: 'recent-5', label: 'Recent Chat 5', icon: <MessageCircle /> },
-        ],
-      },
-      {
-        id: 'settings',
-        title: 'Settings (Lazy Loaded)',
-        items: [
-          { id: 'profile', label: 'Profile', icon: <User /> },
-          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
-          { id: 'security', label: 'Security', icon: <Settings /> },
-          { id: 'notifications', label: 'Notifications', icon: <Settings /> },
-        ],
-      },
-    ];
-
-    return (
-      <div style={{ display: 'flex', height: '100vh' }}>
-        <Sidebar
-          sections={sections}
-          expandedSections={expandedSections}
-          onSectionToggle={handleSectionToggle}
-          lazyLoadSections={true}
-          sectionsCollapsible={true}
-        />
-        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
-          <h2>Lazy Loading Sections</h2>
-          <p>
-            This example demonstrates lazy loading of section content. Content is only rendered when sections are
-            expanded.
-          </p>
-
-          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
-            <h3>Performance Benefits:</h3>
+            <h3>Features Demonstrated:</h3>
             <ul>
-              <li>
-                <strong>Faster Initial Load:</strong> Only render visible content
-              </li>
-              <li>
-                <strong>Reduced Memory Usage:</strong> DOM elements created on-demand
-              </li>
-              <li>
-                <strong>Better Performance:</strong> Fewer components to manage
-              </li>
-              <li>
-                <strong>Scalable:</strong> Works well with large numbers of sections
-              </li>
+              <li>Automatic responsive behavior switching</li>
+              <li>Mobile toggle button with backdrop</li>
+              <li>useSidebar hook for state management</li>
+              <li>Ref-based programmatic control</li>
+              <li>Proper layout structure for all screen sizes</li>
+              <li>Working controls for mobile sidebar</li>
             </ul>
-          </div>
-
-          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
-            <h3>Current State:</h3>
-            <pre
-              style={{
-                backgroundColor: 'var(--theme-color-component)',
-                padding: '1rem',
-                borderRadius: '4px',
-                color: 'var(--theme-text-base)',
-              }}
-            >
-              {JSON.stringify(expandedSections, null, 2)}
-            </pre>
           </div>
 
           <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
             <h3>Try it:</h3>
             <p>
-              Expand the "History" or "Settings" sections to see lazy loading in action. The content will only be
-              rendered when you expand the section.
+              Resize your browser window to see the responsive behavior in action. On mobile-sized screens, the sidebar
+              will overlay content and can be controlled with the buttons in the example.
             </p>
-          </div>
-        </div>
-      </div>
-    );
-  },
-};
-
-export const DefaultExpandedSections: Story = {
-  render: function DefaultExpandedSections() {
-    const sections = [
-      {
-        id: 'main',
-        title: 'Main Navigation',
-        items: [
-          { id: 'home', label: 'Home', icon: <LucideHome />, isActive: true },
-          { id: 'dashboard', label: 'Dashboard', icon: <Search /> },
-        ],
-      },
-      {
-        id: 'history',
-        title: 'History',
-        items: [
-          { id: 'recent-1', label: 'Recent Chat 1', icon: <MessageCircle /> },
-          { id: 'recent-2', label: 'Recent Chat 2', icon: <MessageCircle /> },
-        ],
-      },
-      {
-        id: 'settings',
-        title: 'Settings',
-        items: [
-          { id: 'profile', label: 'Profile', icon: <User /> },
-          { id: 'preferences', label: 'Preferences', icon: <Settings /> },
-        ],
-      },
-    ];
-
-    return (
-      <div style={{ display: 'flex', height: '100vh' }}>
-        <Sidebar
-          sections={sections}
-          defaultExpandedSections={{
-            main: true, // Main section expanded by default
-            history: false, // History section collapsed by default
-            settings: true, // Settings section expanded by default
-          }}
-        />
-        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
-          <h2>Default Expanded Sections</h2>
-          <p>
-            This example shows how to set default expanded states for sections using the \`defaultExpandedSections\`
-            prop.
-          </p>
-
-          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
-            <h3>Configuration:</h3>
-            <pre
-              style={{
-                backgroundColor: 'var(--theme-color-component)',
-                padding: '1rem',
-                borderRadius: '4px',
-                color: 'var(--theme-text-base)',
-              }}
-            >
-              {`defaultExpandedSections={{
-                main: true,     // Main section expanded by default
-                history: false, // History section collapsed by default
-                settings: true, // Settings section expanded by default
-              }}`}
-            </pre>
-          </div>
-
-          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
-            <h3>Benefits:</h3>
-            <ul>
-              <li>Control initial state without managing controlled state</li>
-              <li>Improve performance by not expanding all sections by default</li>
-              <li>Provide better UX by showing most important sections first</li>
-              <li>Reduce content loading issues in complex applications</li>
-            </ul>
           </div>
         </div>
       </div>
