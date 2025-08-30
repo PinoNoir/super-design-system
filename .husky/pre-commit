@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
 # Ensure we're in the right directory
 cd "$(dirname "$0")/.."
