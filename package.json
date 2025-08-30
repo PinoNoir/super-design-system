@@ -93,7 +93,7 @@
       "prettier --write"
     ],
     "packages/*/src/**/*.{css,scss}": [
-      "stylelint --fix"
+      "prettier --write"
     ]
   }
 }

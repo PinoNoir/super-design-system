@@ -9,8 +9,9 @@ Super Design System is a monorepo containing React components, design tokens, an
 ## Architecture & Dependencies
 
 The monorepo has a specific build order that must be followed:
+
 1. **sds-tokens** → Style Dictionary-based design tokens (CSS custom properties)
-2. **sds-styles** → SASS-based CSS framework that depends on sds-tokens 
+2. **sds-styles** → SASS-based CSS framework that depends on sds-tokens
 3. **sds-ui** → React component library with TypeScript and CSS modules
 4. **mui-themes** → Material-UI theme configurations
 
@@ -19,17 +20,19 @@ Each package depends on the previous ones in the chain. The sds-styles package a
 ## Commands
 
 ### Build Commands
+
 ```bash
 # Build all packages in correct order
 pnpm build
 
 # Build individual packages
 pnpm build:ui        # sds-ui package only
-pnpm build:styles    # sds-styles package (includes sds-tokens)  
+pnpm build:styles    # sds-styles package (includes sds-tokens)
 pnpm build:tokens    # sds-tokens package only
 ```
 
 ### Development Commands
+
 ```bash
 # Run Storybook development server (sds-ui)
 pnpm --filter sds-ui dev
@@ -42,6 +45,7 @@ pnpm --filter react-sandbox dev
 ```
 
 ### Testing & Quality
+
 ```bash
 # Run all tests across workspaces
 pnpm test
@@ -57,6 +61,7 @@ pnpm lint:fix          # Fix linting issues
 ```
 
 ### Package Management
+
 ```bash
 pnpm install-deps      # Install all dependencies
 pnpm update-deps       # Update dependencies interactively

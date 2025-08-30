@@ -1,4 +1,15 @@
 #!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-npx lint-staged
+# Ensure we're in the right directory
+cd "$(dirname "$0")/.."
+
+# Run lint-staged using pnpm (more reliable in monorepos)
+echo "Running lint-staged..."
+pnpm exec lint-staged
+
+# Run linting on all packages
+echo "Running lint:fix on packages..."
 pnpm lint:fix --filter=./packages/*
+
+echo "Pre-commit checks completed successfully!"
