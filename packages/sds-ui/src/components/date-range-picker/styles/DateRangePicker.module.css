@@ -1,0 +1,104 @@
+.container {
+  display: grid;
+  grid-gap: var(--space-8);
+  width: fit-content;
+  min-width: 250px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.innerWrapper {
+  position: relative;
+  display: flex;
+}
+
+.innerWrapper svg {
+  position: absolute;
+  top: 5px;
+  right: var(--space-8);
+}
+
+.truncate {
+  text-overflow: ellipsis;
+  word-wrap: none;
+}
+
+.popover {
+  padding: 0;
+  width: auto;
+  border: none;
+}
+
+.textInput {
+  font-family: inherit;
+  box-sizing: border-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  width: 100%;
+  min-width: 250px;
+  max-width: 100%;
+  padding-inline: var(--space-8);
+  min-height: var(--theme-input-height);
+  border: 1px solid var(--theme-input-border-color);
+  border-radius: var(--theme-input-border-radius);
+  color: var(--theme-input-text-color);
+  background-color: var(--theme-input-background-color);
+  transition:
+    border-color 150ms ease-in-out,
+    box-shadow 150ms ease-in-out;
+
+  &:focus {
+    border: 1px solid var(--theme-input-focus-border-color);
+    outline: 2px solid transparent;
+    box-shadow:
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color),
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color);
+  }
+
+  &:focus-visible {
+    border: 1px solid var(--theme-input-focus-border-color);
+    outline: 2px solid transparent;
+    box-shadow:
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color),
+      0px 0px 0px 2px var(--theme-input-focus-box-shadow-color);
+  }
+
+  &::placeholder {
+    color: var(--theme-input-placeholder-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--theme-input-disabled-background-color);
+    color: var(--theme-input-disabled-text-color);
+    border: 1px solid var(--theme-input-disabled-border-color);
+  }
+
+  &:read-only {
+    pointer-events: none;
+  }
+}
+
+.textInput[data-invalid] {
+  color: var(--theme-input-error-text-color);
+  border: var(--theme-input-border-width) solid var(--theme-input-error-border-color);
+  outline: 2px solid transparent;
+
+  &:focus {
+    box-shadow:
+      0px 0px 0px 2px var(--theme-input-error-box-shadow-color),
+      0px 0px 0px 2px var(--theme-input-error-box-shadow-color);
+    background-color: var(--theme-input-error-background-color);
+  }
+}
+
+.textInput[data-invalid]:focus-within {
+  outline: 2px solid transparent;
+}

@@ -1,0 +1,99 @@
+/* Base popover panel */
+.popoverContent {
+  z-index: 50;
+  width: 18rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--theme-border-base);
+  background: var(--theme-color-component);
+  color: var(--theme-text-base);
+  padding: var(--space-16);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  outline: none;
+
+  /* animation config */
+  --popover-duration: 150ms;
+  --enter-ease: cubic-bezier(0, 0, 0.2, 1);
+  --exit-ease: cubic-bezier(0.4, 0, 1, 1);
+
+  /* translate offsets; set by [data-side] below */
+  --dx: 0;
+  --dy: 0;
+}
+
+/* Open/close state (data-[state=...]) */
+.popoverContent[data-state='open'] {
+  animation: popover-in var(--popover-duration) var(--enter-ease) both;
+}
+
+.popoverContent[data-state='closed'] {
+  animation: popover-out var(--popover-duration) var(--exit-ease) both;
+}
+
+/* Directional slide (data-[side=...]) — 0.5rem = “-2” spacing */
+.popoverContent[data-side='top'] {
+  /* open: slide in from bottom */
+  --dx: 0;
+  --dy: 0.5rem;
+}
+
+.popoverContent[data-side='bottom'] {
+  /* open: slide in from top */
+  --dx: 0;
+  --dy: -0.5rem;
+}
+
+.popoverContent[data-side='left'] {
+  /* open: slide in from right */
+  --dx: 0.5rem;
+  --dy: 0;
+}
+
+.popoverContent[data-side='right'] {
+  /* open: slide in from left */
+  --dx: -0.5rem;
+  --dy: 0;
+}
+
+/* Keyframes approximating:
+   animate-in + fade-in-0 + zoom-in-95 + slide-in-from-*-2
+   animate-out + fade-out-0 + zoom-out-95 + slide-in-from-*-2
+*/
+@keyframes popover-in {
+  from {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes popover-out {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.95);
+  }
+}
+
+/* Optional: keep focus ring for keyboard users (Tailwind's outline-none removes it) */
+.popoverContent:focus-visible {
+  outline: 2px solid var(--theme-color-primary);
+  outline-offset: 2px;
+}
+
+/* Optional: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .popoverContent[data-state='open'],
+  .popoverContent[data-state='closed'] {
+    animation: none;
+  }
+}

@@ -1,0 +1,225 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  border: 1px solid var(--theme-border-base);
+  border-radius: var(--border-radius-4);
+  background: var(--theme-background);
+}
+
+/* Animation support */
+.root[data-animate] {
+  transition: all var(--rdp-animation_duration, 0.3s) var(--rdp-animation_timing, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.months {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-16);
+}
+
+@media (min-width: 640px) {
+  .months {
+    flex-direction: row;
+  }
+}
+
+.month {
+  display: flex;
+  color: var(--theme-text-base);
+  flex-direction: column;
+  margin-inline-end: var(--space-24);
+
+  &:last-child {
+    margin-inline-end: var(--space-0);
+  }
+}
+
+.caption {
+  display: flex;
+  justify-content: center;
+  padding-block-start: var(--space-4);
+  padding-block-end: var(--space-8);
+  position: relative;
+  align-items: center;
+}
+
+.captionLabel {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-muted);
+}
+
+.navButton {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  margin-inline: var(--space-16);
+  padding: 0;
+  opacity: 0.5;
+  z-index: 2;
+  transition: opacity 150ms ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  & svg {
+    color: var(--theme-icon-base);
+  }
+}
+
+.nav {
+  display: flex;
+}
+
+.navButtonPrevious {
+  position: absolute;
+  left: 0.25rem;
+}
+
+.navButtonNext {
+  position: absolute;
+  right: 0.25rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.25rem;
+}
+
+.headRow {
+  display: flex;
+}
+
+.headCell {
+  color: var(--theme-text-base);
+  border-radius: var(--border-radius-4);
+  width: 2.25rem;
+  font-weight: 400;
+  font-size: var(--font-size-body);
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.cell {
+  text-align: center;
+  font-size: var(--font-size-body);
+  padding: 0;
+  position: relative;
+}
+
+.cell:has([aria-selected]) {
+  background-color: var(--color-blue-20);
+}
+
+.cell:first-child:has([aria-selected]) {
+  border-top-left-radius: var(--border-radius-4);
+  border-bottom-left-radius: var(--border-radius-4);
+}
+
+.cell:last-child:has([aria-selected]) {
+  border-top-right-radius: var(--border-radius-4);
+  border-bottom-right-radius: var(--border-radius-4);
+}
+
+.cell:focus-within {
+  position: relative;
+  z-index: 20;
+}
+
+.dayButton {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-4);
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.daySelected {
+  background-color: var(--color-blue-20);
+  color: var(--color-blue-50);
+  font-weight: var(--font-weight-medium);
+}
+
+.daySelected:hover,
+.daySelected:focus {
+  color: var(--color-blue-50);
+}
+
+.dayToday {
+  background-color: var(--theme-color-background);
+  border: 1px solid var(--theme-border-base);
+  color: var(--theme-text-base);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius-4);
+}
+
+.dayOutside {
+  color: var(--theme-color-disabled);
+  opacity: 0.5;
+}
+
+.dayDisabled {
+  color: var(--theme-color-disabled);
+  opacity: 0.5;
+}
+
+.dayRangeMiddle[aria-selected] {
+  background-color: var(--color-blue-10);
+  color: var(--color-blue-70);
+}
+
+.dayHidden {
+  visibility: hidden;
+}
+
+/* Add these range selection styles */
+.dayRangeStart {
+  background-color: var(--color-blue-10);
+  color: var(--color-blue-50);
+  border-radius: var(--border-radius-4) 0 0 var(--border-radius-4);
+  font-weight: var(--font-weight-medium);
+}
+
+.dayRangeEnd {
+  background-color: var(--color-blue-10);
+  color: var(--color-blue-50);
+  border-radius: 0 var(--border-radius-4) var(--border-radius-4) 0;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Enhanced hover states */
+.dayButton:hover:not([aria-disabled]) {
+  background-color: var(--color-blue-20);
+  color: var(--color-blue-70);
+}
+
+/* Focus states for accessibility */
+.dayButton:focus-visible {
+  outline: 2px solid var(--color-blue-20);
+  outline-offset: 2px;
+}
+
+/* Week number styling */
+.weekNumber {
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+}
+
+/* Dropdown styling */
+.dropdown {
+  background-color: var(--theme-input-background-color);
+  border: 1px solid var(--theme-input-border-color);
+  border-radius: var(--theme-input-border-radius);
+  color: var(--theme-input-text-color);
+}
