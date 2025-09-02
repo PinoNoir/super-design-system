@@ -3,8 +3,8 @@
 # Ensure we're in the right directory
 cd "$(dirname "$0")/.."
 
-# Add node_modules/.bin to PATH to ensure pnpm is available
-export PATH="$PWD/node_modules/.bin:$PATH"
+# Add common paths where pnpm might be installed
+export PATH="$PWD/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:$HOME/Library/pnpm:$HOME/.nvm/versions/node/*/bin:$PATH"
 
 # Check if pnpm is available, if not try npx
 if command -v pnpm >/dev/null 2>&1; then
