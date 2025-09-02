@@ -50,6 +50,35 @@
   color: var(--theme-text-muted);
 }
 
+/* Enhanced captionLabel for dropdown mode */
+.captionLabel[aria-hidden='true'] {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background-color: var(--theme-input-background-color);
+  border: 1px solid var(--theme-input-border-color);
+  border-radius: var(--theme-input-border-radius);
+  color: var(--theme-input-text-color);
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-4) var(--space-8);
+  min-width: 80px;
+  cursor: pointer;
+  user-select: none;
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+.captionLabel[aria-hidden='true']:hover {
+  border-color: var(--theme-input-focus-border-color);
+}
+
+.captionLabel[aria-hidden='true'] svg {
+  transform: rotate(90deg);
+  transition: transform 0.2s ease;
+  color: var(--theme-icon-base);
+}
+
 .navButton {
   cursor: pointer;
   border: none;
@@ -218,8 +247,56 @@
 
 /* Dropdown styling */
 .dropdown {
-  background-color: var(--theme-input-background-color);
+  background-color: var(--theme-color-background);
   border: 1px solid var(--theme-input-border-color);
   border-radius: var(--theme-input-border-radius);
   color: var(--theme-input-text-color);
+}
+
+/* Dropdown container styles */
+:global(.rdp-dropdowns) {
+  display: flex;
+  gap: var(--space-8);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-8);
+}
+
+:global(.rdp-dropdown_root) {
+  position: relative;
+  display: inline-block;
+}
+
+:global(.rdp-dropdown) {
+  appearance: none;
+  background-color: var(--theme-color-background);
+  border: 1px solid var(--theme-input-border-color);
+  border-radius: var(--theme-input-border-radius);
+  color: var(--theme-input-text-color);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-4) var(--space-8);
+  min-width: 80px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 2;
+}
+
+:global(.rdp-dropdown):focus {
+  outline: 2px solid var(--theme-input-focus-box-shadow-color);
+  outline-offset: 2px;
+}
+
+:global(.rdp-dropdown):hover {
+  border-color: var(--theme-input-focus-border-color);
+}
+
+:global(.rdp-months_dropdown),
+:global(.rdp-years_dropdown) {
+  min-width: 100px;
 }

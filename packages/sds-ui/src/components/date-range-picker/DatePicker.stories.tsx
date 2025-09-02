@@ -213,7 +213,8 @@ export const Controlled: Story = {
         <div
           style={{
             padding: '12px',
-            backgroundColor: '#f5f5f5',
+            backgroundColor: 'var(--theme-color-component)',
+            color: 'var(--theme-text-base)',
             borderRadius: '4px',
             fontSize: '14px',
           }}
@@ -260,8 +261,8 @@ export const AdvancedFeatures: Story = {
           onClick={() => setShowAdvanced(!showAdvanced)}
           style={{
             padding: '8px 16px',
-            backgroundColor: '#007bff',
-            color: 'white',
+            backgroundColor: 'var(--theme-color-component)',
+            color: 'var(--theme-text-base)',
             border: 'none',
             borderRadius: '4px',
             cursor: 'pointer',
@@ -287,7 +288,8 @@ export const AdvancedFeatures: Story = {
           <div
             style={{
               padding: '12px',
-              backgroundColor: '#e7f3ff',
+              backgroundColor: 'var(--theme-color-component)',
+              color: 'var(--theme-text-base)',
               borderRadius: '4px',
               fontSize: '14px',
             }}
@@ -345,7 +347,8 @@ export const FlexibleWidth: Story = {
         <div
           style={{
             padding: '12px',
-            backgroundColor: '#e7f3ff',
+            backgroundColor: 'var(--theme-color-component)',
+            color: 'var(--theme-text-base)',
             borderRadius: '4px',
             fontSize: '14px',
             maxWidth: '400px',
@@ -402,7 +405,8 @@ export const StylingShowcase: Story = {
         <div
           style={{
             padding: '12px',
-            backgroundColor: '#f8f9fa',
+            backgroundColor: 'var(--theme-color-component)',
+            color: 'var(--theme-text-base)',
             borderRadius: '4px',
             fontSize: '14px',
           }}

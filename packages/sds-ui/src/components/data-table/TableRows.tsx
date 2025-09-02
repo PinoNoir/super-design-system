@@ -32,7 +32,7 @@ export interface TableRowsProps<T> {
   /** Whether the row is draggable */
   isDraggable?: boolean;
 
-  /** The height of rows in the `Table` */
+  /** The height of rows in the `Table` - converted to CSS classes, not passed to DOM */
   rowHeight?: 'base' | 'condensed';
 
   /** Whether the row is collapsible */
@@ -181,6 +181,7 @@ const TableRows = <T,>({
     [isDisabled, collapsibleContent, isExpanded, onSelectionChange, rowId, isSelected],
   );
 
+  // Convert rowHeight prop to CSS classes (not passed to DOM element)
   const rowStyles = clsx(styles.dataTableRow, className, {
     [styles.selected]: isSelected,
     [styles.disabled]: isDisabled,
