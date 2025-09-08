@@ -10,7 +10,7 @@ storybook-static
 chromatic-diagnostics.json
 chromatic.config.json
 chromatic.log
-.icloud/
+
 
 
 # testing
@@ -66,6 +66,7 @@ Thumbs.db
 .env.development.local
 .env.test.local
 .env.production.local
+.icloud/
 
 # vercel
 apps/*.vercel

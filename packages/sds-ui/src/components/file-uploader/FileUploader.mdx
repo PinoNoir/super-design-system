@@ -5,124 +5,290 @@ import * as FileUploaderStories from './FileUploader.stories';
 
 # File Uploader
 
-The `FileUploader` component allows users to upload files to the system from their local device. It works in conjunction with the `FileContext` to manage file upload states and processes.
+The `FileUploader` component allows users to upload files to the system from their local device. As of v2.0, it operates as a self-contained component with no external context dependencies required.
 
 ## Features
 
-- Drag and Drop: Users can drag files directly into the component area or use a traditional file selection dialog.
-- Multiple File Support: Allows uploading multiple files simultaneously.
-- File Type Validation: Ensures only specified file types are uploaded.
-- Upload Progress Indicator: Displays real-time progress for individual file uploads, controlled via the `useFileContext` hook.
-- Customizable File Cards: Renders file information using customizable `FileCard` components.
+- **Self-Contained Component**: No context provider required - works independently
+- **Flexible Upload API**: Promise-based upload handlers with configurable adapters
+- **Built-in Upload Adapters**: REST API, FormData, chunked uploads, and S3 support
+- **Drag and Drop**: Users can drag files directly into the component area or use a traditional file selection dialog
+- **Multiple File Support**: Allows uploading multiple files simultaneously
+- **File Type Validation**: Ensures only specified file types are uploaded
+- **Upload Progress Tracking**: Real-time progress indication with file status management
+- **Customizable File Cards**: Renders file information using customizable `FileCard` components
+- **Controlled/Uncontrolled Modes**: Works with external state management or self-contained
 
 ## Usage
 
-### Step 1: Wrap your application with FileContextProvider
+### Basic Usage (Self-Contained)
 
-First, wrap your top-level component or the relevant component tree with the `FileContextProvider`:
-
-```jsx
-import { FileContextProvider } from 'sds-ui';
-
-const MyApp = () => {
-  return (
-    <FileContextProvider>
-      <App />
-    </FileContextProvider>
-  );
-};
-```
-
-2. In the parent component where you use the `FileUploader` component, use the `useFileContext` hook to access the necessary callback functions to control the state of the file upload.
-
-#### Example:
+Simple setup with controlled state management:
 
 ```jsx
-import React, { useCallback } from 'react';
-import { FileUploader, useFileContext, FileStatus } from 'sds-ui';
+import React, { useState, useCallback } from 'react';
+import { FileUploader, FileWithStatus, UploadResult } from 'sds-ui';
 
 const MyComponent = () => {
-  const {
-    addFile,
-    updateFileProgress,
-    updateFileStatus,
-    showStatusMessage,
-    retryUpload,
-    clearAllFiles,
-  } = useFileContext();
+  const [files, setFiles] = useState<FileWithStatus[]>([]);
 
-  const mockOnUpload = useCallback(
-    async (file: File) => {
-      addFile(file);
+  const handleUpload = useCallback(async (file: File): Promise<UploadResult> => {
+    // Simulate API upload
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
 
-      try {
-        // Simulate upload process
-        for (let progress = 0; progress <= 100; progress += 10) {
-          updateFileProgress(file.name, progress);
-          await new Promise((resolve) => setTimeout(resolve, 500));
-        }
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
 
-        updateFileStatus(file.name, FileStatus.Complete, 'File uploaded successfully.');
-        showStatusMessage('success', 'File uploaded successfully!', 'check-circle');
-        clearAllFiles();
-      } catch (error) {
-        updateFileStatus(file.name, FileStatus.ValidationFailed, 'File upload failed.');
-        showStatusMessage(
-          'error',
-          'File upload failed. Please try again.',
-          'alert-rhombus',
-        );
-        throw error;
-      }
-    },
-    [addFile, updateFileProgress, updateFileStatus, showStatusMessage, clearAllFiles]
-  );
+      const data = await response.json();
 
-  const renderFileCard = useCallback(
-    (fileWithStatus: FileWithStatus) => (
-      <FileCard
-        key={fileWithStatus.file.name}
-        fileWithStatus={fileWithStatus}
-        onRetryUpload={() => retryUpload(fileWithStatus.file)}
-        metaData="Your metadata here"
-      />
-    ),
-    [retryUpload]
-  );
+      return {
+        success: true,
+        progress: 100,
+        data,
+        file,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        file,
+      };
+    }
+  }, []);
+
+  const renderFileCard = useCallback((fileWithStatus: FileWithStatus) => (
+    <FileCard
+      key={fileWithStatus.file.name}
+      file={fileWithStatus}
+      metaData="Standalone Upload"
+    />
+  ), []);
 
   return (
     <FileUploader
-      buttonLabel="Select file"
-      helperText="Up to 5 files can be uploaded at a time, each no larger than 20MB, and the total upload size should not exceed 200MB. Only PDF format is accepted."
-      accept={['.pdf']}
-      labelDescription="or Drop Files Here"
-      disabled={false}
+      files={files}
+      onFilesChange={setFiles}
+      buttonLabel="Select Files"
+      helperText="Upload files to your account"
+      accept={['.pdf', '.jpg', '.png']}
       multiple={true}
       maxFileSize={10}
       maxFiles={5}
-      onUpload={mockOnUpload}
+      onUpload={handleUpload}
       renderFileCard={renderFileCard}
     />
   );
 };
 ```
 
-### File Upload Example
+### Using Built-in Upload Adapters
+
+Pre-built adapters for common upload patterns:
+
+#### REST API Upload
+
+```jsx
+import { FileUploaderAdapters } from 'sds-ui';
+
+const restUploader = FileUploaderAdapters.createRestUploader({
+  baseUrl: 'https://api.example.com',
+  endpoint: 'files',
+  headers: { Authorization: 'Bearer your-token' },
+  formDataKey: 'document',
+});
+
+<FileUploader onUpload={restUploader} buttonLabel="Upload to API" />;
+```
+
+#### FormData with Additional Fields
+
+```jsx
+const formDataUploader = FileUploaderAdapters.createFormDataUploader({
+  url: '/api/documents',
+  fileKey: 'file',
+  additionalFields: {
+    userId: '123',
+    category: 'documents',
+  },
+});
+
+<FileUploader onUpload={formDataUploader} />;
+```
+
+#### AWS S3 Upload
+
+```jsx
+const s3Uploader = FileUploaderAdapters.createS3Uploader({
+  region: 'us-east-1',
+  bucket: 'my-bucket',
+  accessKeyId: 'your-key',
+  secretAccessKey: 'your-secret',
+});
+
+<FileUploader onUpload={s3Uploader} />;
+```
+
+### Custom Upload Configuration
+
+Pass upload configuration at runtime:
+
+```jsx
+const handleUpload = async (file: File, config?: UploadConfig) => {
+  const uploadUrl = config?.url || '/api/upload';
+  // Custom upload logic
+};
+
+<FileUploader
+  uploadConfig={{
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' }
+  }}
+  onUpload={handleUpload}
+/>
+```
+
+## Breaking Changes in v2.0
+
+### Context-Based Usage Removed
+
+The FileUploader v2.0 no longer supports or requires context providers. All context-related components and hooks have been removed:
+
+#### Removed Components and Hooks:
+
+- `FileContextProvider`
+- `FileContext`
+- `useFileContext`
+- `standalone` prop (now default behavior)
+
+#### What to Remove from Your App:
+
+1. **Remove Context Provider Wrapper**:
+
+```jsx
+// REMOVE THIS
+<FileContextProvider>
+  <YourComponent />
+</FileContextProvider>
+```
+
+2. **Remove Context Hook Usage**:
+
+```jsx
+// REMOVE THIS
+const { addFile, updateFileProgress, updateFileStatus, showStatusMessage, retryUpload, clearAllFiles } =
+  useFileContext();
+```
+
+3. **Remove Context-Related Imports**:
+
+```jsx
+// REMOVE THESE
+import { FileContextProvider, useFileContext } from 'sds-ui';
+```
+
+4. **Update Manual File State Management**:
+   Replace manual context calls with the new Promise-based approach that handles state automatically.
+
+## Examples
+
+### Basic Usage
 
 <Canvas of={FileUploaderStories.FileUploadExample} />
 
+### Upload Adapter Examples
+
+#### Simple Usage with State Management
+
+<Canvas of={FileUploaderStories.StandaloneMode} />
+
+#### REST API Integration
+
+<Canvas of={FileUploaderStories.RestApiUpload} />
+
+#### FormData Upload
+
+<Canvas of={FileUploaderStories.FormDataUpload} />
+
+## API Reference
+
 ### FileUploader Props
 
-- buttonLabel: (string) Label for the file selection button.
-- helperText: (string) Helper text displayed below the uploader.
-- accept: (string[]) Array of accepted file types.
-- labelDescription: (string) Additional description for the uploader.
-- disabled: (boolean) Whether the uploader is disabled.
-- multiple: (boolean) Whether multiple file selection is allowed.
-- maxFileSize: (number) Maximum file size in MB.
-- maxFiles: (number) Maximum number of files that can be uploaded.
-- onUpload: (function) Callback function called when files are selected for upload.
-- renderFileCard: (function) Custom function to render FileCard components.
+#### Core Props
+
+- **buttonLabel** `string` - Label for the file selection button
+- **helperText** `string` - Helper text displayed below the uploader
+- **accept** `string[]` - Array of accepted file types (e.g., `['.pdf', '.jpg']`)
+- **labelDescription** `string` - Additional description for the uploader (e.g., "or Drop Files Here")
+- **disabled** `boolean` - Whether the uploader is disabled
+- **multiple** `boolean` - Whether multiple file selection is allowed (default: `true`)
+
+#### File Validation
+
+- **maxFileSize** `number` - Maximum file size in MB
+- **maxFiles** `number` - Maximum number of files that can be uploaded
+- **allowDuplicates** `boolean` - Allow duplicate files (default: `false`)
+- **onCustomFilesValidate** `(files: File[]) => boolean` - Custom validation function
+
+#### Upload Configuration
+
+- **uploadConfig** `UploadConfig` - Upload configuration object
+- **onUpload** `(file: File, config?: UploadConfig) => Promise<UploadResult> | void` - Upload handler function
+- **onUploadSuccess** `(file: File, result: UploadResult) => void` - Success callback
+- **onUploadFailure** `(file: File, error: any) => void` - Failure callback
+
+#### State Management
+
+- **files** `FileWithStatus[]` - Controlled files state (optional, uses internal state if not provided)
+- **onFilesChange** `(files: FileWithStatus[]) => void` - Files change callback (required when using controlled mode)
+
+#### Rendering & Events
+
+- **renderFileCard** `(file: FileWithStatus) => React.ReactNode` - Custom file card renderer
+- **onFileValidationFailure** `(errorType, fileName) => void` - Validation failure callback
+- **onSelectedFileAlreadyUploaded** `(fileName) => void` - Duplicate file callback
+- **onUploadCompleted** `(files: File[]) => void` - All uploads completed callback
+- **onRetryUpload** `(file: File) => void` - Retry upload callback
+
+### Types
+
+#### UploadConfig
+
+```typescript
+interface UploadConfig {
+  method?: 'POST' | 'PUT' | 'PATCH';
+  url?: string;
+  headers?: Record<string, string>;
+  formDataKey?: string;
+  chunkSize?: number;
+  concurrent?: boolean;
+  timeout?: number;
+}
+```
+
+#### UploadResult
+
+```typescript
+interface UploadResult {
+  success: boolean;
+  progress?: number;
+  error?: string;
+  data?: any;
+  file?: File;
+}
+```
+
+### Upload Adapters
+
+Pre-built upload adapters available via `FileUploaderAdapters`:
+
+- **createRestUploader(config)** - Generic REST API uploads
+- **createFormDataUploader(config)** - FormData with additional fields
+- **createChunkedUploader(config)** - Large file chunked uploads
+- **createS3Uploader(config)** - AWS S3 presigned URL uploads
 
 <hr />
 
@@ -140,14 +306,77 @@ fileWithStatus: (object) Object containing file info and status.
 onRetryUpload: (function) Callback for retrying upload.
 metaData: (string) Additional metadata for the file.
 
-#### Notes for Developers
+## Migration Guide
 
-1. Ensure that you're wrapping your application or relevant component tree with FileContextProvider.
-2. Customize the mockOnUpload function to integrate with your actual file upload API.
-3. The renderFileCard function allows you to customize how each file's information is displayed.
-4. Use the functions provided by useFileContext to manage file states and show status messages.
-5. Adjust the maxFileSize, maxFiles, and accept props according to your application's requirements.
+### Migrating from Context-Based to Standalone Mode
 
-- These components are complex and have a lot of moving parts. If you are using them in your application, make sure to test them thoroughly.
-- If you experience any issues or have questions, please reach out to **nickpino.designs@gmail.com** or message me on teams chat. I'll be happy to troubleshoot and assist you!
-- If you have any suggestions for improvements or new features, please open a Jira ticket and assign it to me (nicholas.pino), I'm always looking for ways to make our design system better!
+**Before (Legacy Context-Based):**
+
+```jsx
+import { FileContextProvider, useFileContext, FileUploader } from 'sds-ui';
+
+const MyComponent = () => {
+  const { addFile, updateFileProgress, updateFileStatus } = useFileContext();
+
+  const handleUpload = async (file: File) => {
+    addFile(file);
+    // Manual state management...
+  };
+
+  return <FileUploader onUpload={handleUpload} />;
+};
+
+// Requires provider wrapper
+<FileContextProvider>
+  <MyComponent />
+</FileContextProvider>
+```
+
+**After (Standalone Mode):**
+
+```jsx
+import { FileUploader, FileWithStatus, UploadResult } from 'sds-ui';
+
+const MyComponent = () => {
+  const [files, setFiles] = useState<FileWithStatus[]>([]);
+
+  const handleUpload = async (file: File): Promise<UploadResult> => {
+    // Return result, automatic state management
+    return { success: true, file };
+  };
+
+  return (
+    <FileUploader
+      files={files}
+      onFilesChange={setFiles}
+      onUpload={handleUpload}
+    />
+  );
+};
+
+// No provider needed!
+```
+
+### Key Benefits of Migration
+
+1. **Simpler Setup** - No context provider wrapper required
+2. **Better Performance** - Eliminates unnecessary context re-renders
+3. **Clearer Data Flow** - Explicit props instead of implicit context
+4. **Enhanced Type Safety** - Better TypeScript support with Promise-based uploads
+5. **API Flexibility** - Built-in adapters for common upload patterns
+
+### Breaking Changes in v2.0
+
+- Context-based usage will be removed
+- `onUpload` must return `Promise<UploadResult>` (not void)
+- `standalone` prop will default to `true`
+
+## Notes for Developers
+
+- These components are complex and have many features. Test thoroughly in your application.
+- Use built-in upload adapters for common patterns (REST, FormData, S3)
+- The `renderFileCard` function allows complete customization of file display
+- Adjust validation props (`maxFileSize`, `maxFiles`, `accept`) according to your requirements
+- Consider using controlled mode (`files` + `onFilesChange`) for complex file management scenarios
+
+For questions or issues, please reach out to **nickpino.designs@gmail.com** or create a Jira ticket assigned to **nicholas.pino**.

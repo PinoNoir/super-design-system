@@ -58,7 +58,7 @@ export const Default: Story = {
     <Panel
       header="h2 header"
       headerActionButton={
-        <Button variant="tertiary" fill="ghost">
+        <Button variant="tertiary" fill="outline">
           Add Task
         </Button>
       }

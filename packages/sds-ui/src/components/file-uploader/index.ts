@@ -9,3 +9,5 @@ export { default as StatusMessageDisplay } from './StatusMessageDisplay';
 export type { FileUploaderProps } from './FileUploader';
 export type { FileCardProps } from './FileCard';
 export type { StatusMessageProps } from './StatusMessage';
+export type { UploadConfig, UploadResult, S3Config, RestConfig, FormDataConfig, UploadAdapter } from './types';
+export { FileUploaderAdapters } from './uploadAdapters';

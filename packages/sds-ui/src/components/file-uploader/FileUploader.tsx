@@ -1,11 +1,11 @@
 import { clsx } from 'clsx';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FileStatus, FileValidationErrorType, FileWithStatus } from '../../global-types/file-status';
-import useFileContext from './useFileContext';
 import { useFileValidation } from '../../hooks';
 import { Button } from '../button';
 import styles from './styles/FileUploader.module.css';
 import { AnimatePresence, motion } from 'framer-motion';
+import { UploadConfig, UploadResult } from './types';
 
 export interface FileUploaderProps {
   /**
@@ -77,14 +77,20 @@ export interface FileUploaderProps {
   onCustomFilesValidate?: (files: File[]) => boolean;
 
   /**
-   * Callback function for handling file upload requests
+   * Upload configuration for API integration
    */
-  onUpload: (file: File) => void;
+  uploadConfig?: UploadConfig;
+
+  /**
+   * Enhanced callback function for handling file upload requests
+   * Returns a Promise for better API integration
+   */
+  onUpload: (file: File, config?: UploadConfig) => Promise<UploadResult> | void;
 
   /**
    * Callback function for when a file is successfully uploaded
    */
-  onUploadSuccess?: (file: File, status: FileStatus) => void;
+  onUploadSuccess?: (file: File, result: UploadResult) => void;
 
   /**
    * Callback function for when a file upload fails
@@ -115,6 +121,16 @@ export interface FileUploaderProps {
    * Custom render function for the file card component to display onUpload
    */
   renderFileCard?: (file: FileWithStatus) => React.ReactNode;
+
+  /**
+   * Controlled files state - when provided, component works in controlled mode
+   */
+  files?: FileWithStatus[];
+
+  /**
+   * Callback for controlled files state changes
+   */
+  onFilesChange?: (files: FileWithStatus[]) => void;
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({
@@ -128,7 +144,10 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   labelDescription,
   disabled,
   onCustomFilesValidate,
+  uploadConfig,
   onUpload,
+  onUploadSuccess,
+  onUploadFailure,
   onFileValidationFailure,
   onSelectedFileAlreadyUploaded,
   onUploadCompleted,
@@ -136,14 +155,86 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   maxFiles,
   renderFileCard,
   allowDuplicates = false,
+  files: controlledFiles,
+  onFilesChange,
   ...props
 }) => {
-  const { files, isDuplicateFile, showStatusMessage, addFilesSelectedToUpload } = useFileContext();
+  // Self-contained state management
+  const [internalFiles, setInternalFiles] = useState<FileWithStatus[]>([]);
+  const [uploadedFileMetadata, setUploadedFileMetadata] = useState<FileWithStatus[]>([]);
+
+  // Use controlled files if provided, otherwise use internal state
+  const files = controlledFiles ?? internalFiles;
+
+  const isDuplicateFile = useCallback(
+    (file: File) => {
+      return uploadedFileMetadata.some((meta) => file.name === meta.file.name && file.size === meta.size);
+    },
+    [uploadedFileMetadata],
+  );
+
+  const updateFiles = useCallback(
+    (updater: (prev: FileWithStatus[]) => FileWithStatus[]) => {
+      if (controlledFiles && onFilesChange) {
+        onFilesChange(updater(controlledFiles));
+      } else {
+        setInternalFiles(updater);
+      }
+    },
+    [controlledFiles, onFilesChange],
+  );
+
+  const addFile = useCallback(
+    (file: File) => {
+      const newFile: FileWithStatus = {
+        fileInfo: {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          lastModified: file.lastModified,
+        },
+        file,
+        status: FileStatus.Uploading,
+        progress: 0,
+        size: file.size,
+      };
+
+      updateFiles((prev) => [...prev, newFile]);
+    },
+    [updateFiles],
+  );
+
+  const updateFileStatus = useCallback(
+    (fileName: string, status: FileStatus, message?: string) => {
+      updateFiles((prev) => prev.map((file) => (file.file.name === fileName ? { ...file, status, message } : file)));
+    },
+    [updateFiles],
+  );
+
+  const markFileAsUploaded = useCallback((file: File) => {
+    const uploadedFile: FileWithStatus = {
+      fileInfo: {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        lastModified: file.lastModified,
+      },
+      file,
+      status: FileStatus.Complete,
+      progress: 100,
+      size: file.size,
+    };
+    setUploadedFileMetadata((prev) => [...prev, uploadedFile]);
+  }, []);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openFileDialog = useCallback(() => {
     fileInputRef.current?.click();
+  }, []);
+
+  const showStatusMessage = useCallback(() => {
+    // In standalone mode, status messages could be handled via callbacks
   }, []);
 
   const { validateFile, validateFileList } = useFileValidation({
@@ -159,24 +250,55 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   });
 
   const handleFileSelection = useCallback(
-    (fileList: FileList) => {
+    async (fileList: FileList) => {
       if (!fileList || fileList.length === 0) return;
 
       if (!validateFileList(fileList)) return;
       const uploadedFiles: File[] = [];
 
-      Array.from(fileList).forEach((file) => {
+      for (const file of Array.from(fileList)) {
         const isValid = validateFile(file);
         if (isValid) {
           uploadedFiles.push(file);
-          onUpload(file);
-        }
-      });
+          addFile(file);
 
-      addFilesSelectedToUpload(fileList);
+          try {
+            const uploadResult = await Promise.resolve(onUpload(file, uploadConfig));
+
+            // Handle both new Promise-based and legacy void returns
+            if (uploadResult && typeof uploadResult === 'object' && 'success' in uploadResult) {
+              if (uploadResult.success) {
+                updateFileStatus(file.name, FileStatus.Complete, 'Upload successful');
+                markFileAsUploaded(file);
+                onUploadSuccess?.(file, uploadResult);
+              } else {
+                updateFileStatus(file.name, FileStatus.ValidationFailed, uploadResult.error || 'Upload failed');
+                onUploadFailure?.(file, uploadResult.error);
+              }
+            }
+          } catch (error) {
+            updateFileStatus(file.name, FileStatus.ValidationFailed, 'Upload failed');
+            onUploadFailure?.(file, error);
+            showStatusMessage();
+          }
+        }
+      }
+
       onUploadCompleted?.(uploadedFiles);
     },
-    [validateFile, validateFileList, addFilesSelectedToUpload, onUpload, onUploadCompleted],
+    [
+      validateFile,
+      validateFileList,
+      addFile,
+      onUpload,
+      uploadConfig,
+      updateFileStatus,
+      markFileAsUploaded,
+      onUploadSuccess,
+      onUploadFailure,
+      showStatusMessage,
+      onUploadCompleted,
+    ],
   );
 
   const handleFileChange = useCallback(
@@ -258,9 +380,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({
       <p className={styles.fileDescription}>{helperText}</p>
       <div className={styles.fileContainer}>
         <AnimatePresence>
-          {files.map((fileWithStatus) => (
+          {files.map((fileWithStatus: FileWithStatus) => (
             <motion.div
-              key={fileWithStatus.file.name}
+              key={fileWithStatus.file?.name || fileWithStatus.fileInfo?.name}
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1, transition: { type: 'spring', damping: 20, stiffness: 300 } }}
               exit={{ y: 0, opacity: 0, transition: { duration: 0.1, ease: 'easeOut' } }}

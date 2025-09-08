@@ -63,6 +63,7 @@ describe('FileUploader component', () => {
           size: 1024 * 1024,
           type: 'application/pdf',
         }),
+        undefined, // uploadConfig parameter
       ),
     );
 
