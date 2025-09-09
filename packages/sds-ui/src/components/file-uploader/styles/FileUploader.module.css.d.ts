@@ -11,8 +11,10 @@ const fileContainer: string;
 const fileDescription: string;
 const fileDropContainer: string;
 const disabled: string;
+const left: string;
+const center: string;
 
-export { fileUploader, fileContainer, fileDescription, fileDropContainer, disabled };
+export { fileUploader, fileContainer, fileDescription, fileDropContainer, disabled, left, center };
 
 export default {
   fileUploader,
@@ -20,4 +22,6 @@ export default {
   fileDescription,
   fileDropContainer,
   disabled,
+  left,
+  center,
 };

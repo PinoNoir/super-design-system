@@ -5,8 +5,9 @@ import FileUploader from './FileUploader';
 import FileCard from './FileCard';
 import StatusMessageDisplay from './StatusMessageDisplay';
 import StatusMessage from './StatusMessage';
-import { UploadResult, UploadConfig } from './types';
+import { UploadResult } from './types';
 import { FileUploaderAdapters } from './uploadAdapters';
+import FileContextProvider from './FileContextProvider';
 
 const meta: Meta<typeof FileUploader> = {
   title: 'Components/Inputs/File Uploader',
@@ -15,9 +16,11 @@ const meta: Meta<typeof FileUploader> = {
   tags: ['!autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '800px' }}>
-        <Story />
-      </div>
+      <FileContextProvider>
+        <div style={{ maxWidth: '800px' }}>
+          <Story />
+        </div>
+      </FileContextProvider>
     ),
   ],
 };
@@ -85,9 +88,9 @@ const FileUploadExampleComponent = () => {
         files={files}
         onFilesChange={setFiles}
         buttonLabel="Select file"
+        labelDescription="Or drag and drop files here..."
         helperText="Up to 5 files can be uploaded at a time, each no larger than 20MB, and the total upload size should not exceed 200MB. Only PDF format is accepted."
         accept={['.pdf']}
-        labelDescription="or Drop Files Here"
         disabled={false}
         multiple={true}
         maxFileSize={10}
@@ -105,54 +108,6 @@ const FileUploadExampleComponent = () => {
 
 export const FileUploadExample: Story = {
   render: () => <FileUploadExampleComponent />,
-};
-
-// New standalone mode example
-const StandaloneFileUploader = () => {
-  const [files, setFiles] = useState<FileWithStatus[]>([]);
-
-  const handleUpload = useCallback(async (file: File, _config?: UploadConfig): Promise<UploadResult> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          progress: 100,
-          data: { id: Math.random().toString(36), url: `https://example.com/files/${file.name}` },
-          file,
-        });
-      }, 2000);
-    });
-  }, []);
-
-  const renderFileCard = useCallback(
-    (fileWithStatus: FileWithStatus) => (
-      <FileCard
-        key={fileWithStatus.fileInfo?.name || fileWithStatus.file?.name}
-        file={fileWithStatus}
-        metaData="Standalone Upload"
-      />
-    ),
-    [],
-  );
-
-  return (
-    <FileUploader
-      files={files}
-      onFilesChange={setFiles}
-      buttonLabel="Select Files"
-      helperText="No context provider required!"
-      accept={['.pdf', '.jpg', '.png']}
-      multiple={true}
-      maxFileSize={10}
-      maxFiles={5}
-      onUpload={handleUpload}
-      renderFileCard={renderFileCard}
-    />
-  );
-};
-
-export const StandaloneMode: Story = {
-  render: () => <StandaloneFileUploader />,
 };
 
 // REST API example
@@ -177,11 +132,13 @@ const RestApiFileUploader = () => {
   return (
     <FileUploader
       buttonLabel="Upload to API"
+      labelDescription="Or drag and drop files here..."
       helperText="Files will be uploaded to REST API endpoint"
       accept={['.pdf', '.doc', '.docx']}
       multiple={true}
       onUpload={uploadAdapter}
       renderFileCard={renderFileCard}
+      layout="center"
     />
   );
 };

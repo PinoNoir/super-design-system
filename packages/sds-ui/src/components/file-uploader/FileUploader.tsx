@@ -72,6 +72,12 @@ export interface FileUploaderProps {
   allowDuplicates?: boolean;
 
   /**
+   * Specify the layout of the `<FileUploader>`
+   * @default 'left'
+   */
+  layout?: 'left' | 'center';
+
+  /**
    * Callback function for invoking additional custom files validation(s)
    */
   onCustomFilesValidate?: (files: File[]) => boolean;
@@ -143,6 +149,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   accept,
   labelDescription,
   disabled,
+  layout = 'left',
   onCustomFilesValidate,
   uploadConfig,
   onUpload,
@@ -339,7 +346,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         automation-id="file-drop-zone"
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        className={clsx(styles.fileDropContainer, { [styles.disabled]: disabled })}
+        className={clsx(styles.fileDropContainer, { [styles.disabled]: disabled }, styles[layout])}
         aria-disabled={disabled}
         draggable={true}
         onDragStart={(event) => event.preventDefault()}
@@ -357,7 +364,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           aria-label="Select files to upload"
           disabled={disabled}
           onClick={openFileDialog}
-          style={{ marginRight: '8px' }}
           iconPosition="left"
           icon={buttonIcon}
         >
