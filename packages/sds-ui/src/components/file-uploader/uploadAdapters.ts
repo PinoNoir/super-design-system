@@ -80,7 +80,9 @@ export const createFormDataUploader = (config: FormDataConfig): UploadAdapter =>
   };
 };
 
-export const createChunkedUploader = (config: RestConfig & { chunkSize?: number }): UploadAdapter => {
+export const createChunkedUploader = (
+  config: RestConfig & { chunkSize?: number; onProgress?: (progress: number) => void }
+): UploadAdapter => {
   return async (file: File, uploadConfig?: UploadConfig): Promise<UploadResult> => {
     try {
       const chunkSize = config.chunkSize || uploadConfig?.chunkSize || 1024 * 1024; // 1MB default
@@ -110,20 +112,15 @@ export const createChunkedUploader = (config: RestConfig & { chunkSize?: number 
           throw new Error(`Chunk upload failed with status: ${response.status}`);
         }
 
+        // Update progress for each chunk
         const progress = Math.round(((chunkIndex + 1) / totalChunks) * 100);
-
-        if (chunkIndex < totalChunks - 1) {
-          return {
-            success: false, // Not complete yet
-            progress,
-            file,
-          };
-        }
+        config.onProgress?.(progress);
       }
 
       return {
         success: true,
         progress: 100,
+        data: { message: 'Chunked upload completed successfully' },
         file,
       };
     } catch (error) {

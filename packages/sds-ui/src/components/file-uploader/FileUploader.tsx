@@ -6,6 +6,7 @@ import { Button } from '../button';
 import styles from './styles/FileUploader.module.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { UploadConfig, UploadResult } from './types';
+import useFileContext from './useFileContext';
 
 export interface FileUploaderProps {
   /**
@@ -166,32 +167,15 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   onFilesChange,
   ...props
 }) => {
-  // Self-contained state management
+  // Try to use context, fallback to controlled/internal state
+  const context = useFileContext();
   const [internalFiles, setInternalFiles] = useState<FileWithStatus[]>([]);
-  const [uploadedFileMetadata, setUploadedFileMetadata] = useState<FileWithStatus[]>([]);
 
-  // Use controlled files if provided, otherwise use internal state
-  const files = controlledFiles ?? internalFiles;
+  // Priority: controlled files > context files > internal files
+  const files = controlledFiles ?? context?.files ?? internalFiles;
 
-  const isDuplicateFile = useCallback(
-    (file: File) => {
-      return uploadedFileMetadata.some((meta) => file.name === meta.file.name && file.size === meta.size);
-    },
-    [uploadedFileMetadata],
-  );
-
-  const updateFiles = useCallback(
-    (updater: (prev: FileWithStatus[]) => FileWithStatus[]) => {
-      if (controlledFiles && onFilesChange) {
-        onFilesChange(updater(controlledFiles));
-      } else {
-        setInternalFiles(updater);
-      }
-    },
-    [controlledFiles, onFilesChange],
-  );
-
-  const addFile = useCallback(
+  // Use context methods if available, otherwise fallback to local methods
+  const addFile = context?.addFile ?? useCallback(
     (file: File) => {
       const newFile: FileWithStatus = {
         fileInfo: {
@@ -206,42 +190,47 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         size: file.size,
       };
 
-      updateFiles((prev) => [...prev, newFile]);
+      if (controlledFiles && onFilesChange) {
+        onFilesChange([...controlledFiles, newFile]);
+      } else {
+        setInternalFiles(prev => [...prev, newFile]);
+      }
     },
-    [updateFiles],
+    [controlledFiles, onFilesChange],
   );
 
-  const updateFileStatus = useCallback(
+  const updateFileStatus = context?.updateFileStatus ?? useCallback(
     (fileName: string, status: FileStatus, message?: string) => {
-      updateFiles((prev) => prev.map((file) => (file.file.name === fileName ? { ...file, status, message } : file)));
+      if (controlledFiles && onFilesChange) {
+        onFilesChange(controlledFiles.map(file => 
+          file.file.name === fileName ? { ...file, status, message } : file
+        ));
+      } else {
+        setInternalFiles(prev => prev.map(file => 
+          file.file.name === fileName ? { ...file, status, message } : file
+        ));
+      }
     },
-    [updateFiles],
+    [controlledFiles, onFilesChange],
   );
 
-  const markFileAsUploaded = useCallback((file: File) => {
-    const uploadedFile: FileWithStatus = {
-      fileInfo: {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        lastModified: file.lastModified,
-      },
-      file,
-      status: FileStatus.Complete,
-      progress: 100,
-      size: file.size,
-    };
-    setUploadedFileMetadata((prev) => [...prev, uploadedFile]);
+  const markFileAsUploaded = context?.markFileAsUploaded ?? useCallback((file: File) => {
+    // If no context, this is handled by updateFileStatus
   }, []);
+
+  const isDuplicateFile = context?.isDuplicateFile ?? useCallback(
+    (file: File) => {
+      const filesToCheck = controlledFiles ?? internalFiles;
+      return filesToCheck.some((f) => f.file.name === file.name && f.file.size === file.size);
+    },
+    [controlledFiles, internalFiles],
+  );
+
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openFileDialog = useCallback(() => {
     fileInputRef.current?.click();
-  }, []);
-
-  const showStatusMessage = useCallback(() => {
-    // In standalone mode, status messages could be handled via callbacks
   }, []);
 
   const { validateFile, validateFileList } = useFileValidation({
@@ -253,7 +242,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     onFileValidationFailure,
     onSelectedFileAlreadyUploaded,
     isDuplicateFile,
-    showStatusMessage,
+    showStatusMessage: () => {
+      // This will be handled by the context's showStatusMessage
+      if (context) {
+        context.showStatusMessage('error', 'File validation failed', '⚠️');
+      }
+    },
   });
 
   const handleFileSelection = useCallback(
@@ -278,15 +272,30 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                 updateFileStatus(file.name, FileStatus.Complete, 'Upload successful');
                 markFileAsUploaded(file);
                 onUploadSuccess?.(file, uploadResult);
+                
+                // Show success status message
+                if (context) {
+                  context.showStatusMessage('success', `${file.name} uploaded successfully`, '✅');
+                }
               } else {
                 updateFileStatus(file.name, FileStatus.ValidationFailed, uploadResult.error || 'Upload failed');
                 onUploadFailure?.(file, uploadResult.error);
+                
+                // Show error status message
+                if (context) {
+                  context.showStatusMessage('error', uploadResult.error || 'Upload failed', '❌');
+                }
               }
             }
           } catch (error) {
-            updateFileStatus(file.name, FileStatus.ValidationFailed, 'Upload failed');
+            const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+            updateFileStatus(file.name, FileStatus.ValidationFailed, errorMessage);
             onUploadFailure?.(file, error);
-            showStatusMessage();
+            
+            // Show error status message
+            if (context) {
+              context.showStatusMessage('error', errorMessage, '❌');
+            }
           }
         }
       }
@@ -303,7 +312,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
       markFileAsUploaded,
       onUploadSuccess,
       onUploadFailure,
-      showStatusMessage,
+      context,
       onUploadCompleted,
     ],
   );

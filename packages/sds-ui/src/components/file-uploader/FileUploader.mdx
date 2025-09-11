@@ -5,11 +5,11 @@ import * as FileUploaderStories from './FileUploader.stories';
 
 # File Uploader
 
-The `FileUploader` component allows users to upload files to the system from their local device. As of v2.0, it operates as a self-contained component with no external context dependencies required.
+The `FileUploader` component allows users to upload files to the system from their local device. It supports two usage patterns: **standalone mode** for simple implementations and **context mode** for advanced status messaging and shared state management.
 
 ## Features
 
-- **Self-Contained Component**: No context provider required - works independently
+- **Dual Usage Modes**: Works independently or with FileContextProvider for status messages
 - **Flexible Upload API**: Promise-based upload handlers with configurable adapters
 - **Built-in Upload Adapters**: REST API, FormData, chunked uploads, and S3 support
 - **Drag and Drop**: Users can drag files directly into the component area or use a traditional file selection dialog
@@ -21,19 +21,64 @@ The `FileUploader` component allows users to upload files to the system from the
 
 ## Usage
 
-### Basic Usage (Self-Contained)
+### Mode 1: Standalone Usage (Simple)
 
-Simple setup with controlled state management:
+For basic file uploads without status messages:
 
 ```jsx
 import React, { useState, useCallback } from 'react';
-import { FileUploader, FileWithStatus, UploadResult } from 'sds-ui';
+import { FileUploader, FileCard } from 'sds-ui';
 
-const MyComponent = () => {
-  const [files, setFiles] = useState<FileWithStatus[]>([]);
+const SimpleUploader = () => {
+  const [files, setFiles] = useState([]);
 
-  const handleUpload = useCallback(async (file: File): Promise<UploadResult> => {
-    // Simulate API upload
+  const handleUpload = useCallback(async (file) => {
+    // Your upload logic here
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    });
+
+    return {
+      success: response.ok,
+      data: await response.json(),
+      file
+    };
+  }, []);
+
+  return (
+    <FileUploader
+      files={files}
+      onFilesChange={setFiles}
+      buttonLabel="Upload Files"
+      helperText="Select files to upload"
+      onUpload={handleUpload}
+      renderFileCard={(file) => <FileCard file={file} />}
+    />
+  );
+};
+```
+
+### Mode 2: Context Usage (Advanced)
+
+For uploads with status messages and shared state management:
+
+```jsx
+import React, { useState, useCallback } from 'react';
+import {
+  FileContextProvider,
+  FileUploader,
+  FileCard,
+  StatusMessageDisplay
+} from 'sds-ui';
+
+const AdvancedUploader = () => {
+  const [files, setFiles] = useState([]);
+
+  const handleUpload = useCallback(async (file) => {
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -46,7 +91,7 @@ const MyComponent = () => {
       const data = await response.json();
 
       return {
-        success: true,
+        success: response.ok,
         progress: 100,
         data,
         file,
@@ -60,6 +105,28 @@ const MyComponent = () => {
     }
   }, []);
 
+  return (
+    <FileContextProvider>
+      <FileUploader
+        files={files}
+        onFilesChange={setFiles}
+        buttonLabel="Upload Files"
+        helperText="Select files to upload"
+        onUpload={handleUpload}
+        renderFileCard={(file) => <FileCard file={file} />}
+      >
+        <StatusMessageDisplay />
+      </FileUploader>
+    </FileContextProvider>
+  );
+};
+```
+
+**Key Differences:**
+- **Standalone**: No context provider, no status messages
+- **Context Mode**: Wrapped in `FileContextProvider`, includes `StatusMessageDisplay` for upload status feedback
+
+```jsx
   const renderFileCard = useCallback((fileWithStatus: FileWithStatus) => (
     <FileCard
       key={fileWithStatus.file.name}
@@ -151,47 +218,39 @@ const handleUpload = async (file: File, config?: UploadConfig) => {
 />
 ```
 
-## Breaking Changes in v2.0
+## Usage Modes
 
-### Context-Based Usage Removed
+The FileUploader supports flexible usage patterns:
 
-The FileUploader v2.0 no longer supports or requires context providers. All context-related components and hooks have been removed:
+### With Context Provider (Recommended)
 
-#### Removed Components and Hooks:
-
-- `FileContextProvider`
-- `FileContext`
-- `useFileContext`
-- `standalone` prop (now default behavior)
-
-#### What to Remove from Your App:
-
-1. **Remove Context Provider Wrapper**:
+When wrapped with `FileContextProvider`, you get:
+- Centralized state management
+- Built-in status messaging via `StatusMessageDisplay`
+- Shared state across multiple components
 
 ```jsx
-// REMOVE THIS
 <FileContextProvider>
-  <YourComponent />
+  <FileUploader onUpload={handleUpload}>
+    <StatusMessageDisplay />
+  </FileUploader>
 </FileContextProvider>
 ```
 
-2. **Remove Context Hook Usage**:
+### Standalone Mode
+
+Without context provider, the component:
+- Uses internal state management
+- Supports controlled mode via `files` and `onFilesChange` props
+- Falls back gracefully (no status messages)
 
 ```jsx
-// REMOVE THIS
-const { addFile, updateFileProgress, updateFileStatus, showStatusMessage, retryUpload, clearAllFiles } =
-  useFileContext();
+<FileUploader
+  files={files}
+  onFilesChange={setFiles}
+  onUpload={handleUpload}
+/>
 ```
-
-3. **Remove Context-Related Imports**:
-
-```jsx
-// REMOVE THESE
-import { FileContextProvider, useFileContext } from 'sds-ui';
-```
-
-4. **Update Manual File State Management**:
-   Replace manual context calls with the new Promise-based approach that handles state automatically.
 
 ## Examples
 
@@ -200,10 +259,6 @@ import { FileContextProvider, useFileContext } from 'sds-ui';
 <Canvas of={FileUploaderStories.FileUploadExample} />
 
 ### Upload Adapter Examples
-
-#### Simple Usage with State Management
-
-<Canvas of={FileUploaderStories.StandaloneMode} />
 
 #### REST API Integration
 

@@ -1,7 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { DayPicker } from 'react-day-picker';
+import { DayPicker, ClassNames } from 'react-day-picker';
 import * as React from 'react';
-import type { ClassNames } from 'react-day-picker';
 import styles from './styles/Calendar.module.css';
 import clsx from 'clsx';
 

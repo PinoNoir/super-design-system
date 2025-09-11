@@ -1,10 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/file-uploader/__tests__/FileUploader.test.tsx">
-    <testCase name="FileUploader component successful file upload" duration="140"/>
-    <testCase name="FileUploader component accepts only PDF files for upload" duration="133"/>
-    <testCase name="FileUploader component displays an error for files larger than max size" duration="150"/>
-    <testCase name="FileUploader component handles multiple file uploads" duration="132"/>
-    <testCase name="FileUploader component displays an error when too many files are uploaded" duration="185"/>
+    <testCase name="FileUploader component successful file upload" duration="145"/>
+    <testCase name="FileUploader component accepts only PDF files for upload" duration="337"/>
+    <testCase name="FileUploader component displays an error for files larger than max size" duration="299"/>
+    <testCase name="FileUploader component handles multiple file uploads" duration="144"/>
+    <testCase name="FileUploader component displays an error when too many files are uploaded" duration="138"/>
+  </file>
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/file-uploader/__tests__/FileCard.test.tsx">
+    <testCase name="FileCard renders file information correctly" duration="15"/>
+    <testCase name="FileCard renders the correct file icon based on file type" duration="6"/>
+    <testCase name="FileCard renders icons for different file types" duration="7"/>
+    <testCase name="FileCard renders menu items when action handlers are provided" duration="23"/>
+    <testCase name="FileCard does not render menu when no action handlers are provided" duration="3"/>
+    <testCase name="FileCard shows only specific menu items based on provided handlers" duration="9"/>
+    <testCase name="FileCard calls handlers when menu items are clicked" duration="27"/>
+    <testCase name="FileCard calls onRetryUpload when retry button is clicked" duration="47"/>
+    <testCase name="FileCard renders progress bar when status is Uploading" duration="14"/>
+    <testCase name="FileCard displays different message styles based on file status" duration="8"/>
+    <testCase name="FileCard applies correct status class to the file card" duration="11"/>
+    <testCase name="FileCard handles missing file properties gracefully" duration="3"/>
+    <testCase name="FileCard generates a unique ID if none is provided" duration="3"/>
+    <testCase name="FileCard uses provided ID if one is passed" duration="3"/>
+    <testCase name="FileCard renders metaData when provided" duration="4"/>
+  </file>
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/file-uploader/__tests__/FileContext.test.tsx">
+    <testCase name="FileContext provides the correct initial state" duration="4"/>
+    <testCase name="FileContext adds a file correctly" duration="4"/>
+    <testCase name="FileContext updates file status correctly" duration="4"/>
+    <testCase name="FileContext updates file progress correctly" duration="3"/>
+    <testCase name="FileContext shows and clears status message correctly" duration="4"/>
+    <testCase name="FileContext deletes a file correctly" duration="3"/>
+    <testCase name="FileContext clears all files correctly" duration="3"/>
+  </file>
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/file-uploader/__tests__/StatusMessage.test.tsx">
+    <testCase name="StatusMessage renders correctly with success props" duration="23"/>
+    <testCase name="StatusMessage renders correctly with error props" duration="6"/>
+    <testCase name="StatusMessage calls onDismiss when dismiss button is clicked" duration="3"/>
+    <testCase name="StatusMessage has correct accessibility attributes" duration="4"/>
+  </file>
+  <file path="/Users/nicholasj.pino/Desktop/Web Development/super-design-system/packages/sds-ui/src/components/file-uploader/__tests__/StatusMessageDisplay.test.tsx">
+    <testCase name="StatusMessageDisplay renders nothing when statusMessage is null" duration="3"/>
+    <testCase name="StatusMessageDisplay renders StatusMessage when statusMessage is provided" duration="6"/>
+    <testCase name="StatusMessageDisplay passes clearStatusMessage as onDismiss prop to StatusMessage" duration="3"/>
   </file>
 </testExecutions>
