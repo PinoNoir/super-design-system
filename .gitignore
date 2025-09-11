@@ -73,3 +73,6 @@ apps/*.vercel
 # typescript
 *.tsbuildinfo
 apps/*next-env.d.ts
+
+# Vite auto-generated CSS module declaration files
+**/*.d.css.ts

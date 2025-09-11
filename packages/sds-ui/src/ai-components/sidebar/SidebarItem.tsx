@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './styles/Sidebar.module.css';
+import { Tooltip } from '../../components';
 
 export interface SidebarItemProps {
   icon?: React.ReactNode;
@@ -14,6 +15,7 @@ export interface SidebarItemProps {
   customMenu?: React.ReactNode;
   href?: string;
   onClick?: (e: React.MouseEvent) => void;
+  description?: React.ReactNode;
   [key: string]: any;
 }
 
@@ -29,6 +31,7 @@ const SidebarItem = ({
   customMenu,
   href = '#',
   onClick,
+  description,
   ...props
 }: SidebarItemProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -119,6 +122,32 @@ const SidebarItem = ({
     enhancedMenu = React.cloneElement(customMenu, menuProps);
   }
 
+  const mainAction = (
+    <a
+      className={styles.mainAction}
+      href={href}
+      aria-disabled={disabled}
+      tabIndex={disabled ? -1 : 0}
+      role="menuitem"
+      onClick={handleMainClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {icon && <span className={styles.iconButton}>{icon}</span>}
+      {!collapsed && <span className={styles.navLabel}>{label}</span>}
+      {!collapsed && badge && <span className={styles.navBadge}>{badge}</span>}
+    </a>
+  );
+
+  // Try simpler wrapper approach
+  const tooltipContent = description ? (
+    <Tooltip description={description} side="right" delayDuration={0}>
+      <div style={{ display: 'contents' }}>{mainAction}</div>
+    </Tooltip>
+  ) : (
+    mainAction
+  );
+
   return (
     <li
       className={clsx(
@@ -134,18 +163,7 @@ const SidebarItem = ({
       data-menu-open={menuOpen}
       {...props}
     >
-      <a
-        className={styles.mainAction}
-        href={href}
-        aria-disabled={disabled}
-        tabIndex={disabled ? -1 : 0}
-        role="menuitem"
-        onClick={handleMainClick}
-      >
-        {icon && <span className={styles.iconButton}>{icon}</span>}
-        {!collapsed && <span className={styles.navLabel}>{label}</span>}
-        {!collapsed && badge && <span className={styles.navBadge}>{badge}</span>}
-      </a>
+      {tooltipContent}
 
       {customMenu && (
         <span

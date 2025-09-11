@@ -20,12 +20,39 @@ const meta: Meta<typeof Tooltip> = {
     delayDuration: {
       control: 'number',
     },
+    skipDelayDuration: {
+      control: 'number',
+    },
+    disableHoverableContent: {
+      control: 'boolean',
+    },
     defaultOpen: {
       control: 'boolean',
     },
     side: {
       control: 'select',
       options: ['top', 'right', 'bottom', 'left'],
+    },
+    align: {
+      control: 'select',
+      options: ['start', 'center', 'end'],
+    },
+    sticky: {
+      control: 'select',
+      options: ['partial', 'always'],
+    },
+    avoidCollisions: {
+      control: 'boolean',
+    },
+    collisionPadding: {
+      control: 'number',
+    },
+    sideOffset: {
+      control: 'number',
+    },
+    textAlign: {
+      control: 'select',
+      options: ['left', 'center', 'right'],
     },
   },
 };
@@ -108,6 +135,76 @@ export const AlwaysOpen: Story = {
     ),
     description: 'This tooltip is always open for demonstration.',
     open: true,
+    side: 'top',
+  },
+};
+
+export const WithHoverableContent: Story = {
+  args: {
+    children: (
+      <Button variant="secondary" fill="outline">
+        Hoverable Content
+      </Button>
+    ),
+    description: 'This tooltip stays open when you hover over it.',
+    disableHoverableContent: false,
+    delayDuration: 300,
+    skipDelayDuration: 100,
+    side: 'top',
+  },
+};
+
+export const AdvancedCollisionDetection: Story = {
+  args: {
+    children: (
+      <Button variant="primary" fill="filled">
+        Smart Positioning
+      </Button>
+    ),
+    description: 'This tooltip has advanced collision detection and custom padding.',
+    avoidCollisions: true,
+    collisionPadding: 20,
+    sideOffset: 8,
+    side: 'top',
+    align: 'center',
+  },
+};
+
+export const TextLeftAligned: Story = {
+  args: {
+    children: (
+      <Button variant="secondary" fill="outline">
+        Left Aligned
+      </Button>
+    ),
+    description: 'This tooltip text is aligned to the left.',
+    textAlign: 'left',
+    side: 'top',
+  },
+};
+
+export const TextRightAligned: Story = {
+  args: {
+    children: (
+      <Button variant="secondary" fill="outline">
+        Right Aligned
+      </Button>
+    ),
+    description: 'This tooltip text is aligned to the right.',
+    textAlign: 'right',
+    side: 'top',
+  },
+};
+
+export const TextCenterAligned: Story = {
+  args: {
+    children: (
+      <Button variant="secondary" fill="outline">
+        Center Aligned
+      </Button>
+    ),
+    description: 'This tooltip text is centered (default behavior).',
+    textAlign: 'center',
     side: 'top',
   },
 };

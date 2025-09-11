@@ -1,8 +1,9 @@
 import styles from './styles/Sidebar.module.css';
 import clsx from 'clsx';
-import React, { forwardRef, useState, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useState, useCallback, useEffect, useImperativeHandle } from 'react';
 import SidebarLogo from './SidebarLogo';
 import SidebarSection from './SidebarSection';
+import { Tooltip } from '../../components';
 
 export interface NavItem {
   id: string;
@@ -16,6 +17,7 @@ export interface NavItem {
   disabled?: boolean;
   badge?: React.ReactNode;
   customMenu?: React.ReactNode;
+  description?: React.ReactNode;
 }
 
 export interface NavSection {
@@ -246,7 +248,7 @@ const Sidebar = forwardRef<SidebarRef, SidebarProps>(
         const ItemComponent = item.href ? 'a' : NavItemComponent;
         const itemProps = item.href ? { href: item.href } : { onClick: item.onClick };
 
-        return (
+        const itemContent = (
           <ItemComponent
             automation-id={`nav-${item.id}`}
             className={clsx(
@@ -272,6 +274,15 @@ const Sidebar = forwardRef<SidebarRef, SidebarProps>(
               </>
             )}
           </ItemComponent>
+        );
+
+        // Wrap with tooltip if description is provided
+        return item.description ? (
+          <Tooltip description={item.description} side="right" align="start" delayDuration={0}>
+            {itemContent}
+          </Tooltip>
+        ) : (
+          itemContent
         );
       },
       [collapsed, NavItemComponent, navButtonClassName, iconClassName, labelClassName, badgeClassName],

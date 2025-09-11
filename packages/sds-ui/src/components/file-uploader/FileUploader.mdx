@@ -39,13 +39,13 @@ const SimpleUploader = () => {
 
     const response = await fetch('/api/upload', {
       method: 'POST',
-      body: formData
+      body: formData,
     });
 
     return {
       success: response.ok,
       data: await response.json(),
-      file
+      file,
     };
   }, []);
 
@@ -68,12 +68,7 @@ For uploads with status messages and shared state management:
 
 ```jsx
 import React, { useState, useCallback } from 'react';
-import {
-  FileContextProvider,
-  FileUploader,
-  FileCard,
-  StatusMessageDisplay
-} from 'sds-ui';
+import { FileContextProvider, FileUploader, FileCard, StatusMessageDisplay } from 'sds-ui';
 
 const AdvancedUploader = () => {
   const [files, setFiles] = useState([]);
@@ -123,6 +118,7 @@ const AdvancedUploader = () => {
 ```
 
 **Key Differences:**
+
 - **Standalone**: No context provider, no status messages
 - **Context Mode**: Wrapped in `FileContextProvider`, includes `StatusMessageDisplay` for upload status feedback
 
@@ -225,6 +221,7 @@ The FileUploader supports flexible usage patterns:
 ### With Context Provider (Recommended)
 
 When wrapped with `FileContextProvider`, you get:
+
 - Centralized state management
 - Built-in status messaging via `StatusMessageDisplay`
 - Shared state across multiple components
@@ -240,16 +237,13 @@ When wrapped with `FileContextProvider`, you get:
 ### Standalone Mode
 
 Without context provider, the component:
+
 - Uses internal state management
 - Supports controlled mode via `files` and `onFilesChange` props
 - Falls back gracefully (no status messages)
 
 ```jsx
-<FileUploader
-  files={files}
-  onFilesChange={setFiles}
-  onUpload={handleUpload}
-/>
+<FileUploader files={files} onFilesChange={setFiles} onUpload={handleUpload} />
 ```
 
 ## Examples

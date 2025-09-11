@@ -14,8 +14,23 @@ const slideDown: string;
 const slideLeft: string;
 const slideUp: string;
 const slideRight: string;
+const textAlignLeft: string;
+const textAlignCenter: string;
+const textAlignRight: string;
 
-export { trigger, content, arrow, fadeOut, slideDown, slideLeft, slideUp, slideRight };
+export {
+  trigger,
+  content,
+  arrow,
+  fadeOut,
+  slideDown,
+  slideLeft,
+  slideUp,
+  slideRight,
+  textAlignLeft,
+  textAlignCenter,
+  textAlignRight,
+};
 
 export default {
   trigger,
@@ -26,4 +41,7 @@ export default {
   slideLeft,
   slideUp,
   slideRight,
+  textAlignLeft,
+  textAlignCenter,
+  textAlignRight,
 };

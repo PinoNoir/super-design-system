@@ -62,12 +62,12 @@
 }
 
 .content {
-  text-align: center;
   font-size: var(--font-size-sm);
   font-family: var(--font-family-body);
   line-height: var(--font-line-height-body);
-  border-radius: 4px;
-  padding: 8px;
+  border-radius: var(--border-radius-4);
+  padding-block: var(--space-8);
+  padding-inline: var(--space-12);
   width: var(--radix-tooltip-trigger-width);
   max-height: var(--radix-tooltip-content-available-height);
   word-break: break-word;
@@ -112,4 +112,17 @@
 
 .content[data-side='left'] {
   animation-name: slideRight;
+}
+
+/* Text alignment classes */
+.textAlignLeft {
+  text-align: left;
+}
+
+.textAlignCenter {
+  text-align: center;
+}
+
+.textAlignRight {
+  text-align: right;
 }

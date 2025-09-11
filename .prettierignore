@@ -6,3 +6,6 @@
 /packages/*/storybook-static
 /packages/*/*.dts
 /apps/gen-ai/.next
+
+# Vite auto-generated CSS module declaration files
+**/*.d.css.ts

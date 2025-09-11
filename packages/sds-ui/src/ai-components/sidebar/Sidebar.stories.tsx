@@ -211,7 +211,13 @@ const defaultSections = [
     id: 'main',
     title: 'Pinned',
     items: [
-      { id: 'chat-1', label: 'Chapter 7 Filing Strategy Analysis', icon: <MessageCircle />, href: '#' },
+      {
+        id: 'chat-1',
+        label: 'Chapter 7 Filing Strategy Analysis',
+        icon: <MessageCircle />,
+        href: '#',
+        description: 'Detailed analysis of Chapter 7 bankruptcy filing strategies',
+      },
       { id: 'chat-2', label: 'Asset Protection Research', icon: <MessageCircle />, href: '#' },
       { id: 'chat-3', label: 'Debt Discharge Case Review', icon: <MessageCircle />, href: '#' },
       { id: 'chat-4', label: 'Means Test Calculator Help', icon: <MessageCircle />, href: '#' },
@@ -1160,6 +1166,132 @@ export const WithDisabledItems: Story = {
         ],
       },
     ],
+  },
+};
+
+export const WithTooltips: Story = {
+  render: function WithTooltips() {
+    const [collapsed, setCollapsed] = useState(false);
+
+    const sectionsWithTooltips = [
+      {
+        id: 'main',
+        title: 'Navigation',
+        items: [
+          {
+            id: 'home',
+            label: 'Home',
+            icon: <LucideHome />,
+            isActive: true,
+            description: 'Navigate to the main dashboard and overview',
+          },
+          {
+            id: 'search',
+            label: 'Search',
+            icon: <Search />,
+            description: 'Search through all your conversations and content',
+          },
+          {
+            id: 'messages',
+            label: 'Messages',
+            icon: <MessageCircle />,
+            description: 'View and manage all your chat conversations',
+          },
+          {
+            id: 'settings',
+            label: 'Settings',
+            icon: <Settings />,
+            description: 'Configure application preferences and account settings',
+          },
+        ],
+      },
+      {
+        id: 'recent',
+        title: 'Recent Chats',
+        items: [
+          {
+            id: 'chat-1',
+            label: 'Legal Strategy Discussion',
+            icon: <MessageCircle />,
+            description: 'Chapter 7 bankruptcy filing strategy analysis for Johnson case',
+          },
+          {
+            id: 'chat-2',
+            label: 'Asset Protection',
+            icon: <MessageCircle />,
+            description: 'Research on asset protection strategies and exemption planning',
+          },
+        ],
+      },
+    ];
+
+    return (
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <Sidebar
+          collapsible
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed(!collapsed)}
+          sections={sectionsWithTooltips}
+        />
+        <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--theme-color-background)' }}>
+          <h2>Sidebar with Tooltips</h2>
+          <p>
+            This example demonstrates how to add tooltips to sidebar items using the <code>description</code> prop.
+            Tooltips are especially useful when the sidebar is collapsed or when you want to provide additional context.
+          </p>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Usage:</h3>
+            <pre
+              style={{
+                backgroundColor: 'var(--theme-color-component)',
+                padding: '1rem',
+                borderRadius: '4px',
+                color: 'var(--theme-text-base)',
+                overflow: 'auto',
+              }}
+            >
+              {`{
+  id: 'home',
+  label: 'Home',
+  icon: <HomeIcon />,
+  description: 'Navigate to the main dashboard and overview'
+}`}
+            </pre>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Controls:</h3>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <Button variant="base" onClick={() => setCollapsed(!collapsed)}>
+                {collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+              </Button>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Features:</h3>
+            <ul>
+              <li>Hover over any sidebar item to see its tooltip</li>
+              <li>Tooltips appear on the right side of sidebar items</li>
+              <li>Tooltips work in both expanded and collapsed states</li>
+              <li>
+                Optional - only items with <code>description</code> prop show tooltips
+              </li>
+              <li>Uses your existing Tooltip component for consistency</li>
+            </ul>
+          </div>
+
+          <div style={{ marginTop: '2rem', color: 'var(--theme-text-base)' }}>
+            <h3>Try it:</h3>
+            <p>
+              <strong>💡 Tip:</strong> Collapse the sidebar to see how tooltips provide context when labels are hidden.
+              Hover over the icons to see the descriptive tooltips.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   },
 };
 

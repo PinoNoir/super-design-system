@@ -81,7 +81,7 @@ export const createFormDataUploader = (config: FormDataConfig): UploadAdapter =>
 };
 
 export const createChunkedUploader = (
-  config: RestConfig & { chunkSize?: number; onProgress?: (progress: number) => void }
+  config: RestConfig & { chunkSize?: number; onProgress?: (progress: number) => void },
 ): UploadAdapter => {
   return async (file: File, uploadConfig?: UploadConfig): Promise<UploadResult> => {
     try {

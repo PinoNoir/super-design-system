@@ -174,8 +174,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   // Priority: controlled files > context files > internal files
   const files = controlledFiles ?? context?.files ?? internalFiles;
 
-  // Use context methods if available, otherwise fallback to local methods
-  const addFile = context?.addFile ?? useCallback(
+  // Always define local callback functions to avoid conditional hook calls
+  const localAddFile = useCallback(
     (file: File) => {
       const newFile: FileWithStatus = {
         fileInfo: {
@@ -193,32 +193,32 @@ const FileUploader: React.FC<FileUploaderProps> = ({
       if (controlledFiles && onFilesChange) {
         onFilesChange([...controlledFiles, newFile]);
       } else {
-        setInternalFiles(prev => [...prev, newFile]);
+        setInternalFiles((prev) => [...prev, newFile]);
       }
     },
     [controlledFiles, onFilesChange],
   );
 
-  const updateFileStatus = context?.updateFileStatus ?? useCallback(
+  const localUpdateFileStatus = useCallback(
     (fileName: string, status: FileStatus, message?: string) => {
       if (controlledFiles && onFilesChange) {
-        onFilesChange(controlledFiles.map(file => 
-          file.file.name === fileName ? { ...file, status, message } : file
-        ));
+        onFilesChange(
+          controlledFiles.map((file) => (file.file.name === fileName ? { ...file, status, message } : file)),
+        );
       } else {
-        setInternalFiles(prev => prev.map(file => 
-          file.file.name === fileName ? { ...file, status, message } : file
-        ));
+        setInternalFiles((prev) =>
+          prev.map((file) => (file.file.name === fileName ? { ...file, status, message } : file)),
+        );
       }
     },
     [controlledFiles, onFilesChange],
   );
 
-  const markFileAsUploaded = context?.markFileAsUploaded ?? useCallback((file: File) => {
+  const localMarkFileAsUploaded = useCallback((file: File) => {
     // If no context, this is handled by updateFileStatus
   }, []);
 
-  const isDuplicateFile = context?.isDuplicateFile ?? useCallback(
+  const localIsDuplicateFile = useCallback(
     (file: File) => {
       const filesToCheck = controlledFiles ?? internalFiles;
       return filesToCheck.some((f) => f.file.name === file.name && f.file.size === file.size);
@@ -226,6 +226,11 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     [controlledFiles, internalFiles],
   );
 
+  // Use context methods if available, otherwise fallback to local methods
+  const addFile = context?.addFile ?? localAddFile;
+  const updateFileStatus = context?.updateFileStatus ?? localUpdateFileStatus;
+  const markFileAsUploaded = context?.markFileAsUploaded ?? localMarkFileAsUploaded;
+  const isDuplicateFile = context?.isDuplicateFile ?? localIsDuplicateFile;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -272,7 +277,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                 updateFileStatus(file.name, FileStatus.Complete, 'Upload successful');
                 markFileAsUploaded(file);
                 onUploadSuccess?.(file, uploadResult);
-                
+
                 // Show success status message
                 if (context) {
                   context.showStatusMessage('success', `${file.name} uploaded successfully`, '✅');
@@ -280,7 +285,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
               } else {
                 updateFileStatus(file.name, FileStatus.ValidationFailed, uploadResult.error || 'Upload failed');
                 onUploadFailure?.(file, uploadResult.error);
-                
+
                 // Show error status message
                 if (context) {
                   context.showStatusMessage('error', uploadResult.error || 'Upload failed', '❌');
@@ -291,7 +296,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
             const errorMessage = error instanceof Error ? error.message : 'Upload failed';
             updateFileStatus(file.name, FileStatus.ValidationFailed, errorMessage);
             onUploadFailure?.(file, error);
-            
+
             // Show error status message
             if (context) {
               context.showStatusMessage('error', errorMessage, '❌');
