@@ -1,0 +1,564 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as DateRangePickerStories from './DatePicker.stories';
+
+<Meta of={DateRangePickerStories} />
+
+# Date Range Picker
+
+The `DateRangePicker` component is a flexible and accessible date range selection tool built on react-day-picker v9.9.0. It provides an intuitive interface for users to select date ranges through both text input and an interactive calendar popover.
+
+## Features
+
+- **Dual Input Methods**: Text input with intelligent parsing and interactive calendar
+- **Flexible Range Selection**: Single dates or complete date ranges
+- **Smart Text Parsing**: Automatically parses various date formats and range patterns
+- **Range Constraints**: Minimum and maximum night limits for bookings
+- **Date Restrictions**: Disable specific dates or date ranges (weekends, holidays, etc.)
+- **Multiple Display Modes**: Single or multiple month views
+- **Custom Formatting**: Configurable date display formats
+- **Navigation Controls**: Dropdown or button-based month/year navigation
+- **Accessibility Ready**: ARIA labels, keyboard navigation, screen reader support
+- **Responsive Design**: Adapts to container width and mobile viewports
+- **Legacy Support**: Backward compatibility with older prop patterns
+
+<Canvas of={DateRangePickerStories.Default} />
+
+## Basic Usage
+
+```tsx
+import React, { useState } from 'react';
+import { DateRangePicker } from 'sds-ui';
+import type { DateRange } from 'react-day-picker';
+
+function MyComponent() {
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
+
+  return <DateRangePicker value={dateRange} onChange={setDateRange} placeholder="Select your travel dates" />;
+}
+```
+
+## Input Methods
+
+### Text Input Parsing
+
+The component intelligently parses text input in multiple formats:
+
+- **Single Date**: `06/15/2024` → Sets start date only
+- **Date Range**: `06/15/2024 - 06/22/2024` → Sets complete range
+- **Partial Range**: `06/15/2024 - ` → Sets start date, waits for end date
+
+```tsx
+// The component automatically detects and parses these formats:
+// MM/dd/yyyy (default)
+// dd/MM/yyyy (when format="dd/MM/yyyy")
+// Custom formats using date-fns format strings
+```
+
+### Calendar Interaction
+
+- Click the calendar icon or input field to open the popover
+- Single-click to select start date
+- Click another date to complete the range
+- Click and drag for quick range selection
+- Keyboard navigation with arrow keys
+
+## Examples
+
+### Multiple Months Display
+
+<Canvas of={DateRangePickerStories.MultipleMonths} />
+
+Display multiple months for easier range selection:
+
+```tsx
+<DateRangePicker numberOfMonths={2} placeholder="Select dates across months" />
+```
+
+### Date Constraints
+
+<Canvas of={DateRangePickerStories.WithMinMaxDates} />
+
+Restrict available dates using legacy props:
+
+```tsx
+<DateRangePicker
+  minDate={new Date(2024, 0, 1)} // January 1, 2024
+  maxDate={new Date(2024, 11, 31)} // December 31, 2024
+  placeholder="Select dates in 2024"
+/>
+```
+
+### Range Length Constraints
+
+<Canvas of={DateRangePickerStories.RangeConstraints} />
+
+Set minimum and maximum stay duration:
+
+```tsx
+<DateRangePicker
+  min={3} // Minimum 3 nights
+  max={14} // Maximum 14 nights
+  placeholder="Select 3-14 night stay"
+/>
+```
+
+### Business Days Only
+
+<Canvas of={DateRangePickerStories.BusinessDaysOnly} />
+
+Disable weekends and restrict to business days:
+
+```tsx
+<DateRangePicker
+  disabled={{ dayOfWeek: [0, 6] }} // Disable Sunday and Saturday
+  min={1}
+  max={10}
+  placeholder="Business days only"
+/>
+```
+
+### Dropdown Navigation
+
+<Canvas of={DateRangePickerStories.DropdownNavigation} />
+
+Use dropdown selectors for month and year navigation:
+
+```tsx
+<DateRangePicker captionLayout="dropdown" numberOfMonths={2} placeholder="Use dropdowns to navigate" />
+```
+
+### Custom Date Format
+
+<Canvas of={DateRangePickerStories.CustomFormat} />
+
+Change the date display format:
+
+```tsx
+<DateRangePicker
+  format="dd/MM/yyyy" // European format
+  placeholder="DD/MM/YYYY format"
+/>
+```
+
+### Fixed Layout
+
+<Canvas of={DateRangePickerStories.FixedWeeks} />
+
+Prevent calendar height changes with fixed weeks:
+
+```tsx
+<DateRangePicker fixedWeeks={true} showOutsideDays={true} placeholder="Consistent calendar height" />
+```
+
+### Required Selection
+
+<Canvas of={DateRangePickerStories.RequiredSelection} />
+
+Make range selection mandatory:
+
+```tsx
+<DateRangePicker required={true} placeholder="Range selection required" />
+```
+
+### Controlled Component
+
+<Canvas of={DateRangePickerStories.Controlled} />
+
+Full control over the selected value:
+
+```tsx
+function ControlledExample() {
+  const [value, setValue] = useState<DateRange | undefined>();
+
+  const handleChange = (range: DateRange | undefined) => {
+    setValue(range);
+    console.log('Selected range:', range);
+  };
+
+  return <DateRangePicker value={value} onChange={handleChange} placeholder="Controlled picker" />;
+}
+```
+
+## Advanced Features
+
+<Canvas of={DateRangePickerStories.AdvancedFeatures} />
+
+### Dynamic Configuration
+
+```tsx
+function DynamicPicker() {
+  const [isAdvanced, setIsAdvanced] = useState(false);
+
+  return (
+    <DateRangePicker
+      numberOfMonths={isAdvanced ? 2 : 1}
+      captionLayout={isAdvanced ? 'dropdown' : 'label'}
+      min={isAdvanced ? 2 : undefined}
+      max={isAdvanced ? 30 : undefined}
+      fixedWeeks={isAdvanced}
+      excludeDisabled={isAdvanced}
+      placeholder="Dynamic configuration"
+    />
+  );
+}
+```
+
+### Custom Disabled Dates
+
+```tsx
+// Disable specific dates
+const disabledDates = [
+  new Date(2024, 6, 4), // July 4th
+  new Date(2024, 11, 25), // Christmas
+  { from: new Date(2024, 7, 1), to: new Date(2024, 7, 7) }, // Week range
+];
+
+<DateRangePicker disabled={disabledDates} placeholder="Holidays disabled" />;
+```
+
+### Event Handlers
+
+```tsx
+<DateRangePicker
+  onSelect={(range, selectedDay, activeModifiers, event) => {
+    console.log('Selection event:', { range, selectedDay, activeModifiers });
+  }}
+  onMonthChange={(month) => {
+    console.log('Month changed to:', month);
+  }}
+  onDayClick={(day, activeModifiers, event) => {
+    console.log('Day clicked:', day);
+  }}
+  placeholder="Event tracking enabled"
+/>
+```
+
+## Responsive Design
+
+<Canvas of={DateRangePickerStories.FlexibleWidth} />
+
+The component automatically adapts to different screen sizes and container widths:
+
+```tsx
+// Responsive behavior:
+// - Minimum width: 200px for usability
+// - Expands to accommodate content
+// - Adjusts to placeholder text length
+// - Mobile-friendly touch targets
+```
+
+## Styling and Customization
+
+<Canvas of={DateRangePickerStories.StylingShowcase} />
+
+### CSS Modules
+
+The component uses CSS modules for styling. Default styles are applied automatically.
+
+### Custom Class Names
+
+```tsx
+<DateRangePicker
+  className="my-custom-picker"
+  inputClassName="my-custom-input"
+  classNames={{
+    root: 'custom-calendar-root',
+    day_button: 'custom-day-button',
+    selected: 'custom-selected-day',
+    range_middle: 'custom-range-middle',
+  }}
+  placeholder="Custom styled picker"
+/>
+```
+
+### CSS Custom Properties
+
+Override default styles using CSS variables:
+
+```css
+.my-custom-picker {
+  --date-picker-border-color: #2563eb;
+  --date-picker-focus-color: #3b82f6;
+  --date-picker-selected-bg: #1d4ed8;
+}
+```
+
+## API Reference
+
+### Core Props
+
+| Prop             | Type                                      | Default               | Description                                  |
+| ---------------- | ----------------------------------------- | --------------------- | -------------------------------------------- |
+| `value`          | `DateRange \| undefined`                  | `undefined`           | Controlled value for the selected date range |
+| `onChange`       | `(range: DateRange \| undefined) => void` | `undefined`           | Callback fired when the range changes        |
+| `defaultValue`   | `DateRange \| undefined`                  | `undefined`           | Initial value for uncontrolled usage         |
+| `placeholder`    | `string`                                  | `'Pick a date range'` | Placeholder text for the input               |
+| `format`         | `string`                                  | `'MM/dd/yyyy'`        | Date format string (date-fns format)         |
+| `inputClassName` | `string`                                  | `undefined`           | CSS class for the input element              |
+
+### Calendar Configuration
+
+| Prop              | Type                                                             | Default       | Description                    |
+| ----------------- | ---------------------------------------------------------------- | ------------- | ------------------------------ |
+| `numberOfMonths`  | `number`                                                         | `1`           | Number of months to display    |
+| `defaultMonth`    | `Date`                                                           | Current month | Initial month to display       |
+| `startMonth`      | `Date`                                                           | `undefined`   | Earliest month available       |
+| `endMonth`        | `Date`                                                           | `undefined`   | Latest month available         |
+| `captionLayout`   | `'label' \| 'dropdown' \| 'dropdown-months' \| 'dropdown-years'` | `'label'`     | Month/year navigation style    |
+| `showOutsideDays` | `boolean`                                                        | `true`        | Show days from adjacent months |
+| `fixedWeeks`      | `boolean`                                                        | `false`       | Always show 6 weeks per month  |
+
+### Date Constraints
+
+| Prop              | Type                   | Default     | Description                                 |
+| ----------------- | ---------------------- | ----------- | ------------------------------------------- |
+| `disabled`        | `Matcher \| Matcher[]` | `undefined` | Dates to disable (react-day-picker Matcher) |
+| `min`             | `number`               | `undefined` | Minimum nights in range                     |
+| `max`             | `number`               | `undefined` | Maximum nights in range                     |
+| `required`        | `boolean`              | `false`     | Prevent clearing selection                  |
+| `excludeDisabled` | `boolean`              | `false`     | Exclude disabled dates from ranges          |
+
+### Legacy Props
+
+| Prop      | Type     | Default     | Description                      |
+| --------- | -------- | ----------- | -------------------------------- |
+| `minDate` | `Date`   | `undefined` | Legacy: minimum selectable date  |
+| `maxDate` | `Date`   | `undefined` | Legacy: maximum selectable date  |
+| `months`  | `number` | `undefined` | Legacy: alias for numberOfMonths |
+
+### Accessibility
+
+| Prop               | Type     | Default        | Description                 |
+| ------------------ | -------- | -------------- | --------------------------- |
+| `id`               | `string` | Auto-generated | Input element ID            |
+| `aria-label`       | `string` | `undefined`    | ARIA label for input        |
+| `aria-describedby` | `string` | `undefined`    | ARIA described-by reference |
+
+### Styling
+
+| Prop                  | Type                  | Default     | Description                     |
+| --------------------- | --------------------- | ----------- | ------------------------------- |
+| `className`           | `string`              | `undefined` | CSS class for container         |
+| `classNames`          | `ClassNames`          | `undefined` | react-day-picker class names    |
+| `modifiersClassNames` | `ModifiersClassNames` | `undefined` | Modifier-specific class names   |
+| `modifiersStyles`     | `ModifiersStyles`     | `undefined` | Modifier-specific inline styles |
+
+### Event Handlers
+
+| Prop            | Type                                | Description                        |
+| --------------- | ----------------------------------- | ---------------------------------- |
+| `onSelect`      | `PropsRange['onSelect']`            | Fired when range selection changes |
+| `onMonthChange` | `MonthChangeEventHandler`           | Fired when displayed month changes |
+| `onDayClick`    | `DayEventHandler<React.MouseEvent>` | Fired when a day is clicked        |
+
+### Localization
+
+| Prop       | Type             | Default         | Description                |
+| ---------- | ---------------- | --------------- | -------------------------- |
+| `locale`   | `Locale`         | System locale   | date-fns locale object     |
+| `dir`      | `'ltr' \| 'rtl'` | `'ltr'`         | Text direction             |
+| `timeZone` | `string`         | System timezone | IANA timezone identifier   |
+| `today`    | `Date`           | `new Date()`    | Date considered as "today" |
+
+## Types
+
+### DateRange
+
+```typescript
+interface DateRange {
+  from?: Date;
+  to?: Date;
+}
+```
+
+### Matcher
+
+```typescript
+type Matcher =
+  | Date
+  | Date[]
+  | DateRange
+  | DayOfWeek
+  | DateBefore
+  | DateAfter
+  | DateInterval
+  | boolean
+  | ((day: Date) => boolean);
+```
+
+## Migration Guide
+
+### From Previous Versions
+
+**V1 to V2 Changes:**
+
+```tsx
+// Before (V1)
+<DateRangePicker
+  startDate={startDate}
+  endDate={endDate}
+  onStartDateChange={setStartDate}
+  onEndDateChange={setEndDate}
+/>
+
+// After (V2)
+<DateRangePicker
+  value={{ from: startDate, to: endDate }}
+  onChange={(range) => {
+    setStartDate(range?.from);
+    setEndDate(range?.to);
+  }}
+/>
+```
+
+**Legacy Prop Mapping:**
+
+```tsx
+// Legacy props (still supported)
+<DateRangePicker
+  minDate={new Date(2024, 0, 1)}
+  maxDate={new Date(2024, 11, 31)}
+  months={2}
+/>
+
+// Preferred modern props
+<DateRangePicker
+  disabled={[
+    { before: new Date(2024, 0, 1) },
+    { after: new Date(2024, 11, 31) }
+  ]}
+  numberOfMonths={2}
+/>
+```
+
+## Best Practices
+
+### Performance
+
+```tsx
+// Memoize handlers for better performance
+const handleChange = useCallback((range: DateRange | undefined) => {
+  setSelectedRange(range);
+}, []);
+
+// Use controlled mode for complex state management
+const [range, setRange] = useState<DateRange | undefined>();
+```
+
+### User Experience
+
+```tsx
+// Provide clear placeholder text
+<DateRangePicker placeholder="Check-in → Check-out" />
+
+// Set appropriate constraints
+<DateRangePicker
+  min={1}           // At least 1 night
+  max={30}          // Maximum 30 nights
+  disabled={{ before: new Date() }}  // No past dates
+/>
+
+// Use multiple months for longer ranges
+<DateRangePicker
+  numberOfMonths={range?.from && range?.to ? 2 : 1}
+/>
+```
+
+### Accessibility
+
+```tsx
+// Provide ARIA labels
+<DateRangePicker
+  aria-label="Select travel dates"
+  aria-describedby="date-help-text"
+/>
+
+// Include helper text
+<div>
+  <DateRangePicker aria-describedby="date-help" />
+  <div id="date-help">Select your check-in and check-out dates</div>
+</div>
+```
+
+## Common Use Cases
+
+### Hotel Booking
+
+```tsx
+<DateRangePicker
+  placeholder="Check-in → Check-out"
+  min={1} // Minimum 1 night stay
+  disabled={{ before: new Date() }} // No past dates
+  numberOfMonths={2}
+  format="MMM dd, yyyy"
+/>
+```
+
+### Event Planning
+
+```tsx
+<DateRangePicker
+  placeholder="Event start → Event end"
+  disabled={{ dayOfWeek: [0, 6] }} // Weekdays only
+  min={1}
+  max={5} // Maximum 5-day events
+  required={true}
+/>
+```
+
+### Reporting Period
+
+```tsx
+<DateRangePicker
+  placeholder="Report period"
+  maxDate={new Date()} // No future dates
+  captionLayout="dropdown"
+  numberOfMonths={1}
+  format="MM/dd/yyyy"
+/>
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Date Parsing Problems:**
+
+```tsx
+// Issue: Custom format not working
+<DateRangePicker format="DD/MM/YYYY" />  // Wrong format
+
+// Solution: Use date-fns format tokens
+<DateRangePicker format="dd/MM/yyyy" />  // Correct format
+```
+
+**Range Constraints:**
+
+```tsx
+// Issue: Min/max not working
+<DateRangePicker min="3" max="14" />  // Strings not supported
+
+// Solution: Use numbers
+<DateRangePicker min={3} max={14} />  // Numbers required
+```
+
+**Performance Issues:**
+
+```tsx
+// Issue: Re-renders on every change
+const handleChange = (range) => setRange(range); // New function each render
+
+// Solution: Memoize callbacks
+const handleChange = useCallback((range) => setRange(range), []); // Stable reference
+```
+
+## Notes
+
+- Built on react-day-picker v9.9.0 for robust calendar functionality
+- Supports both controlled and uncontrolled usage patterns
+- Automatically handles edge cases like leap years and month boundaries
+- Integrates seamlessly with form libraries like React Hook Form
+- Responsive design works on desktop, tablet, and mobile devices
+- Legacy props maintained for backward compatibility
+
+For technical support or feature requests, please contact the design system team or create a GitHub issue.

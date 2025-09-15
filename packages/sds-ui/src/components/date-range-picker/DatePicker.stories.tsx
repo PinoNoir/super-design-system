@@ -6,14 +6,9 @@ import type { DateRange } from 'react-day-picker';
 const meta: Meta<typeof DateRangePicker> = {
   title: 'Components/Inputs/Date Range Picker',
   component: DateRangePicker,
+  tags: ['!autodocs'],
   parameters: {
     layout: 'centered',
-    docs: {
-      description: {
-        component:
-          'A flexible and accessible date range picker component built with react-day-picker v9.9.0. Supports various selection modes, custom styling, and advanced features.',
-      },
-    },
   },
   argTypes: {
     placeholder: {
