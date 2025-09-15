@@ -32,6 +32,22 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     },
     ref,
   ) => {
+    const CalendarChevron = ({
+      orientation,
+      ...chevronProps
+    }: {
+      className?: string;
+      size?: number;
+      disabled?: boolean;
+      orientation?: 'left' | 'right' | 'up' | 'down';
+    }) => {
+      const { className, size, ...domProps } = chevronProps;
+      if (orientation === 'left') {
+        return <ChevronLeft className={className} size={size} {...domProps} />;
+      }
+      return <ChevronRight className={className} size={size} {...domProps} />;
+    };
+
     return (
       <div ref={ref} className={className}>
         <DayPicker
@@ -68,14 +84,7 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             ...classNames,
           }}
           components={{
-            Chevron: ({ orientation, ...chevronProps }) => {
-              // Filter out non-DOM props before passing to Lucide icons
-              const { className, size, ...domProps } = chevronProps;
-              if (orientation === 'left') {
-                return <ChevronLeft className={className} size={size} {...domProps} />;
-              }
-              return <ChevronRight className={className} size={size} {...domProps} />;
-            },
+            Chevron: CalendarChevron,
           }}
           {...props}
         />
@@ -85,4 +94,5 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
 );
 
 Calendar.displayName = 'Calendar';
+
 export default Calendar;
