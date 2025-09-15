@@ -10,10 +10,10 @@ interface PopoverProps extends React.ComponentPropsWithoutRef<'div'> {
   sideOffset?: number;
 }
 
-const Popover = PopoverPrimitive.Root;
-const PopoverTrigger = PopoverPrimitive.Trigger;
+const DateRangePopover = PopoverPrimitive.Root;
+const DateRangePopoverTrigger = PopoverPrimitive.Trigger;
 
-const PopoverContent = React.forwardRef<HTMLDivElement, PopoverProps>(
+const DateRangePopoverContent = React.forwardRef<HTMLDivElement, PopoverProps>(
   ({ className, align = 'center', sideOffset = 4, ...props }, ref) => (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
@@ -27,6 +27,6 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverProps>(
   ),
 );
 
-PopoverContent.displayName = PopoverPrimitive.Content.displayName;
+DateRangePopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
-export { Popover, PopoverTrigger, PopoverContent };
+export { DateRangePopover, DateRangePopoverTrigger, DateRangePopoverContent };

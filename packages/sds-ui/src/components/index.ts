@@ -8,6 +8,7 @@ export * from './card';
 export * from './checkbox';
 export * from './currency-input';
 export * from './data-table';
+export * from './date-range-picker';
 export * from './drawer';
 export * from './dropdown';
 export * from './dialog';

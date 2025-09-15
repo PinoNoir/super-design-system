@@ -1,3 +1,3 @@
 export { default as DateRangePicker } from './DateRangePicker';
 export * from './Calendar';
-export * from './Popover';
+export { DateRangePopover, DateRangePopoverTrigger, DateRangePopoverContent } from './Popover';

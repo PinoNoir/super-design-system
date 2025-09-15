@@ -80,17 +80,17 @@ jest.mock('../Calendar', () => {
 
 // Mock Popover component
 jest.mock('../Popover', () => ({
-  Popover: ({ children, open, onOpenChange }: any) => (
+  DateRangePopover: ({ children, open, onOpenChange }: any) => (
     <div automation-id="popover" data-open={open} onClick={() => onOpenChange?.(!open)}>
       {children}
     </div>
   ),
-  PopoverTrigger: ({ children, asChild }: any) => (
+  DateRangePopoverTrigger: ({ children, asChild }: any) => (
     <div automation-id="popover-trigger" data-as-child={asChild}>
       {children}
     </div>
   ),
-  PopoverContent: ({ children, className }: any) => (
+  DateRangePopoverContent: ({ children, className }: any) => (
     <div automation-id="popover-content" className={className}>
       {children}
     </div>

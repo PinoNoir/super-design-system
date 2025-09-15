@@ -13,7 +13,7 @@ import type {
 } from 'react-day-picker';
 import { CalendarIcon } from 'lucide-react';
 import Calendar from './Calendar';
-import { Popover, PopoverContent, PopoverTrigger } from './Popover';
+import { DateRangePopover, DateRangePopoverContent, DateRangePopoverTrigger } from './Popover';
 
 import clsx from 'clsx';
 import styles from './styles/DateRangePicker.module.css';
@@ -212,8 +212,8 @@ const DateRangePicker = ({
 
   return (
     <div className={clsx(styles.container, className)}>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
+      <DateRangePopover open={isOpen} onOpenChange={setIsOpen}>
+        <DateRangePopoverTrigger asChild>
           <div className={styles.wrapper}>
             <div className={styles.innerWrapper}>
               <input
@@ -229,8 +229,8 @@ const DateRangePicker = ({
               <CalendarIcon size={20} />
             </div>
           </div>
-        </PopoverTrigger>
-        <PopoverContent className={styles.popover} align="start">
+        </DateRangePopoverTrigger>
+        <DateRangePopoverContent className={styles.popover} align="start">
           <Calendar
             mode="range"
             defaultMonth={displayRange?.from || defaultMonth}
@@ -256,8 +256,8 @@ const DateRangePicker = ({
             dir={dir}
             today={today}
           />
-        </PopoverContent>
-      </Popover>
+        </DateRangePopoverContent>
+      </DateRangePopover>
     </div>
   );
 };

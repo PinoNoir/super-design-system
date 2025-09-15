@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Popover, PopoverTrigger, PopoverContent } from '../Popover';
+import { DateRangePopover, DateRangePopoverTrigger, DateRangePopoverContent } from '../Popover';
 
 // Mock Radix UI Popover components
 jest.mock('@radix-ui/react-popover', () => ({
@@ -30,20 +30,20 @@ jest.mock('@radix-ui/react-popover', () => ({
   Portal: ({ children }: any) => children,
 }));
 
-describe('Popover Components', () => {
+describe('DateRangePopover Components', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('Popover Root', () => {
+  describe('DateRangePopover Root', () => {
     it('renders with default props', () => {
       render(
-        <Popover>
-          <PopoverTrigger asChild>
+        <DateRangePopover>
+          <DateRangePopoverTrigger asChild>
             <button>Open</button>
-          </PopoverTrigger>
-          <PopoverContent>Content</PopoverContent>
-        </Popover>,
+          </DateRangePopoverTrigger>
+          <DateRangePopoverContent>Content</DateRangePopoverContent>
+        </DateRangePopover>,
       );
 
       expect(screen.getByTestId('popover-root')).toBeInTheDocument();
@@ -53,12 +53,12 @@ describe('Popover Components', () => {
 
     it('handles open state', () => {
       render(
-        <Popover open={true}>
-          <PopoverTrigger asChild>
+        <DateRangePopover open={true}>
+          <DateRangePopoverTrigger asChild>
             <button>Open</button>
-          </PopoverTrigger>
-          <PopoverContent>Content</PopoverContent>
-        </Popover>,
+          </DateRangePopoverTrigger>
+          <DateRangePopoverContent>Content</DateRangePopoverContent>
+        </DateRangePopover>,
       );
 
       const root = screen.getByTestId('popover-root');
@@ -66,15 +66,15 @@ describe('Popover Components', () => {
     });
   });
 
-  describe('PopoverTrigger', () => {
+  describe('DateRangePopoverTrigger', () => {
     it('renders with asChild prop', () => {
       render(
-        <Popover>
-          <PopoverTrigger asChild>
+        <DateRangePopover>
+          <DateRangePopoverTrigger asChild>
             <button>Trigger</button>
-          </PopoverTrigger>
-          <PopoverContent>Content</PopoverContent>
-        </Popover>,
+          </DateRangePopoverTrigger>
+          <DateRangePopoverContent>Content</DateRangePopoverContent>
+        </DateRangePopover>,
       );
 
       const trigger = screen.getByTestId('popover-trigger');
@@ -83,17 +83,17 @@ describe('Popover Components', () => {
     });
   });
 
-  describe('PopoverContent', () => {
+  describe('DateRangePopoverContent', () => {
     it('renders content', () => {
       render(
-        <Popover>
-          <PopoverTrigger asChild>
+        <DateRangePopover>
+          <DateRangePopoverTrigger asChild>
             <button>Open</button>
-          </PopoverTrigger>
-          <PopoverContent>
+          </DateRangePopoverTrigger>
+          <DateRangePopoverContent>
             <div>Test Content</div>
-          </PopoverContent>
-        </Popover>,
+          </DateRangePopoverContent>
+        </DateRangePopover>,
       );
 
       expect(screen.getByText('Test Content')).toBeInTheDocument();
@@ -101,12 +101,12 @@ describe('Popover Components', () => {
 
     it('renders with custom className', () => {
       render(
-        <Popover>
-          <PopoverTrigger asChild>
+        <DateRangePopover>
+          <DateRangePopoverTrigger asChild>
             <button>Open</button>
-          </PopoverTrigger>
-          <PopoverContent className="custom-class">Content</PopoverContent>
-        </Popover>,
+          </DateRangePopoverTrigger>
+          <DateRangePopoverContent className="custom-class">Content</DateRangePopoverContent>
+        </DateRangePopover>,
       );
 
       const content = screen.getByTestId('popover-content');
@@ -117,18 +117,18 @@ describe('Popover Components', () => {
   describe('Integration', () => {
     it('renders complete popover structure', () => {
       render(
-        <Popover>
-          <PopoverTrigger asChild>
+        <DateRangePopover>
+          <DateRangePopoverTrigger asChild>
             <button>Open Popover</button>
-          </PopoverTrigger>
-          <PopoverContent>
+          </DateRangePopoverTrigger>
+          <DateRangePopoverContent>
             <div>
               <h3>Popover Title</h3>
               <p>Popover description</p>
               <button>Action</button>
             </div>
-          </PopoverContent>
-        </Popover>,
+          </DateRangePopoverContent>
+        </DateRangePopover>,
       );
 
       expect(screen.getByText('Open Popover')).toBeInTheDocument();
