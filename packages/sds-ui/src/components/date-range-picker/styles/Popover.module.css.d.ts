@@ -10,10 +10,14 @@ const popoverContent: string;
 const popoverIn: string;
 const popoverOut: string;
 
-export { popoverContent, popoverIn, popoverOut };
+export {
+	popoverContent,
+	popoverIn,
+	popoverOut
+};
 
 export default {
-  popoverContent,
-  popoverIn,
-  popoverOut,
+	popoverContent,
+	popoverIn,
+	popoverOut
 };

@@ -6,10 +6,15 @@
  * https://npmjs.com/vite-css-modules
  */
 
+const wrapper: string;
 const label: string;
 
-export { label };
+export {
+	wrapper,
+	label
+};
 
 export default {
-  label,
+	wrapper,
+	label
 };

@@ -8,8 +8,10 @@
 
 const flex: string;
 
-export { flex };
+export {
+	flex
+};
 
 export default {
-  flex,
+	flex
 };

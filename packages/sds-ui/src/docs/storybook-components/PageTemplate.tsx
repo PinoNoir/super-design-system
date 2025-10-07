@@ -1,5 +1,5 @@
 import React from 'react';
-import bg from '../assets/images/stretto-bg.png?url';
+import bg from '../assets/images/bg.png?url';
 import styles from './styles/PageTemplate.module.css';
 
 interface PageTemplateProps {

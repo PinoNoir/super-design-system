@@ -11,11 +11,16 @@ const formRequirementInvalid: string;
 const formRequirementWarning: string;
 const formRequirementSuccess: string;
 
-export { validationMsg, formRequirementInvalid, formRequirementWarning, formRequirementSuccess };
+export {
+	validationMsg,
+	formRequirementInvalid,
+	formRequirementWarning,
+	formRequirementSuccess
+};
 
 export default {
-  validationMsg,
-  formRequirementInvalid,
-  formRequirementWarning,
-  formRequirementSuccess,
+	validationMsg,
+	formRequirementInvalid,
+	formRequirementWarning,
+	formRequirementSuccess
 };

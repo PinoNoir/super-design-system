@@ -14,14 +14,22 @@ const disabled: string;
 const left: string;
 const center: string;
 
-export { fileUploader, fileContainer, fileDescription, fileDropContainer, disabled, left, center };
+export {
+	fileUploader,
+	fileContainer,
+	fileDescription,
+	fileDropContainer,
+	disabled,
+	left,
+	center
+};
 
 export default {
-  fileUploader,
-  fileContainer,
-  fileDescription,
-  fileDropContainer,
-  disabled,
-  left,
-  center,
+	fileUploader,
+	fileContainer,
+	fileDescription,
+	fileDropContainer,
+	disabled,
+	left,
+	center
 };

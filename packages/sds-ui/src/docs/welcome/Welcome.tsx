@@ -2,7 +2,7 @@ import { Link } from '../../components';
 import Azure from '../assets/images/azure.svg';
 import Confluence from '../assets/images/confluence.svg';
 import Figma from '../assets/images/figma.svg';
-import bg from '../assets/images/stretto-bg.png?url';
+import bg from '../assets/images/bg.png?url';
 import Zeroheight from '../assets/images/zeroheight.svg';
 import { HeadingTemplate } from '../storybook-components';
 import styles from './Welcome.module.css';
@@ -55,7 +55,7 @@ export const Welcome = () => {
               <img src={Figma} alt="figma" />
               <span>Figma Library</span>
             </Link>
-            <p>Visit Stretto&apos;s Figma component library for visual references.</p>
+            <p>Visit the SDS Figma component library for visual references.</p>
           </div>
           <div className={styles.linkItem}>
             <Link href="#" target="_blank">

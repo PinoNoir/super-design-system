@@ -19,29 +19,29 @@ const loadingOverlayStop: string;
 const description: string;
 
 export {
-  loader,
-  spinner,
-  rotate,
-  loaderContainer,
-  staticCircle,
-  animatedCircle,
-  dash,
-  loadingOverlay,
-  fullScreenOverlay,
-  loadingOverlayStop,
-  description,
+	loader,
+	spinner,
+	rotate,
+	loaderContainer,
+	staticCircle,
+	animatedCircle,
+	dash,
+	loadingOverlay,
+	fullScreenOverlay,
+	loadingOverlayStop,
+	description
 };
 
 export default {
-  loader,
-  spinner,
-  rotate,
-  loaderContainer,
-  staticCircle,
-  animatedCircle,
-  dash,
-  loadingOverlay,
-  fullScreenOverlay,
-  loadingOverlayStop,
-  description,
+	loader,
+	spinner,
+	rotate,
+	loaderContainer,
+	staticCircle,
+	animatedCircle,
+	dash,
+	loadingOverlay,
+	fullScreenOverlay,
+	loadingOverlayStop,
+	description
 };

@@ -28,7 +28,7 @@ function RootComponent() {
   return (
     <>
       <Navbar
-        logoSrc="/stretto-symbol.svg"
+        logoSrc="/logo-symbol.svg"
         logoLinkUrl="/"
         username={username}
         linkComponents={

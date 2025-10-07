@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function StrettoIcon() {
+export default function LogoIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="26" height="26">
       <path d="M11.491 17.8175L17.7472 11.6667H44.6489L39.0183 17.8175H11.491Z" fill="#fff" />

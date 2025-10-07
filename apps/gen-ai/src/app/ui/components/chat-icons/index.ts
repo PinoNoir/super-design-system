@@ -1,1 +1,1 @@
-export { default } from './stretto-icon';
+export { default } from './logo-icon'

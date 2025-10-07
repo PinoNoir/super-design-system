@@ -18,27 +18,27 @@ const wrapperVariantsBase: string;
 const wrapperVariantsPanel: string;
 
 export {
-  base,
-  row,
-  layoutVariants1Column,
-  layoutVariants2Column,
-  layoutVariants3Column,
-  layoutVariants4Column,
-  formWrapper,
-  wrapperVariants,
-  wrapperVariantsBase,
-  wrapperVariantsPanel,
+	base,
+	row,
+	layoutVariants1Column,
+	layoutVariants2Column,
+	layoutVariants3Column,
+	layoutVariants4Column,
+	formWrapper,
+	wrapperVariants,
+	wrapperVariantsBase,
+	wrapperVariantsPanel
 };
 
 export default {
-  base,
-  row,
-  layoutVariants1Column,
-  layoutVariants2Column,
-  layoutVariants3Column,
-  layoutVariants4Column,
-  formWrapper,
-  wrapperVariants,
-  wrapperVariantsBase,
-  wrapperVariantsPanel,
+	base,
+	row,
+	layoutVariants1Column,
+	layoutVariants2Column,
+	layoutVariants3Column,
+	layoutVariants4Column,
+	formWrapper,
+	wrapperVariants,
+	wrapperVariantsBase,
+	wrapperVariantsPanel
 };

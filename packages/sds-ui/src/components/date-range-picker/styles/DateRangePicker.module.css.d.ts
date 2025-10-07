@@ -13,13 +13,20 @@ const truncate: string;
 const popover: string;
 const textInput: string;
 
-export { container, wrapper, innerWrapper, truncate, popover, textInput };
+export {
+	container,
+	wrapper,
+	innerWrapper,
+	truncate,
+	popover,
+	textInput
+};
 
 export default {
-  container,
-  wrapper,
-  innerWrapper,
-  truncate,
-  popover,
-  textInput,
+	container,
+	wrapper,
+	innerWrapper,
+	truncate,
+	popover,
+	textInput
 };

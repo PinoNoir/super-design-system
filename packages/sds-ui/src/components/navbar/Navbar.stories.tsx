@@ -58,7 +58,7 @@ export const Default: Story = {
     };
 
     return (
-      <Navbar logoSrc="/stretto-symbol.svg" logoLinkUrl="#" links={links} username={username}>
+      <Navbar logoSrc="/symbol.svg" logoLinkUrl="#" links={links} username={username}>
         <NavbarContent
           username={username}
           notificationCount={notificationCount}
@@ -85,7 +85,7 @@ export const CustomLinks: Story = {
 
     return (
       <Navbar
-        logoSrc="/stretto-symbol.svg"
+        logoSrc="/symbol.svg"
         logoLinkUrl="#"
         username={username}
         linkComponents={

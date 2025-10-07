@@ -12,12 +12,18 @@ const current: string;
 const link: string;
 const noTrailingSlash: string;
 
-export { breadcrumb, breadcrumbItem, current, link, noTrailingSlash };
+export {
+	breadcrumb,
+	breadcrumbItem,
+	current,
+	link,
+	noTrailingSlash
+};
 
 export default {
-  breadcrumb,
-  breadcrumbItem,
-  current,
-  link,
-  noTrailingSlash,
+	breadcrumb,
+	breadcrumbItem,
+	current,
+	link,
+	noTrailingSlash
 };

@@ -9,9 +9,12 @@
 const wrapper: string;
 const cardTypeIcon: string;
 
-export { wrapper, cardTypeIcon };
+export {
+	wrapper,
+	cardTypeIcon
+};
 
 export default {
-  wrapper,
-  cardTypeIcon,
+	wrapper,
+	cardTypeIcon
 };

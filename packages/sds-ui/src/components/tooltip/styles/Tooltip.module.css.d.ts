@@ -19,29 +19,29 @@ const textAlignCenter: string;
 const textAlignRight: string;
 
 export {
-  trigger,
-  content,
-  arrow,
-  fadeOut,
-  slideDown,
-  slideLeft,
-  slideUp,
-  slideRight,
-  textAlignLeft,
-  textAlignCenter,
-  textAlignRight,
+	trigger,
+	content,
+	arrow,
+	fadeOut,
+	slideDown,
+	slideLeft,
+	slideUp,
+	slideRight,
+	textAlignLeft,
+	textAlignCenter,
+	textAlignRight
 };
 
 export default {
-  trigger,
-  content,
-  arrow,
-  fadeOut,
-  slideDown,
-  slideLeft,
-  slideUp,
-  slideRight,
-  textAlignLeft,
-  textAlignCenter,
-  textAlignRight,
+	trigger,
+	content,
+	arrow,
+	fadeOut,
+	slideDown,
+	slideLeft,
+	slideUp,
+	slideRight,
+	textAlignLeft,
+	textAlignCenter,
+	textAlignRight
 };

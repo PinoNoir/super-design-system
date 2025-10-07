@@ -14,14 +14,22 @@ const label: string;
 const visuallyHidden: string;
 const requiredLabel: string;
 
-export { checkbox, disabled, indeterminate, checkboxWrapper, label, visuallyHidden, requiredLabel };
+export {
+	checkbox,
+	disabled,
+	indeterminate,
+	checkboxWrapper,
+	label,
+	visuallyHidden,
+	requiredLabel
+};
 
 export default {
-  checkbox,
-  disabled,
-  indeterminate,
-  checkboxWrapper,
-  label,
-  visuallyHidden,
-  requiredLabel,
+	checkbox,
+	disabled,
+	indeterminate,
+	checkboxWrapper,
+	label,
+	visuallyHidden,
+	requiredLabel
 };

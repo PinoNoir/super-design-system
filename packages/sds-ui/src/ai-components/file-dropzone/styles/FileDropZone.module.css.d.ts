@@ -10,10 +10,14 @@ const dropZone: string;
 const dragging: string;
 const hiddenInput: string;
 
-export { dropZone, dragging, hiddenInput };
+export {
+	dropZone,
+	dragging,
+	hiddenInput
+};
 
 export default {
-  dropZone,
-  dragging,
-  hiddenInput,
+	dropZone,
+	dragging,
+	hiddenInput
 };

@@ -13,13 +13,20 @@ const subheading: string;
 const linkItem: string;
 const linkList: string;
 
-export { mainContainer, content, link, subheading, linkItem, linkList };
+export {
+	mainContainer,
+	content,
+	link,
+	subheading,
+	linkItem,
+	linkList
+};
 
 export default {
-  mainContainer,
-  content,
-  link,
-  subheading,
-  linkItem,
-  linkList,
+	mainContainer,
+	content,
+	link,
+	subheading,
+	linkItem,
+	linkList
 };

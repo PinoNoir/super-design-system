@@ -14,9 +14,9 @@ export interface LabelProps extends ComponentPropsWithoutRef<'label'> {
   className?: string;
 
   /**
-   * Specify whether the label has an icon
+   * Optional icon to display after the label text
    */
-  hasIcon?: boolean;
+  icon?: ReactNode;
 
   /**
    * Optionally specify an automation id for testing purposes.
@@ -24,17 +24,17 @@ export interface LabelProps extends ComponentPropsWithoutRef<'label'> {
   ['automation-id']?: string;
 }
 
-const Label: React.FC<LabelProps> = ({ hasIcon, children, ...props }) => {
+const Label: React.FC<LabelProps> = ({ icon, children, ...props }) => {
   return (
-    <Box display="flex">
+    <Box className={styles.wrapper}>
       <label className={styles.label} {...props}>
         {children}
       </label>
-      {!hasIcon ? (
+      {icon && (
         <Box display="flex" alignItems="center">
-          {hasIcon}
+          {icon}
         </Box>
-      ) : null}
+      )}
     </Box>
   );
 };

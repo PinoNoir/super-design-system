@@ -8,8 +8,10 @@
 
 const gridExample: string;
 
-export { gridExample };
+export {
+	gridExample
+};
 
 export default {
-  gridExample,
+	gridExample
 };
