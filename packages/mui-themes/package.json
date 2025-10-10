@@ -1,5 +1,5 @@
 {
-  "name": "mui-themes",
+  "name": "@pinonoir/mui-themes",
   "version": "2.0.0",
   "description": "Official MUI Themes for MUI React components",
   "author": {
@@ -31,5 +31,8 @@
   },
   "devDependencies": {
     "typescript": "5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

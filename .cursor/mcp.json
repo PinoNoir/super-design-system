@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "sds-components": {
+      "command": "node",
+      "args": [
+        "/Users/nicholasj.pino/Desktop/cds-components-mcp/dist/index.js"
+      ],
+      "env": {
+        "REPO_OWNER": "PinoNoir",
+        "REPO_NAME": "super-design-system",
+        "REPO_BRANCH": "main",
+        "LOCAL_REPO_PATH": "/Users/nicholasj.pino/Desktop/super-design-system",
+        "PACKAGES_PATH": "packages/sds-ui,packages/sds-tokens,packages/sds-styles"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/nicholasj.pino/Desktop/Web Development/validity-ai"
+      ]
+    },
+    "vitest": {
+      "command": "npx",
+      "args": ["-y", "vitest"]
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-f43c9369-54e7-4578-80a7-c4a587de1907"
+      }
+    }
+  }
+}

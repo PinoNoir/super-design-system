@@ -1,5 +1,5 @@
 {
-  "name": "sds-tokens",
+  "name": "@pinonoir/sds-tokens",
   "description": "Design tokens generated with Style Dictionary",
   "version": "2.0.0",
   "author": {
@@ -28,5 +28,8 @@
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "style-dictionary": "^4.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

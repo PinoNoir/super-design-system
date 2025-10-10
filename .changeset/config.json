@@ -7,8 +7,8 @@
     }
   ],
   "commit": false,
-  "access": "restricted",
-  "fixed": [["mui-themes", "sds-ui", "sds-styles", "sds-tokens"]],
+  "access": "public",
+  "fixed": [["@pinonoir/mui-themes", "@pinonoir/sds-ui", "@pinonoir/sds-styles", "@pinonoir/sds-tokens"]],
   "linked": [],
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

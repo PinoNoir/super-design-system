@@ -1,5 +1,5 @@
 {
-  "name": "sds-styles",
+  "name": "@pinonoir/sds-styles",
   "description": "A collection of reusable CSS styles built with SASS.",
   "version": "2.0.0",
   "author": {
@@ -44,7 +44,10 @@
     "stylelint-scss": "^6.10.0"
   },
   "dependencies": {
-    "sds-tokens": "workspace:^"
+    "@pinonoir/sds-tokens": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "lint-staged": {
     "*.scss": "pnpm lint:fix"

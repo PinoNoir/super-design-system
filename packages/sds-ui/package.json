@@ -1,5 +1,5 @@
 {
-  "name": "sds-ui",
+  "name": "@pinonoir/sds-ui",
   "description": "React/Typescript component library & CSS framework",
   "version": "2.0.0",
   "author": {
@@ -154,11 +154,14 @@
     "react-day-picker": "^9.9.0",
     "react-hook-form": "^7.62.0",
     "react-use": "^17.6.0",
-    "sds-styles": "workspace:^"
+    "@pinonoir/sds-styles": "workspace:^"
   },
   "peerDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "msw": {
     "workerDirectory": "src/public"
