@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'sds-ui';
+import { Card } from '@pinonoir/sds-ui';
 import styles from './WidgetPlaceholder.module.css';
 
 type WidgetPlaceholderProps = {

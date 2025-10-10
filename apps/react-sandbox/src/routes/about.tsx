@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Button, Tooltip, Box } from 'sds-ui';
+import { Button, Tooltip, Box } from '@pinonoir/sds-ui';
 
 export const Route = createFileRoute('/about')({
   component: AboutComponent,

@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Wrapper, Column } from '../components';
-import { Card, Container } from 'sds-ui';
+import { Card, Container } from '@pinonoir/sds-ui';
 import styles from './styles/layout.module.css';
 
 const RouteComponent = () => {

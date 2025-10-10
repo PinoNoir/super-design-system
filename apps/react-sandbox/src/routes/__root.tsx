@@ -1,10 +1,11 @@
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router';
 import React from 'react';
-import { Navbar, NavbarAlerts, NavbarMenu, DropdownItem, Flex } from 'sds-ui';
+import { Navbar, NavbarAlerts, NavbarMenu, DropdownItem, Flex } from '@pinonoir/sds-ui';
 import ThemeToggle from '../components/theme-toggle/ThemeToggle';
 
 const links = [
   { label: 'Home', url: '/' },
+  { label: 'Dashboard', url: '/dashboard' },
   { label: 'Clients', url: '/clients' },
   { label: 'Calendar', url: '/calendar' },
   { label: 'Settings', url: '/WrapperExamples' },

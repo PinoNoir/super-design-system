@@ -1,4 +1,4 @@
-import { useTheme, ToggleButton } from 'sds-ui';
+import { useTheme, ToggleButton } from '@pinonoir/sds-ui';
 import { Sun, Moon } from 'lucide-react';
 
 const ThemeToggle = () => {

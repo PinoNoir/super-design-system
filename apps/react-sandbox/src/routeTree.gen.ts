@@ -8,80 +8,97 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root';
-import { Route as AboutRouteImport } from './routes/about';
-import { Route as WrapperExamplesRouteImport } from './routes/WrapperExamples';
-import { Route as IndexRouteImport } from './routes/index';
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as WrapperExamplesRouteImport } from './routes/WrapperExamples'
+import { Route as IndexRouteImport } from './routes/index'
 
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WrapperExamplesRoute = WrapperExamplesRouteImport.update({
   id: '/WrapperExamples',
   path: '/WrapperExamples',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute;
-  '/WrapperExamples': typeof WrapperExamplesRoute;
-  '/about': typeof AboutRoute;
+  '/': typeof IndexRoute
+  '/WrapperExamples': typeof WrapperExamplesRoute
+  '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute;
-  '/WrapperExamples': typeof WrapperExamplesRoute;
-  '/about': typeof AboutRoute;
+  '/': typeof IndexRoute
+  '/WrapperExamples': typeof WrapperExamplesRoute
+  '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  '/': typeof IndexRoute;
-  '/WrapperExamples': typeof WrapperExamplesRoute;
-  '/about': typeof AboutRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/WrapperExamples': typeof WrapperExamplesRoute
+  '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '/WrapperExamples' | '/about';
-  fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '/WrapperExamples' | '/about';
-  id: '__root__' | '/' | '/WrapperExamples' | '/about';
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/WrapperExamples' | '/about' | '/dashboard'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/WrapperExamples' | '/about' | '/dashboard'
+  id: '__root__' | '/' | '/WrapperExamples' | '/about' | '/dashboard'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  WrapperExamplesRoute: typeof WrapperExamplesRoute;
-  AboutRoute: typeof AboutRoute;
+  IndexRoute: typeof IndexRoute
+  WrapperExamplesRoute: typeof WrapperExamplesRoute
+  AboutRoute: typeof AboutRoute
+  DashboardRoute: typeof DashboardRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
-      id: '/about';
-      path: '/about';
-      fullPath: '/about';
-      preLoaderRoute: typeof AboutRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/WrapperExamples': {
-      id: '/WrapperExamples';
-      path: '/WrapperExamples';
-      fullPath: '/WrapperExamples';
-      preLoaderRoute: typeof WrapperExamplesRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/WrapperExamples'
+      path: '/WrapperExamples'
+      fullPath: '/WrapperExamples'
+      preLoaderRoute: typeof WrapperExamplesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,5 +106,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   WrapperExamplesRoute: WrapperExamplesRoute,
   AboutRoute: AboutRoute,
-};
-export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
+  DashboardRoute: DashboardRoute,
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()

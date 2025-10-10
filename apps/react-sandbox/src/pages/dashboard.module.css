@@ -1,0 +1,361 @@
+/* Dashboard Container */
+.dashboard {
+  padding: var(--space-32);
+  background: var(--theme-color-background);
+  min-height: 100vh;
+}
+
+/* Header Section */
+.header {
+  margin-bottom: var(--space-32);
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+}
+
+.title {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-text-base);
+  margin: 0;
+  margin-bottom: var(--space-8);
+}
+
+.subtitle {
+  font-size: var(--font-size-body);
+  color: var(--theme-text-muted);
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+.searchInput {
+  min-width: 300px;
+}
+
+/* Alert Section */
+.alertSection {
+  margin-bottom: var(--space-24);
+}
+
+/* Stats Grid */
+.statsGrid {
+  margin-bottom: var(--space-32);
+}
+
+.statCard {
+  padding: var(--space-24);
+  height: 100%;
+  border: var(--border-width-1) solid var(--theme-border-base);
+  border-radius: var(--border-radius-8);
+  background: var(--theme-card-background);
+  transition: var(--transition-composite-card-hover);
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-bottom-8);
+}
+
+.statCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-muted);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statValue {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-text-base);
+  margin: 0;
+  line-height: var(--font-line-height-condensed);
+}
+
+.statChange {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.statTrend {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-muted);
+}
+
+/* Main Content Grid */
+.mainContent {
+  gap: var(--space-24);
+}
+
+.contentCard {
+  padding: 0;
+  border: var(--border-width-1) solid var(--theme-card-border);
+  border-radius: var(--border-radius-8);
+  background: var(--theme-card-background);
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-24);
+}
+
+.cardTitle {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-text-base);
+  margin: 0;
+}
+
+/* Table Wrapper */
+.tableWrapper {
+  padding: var(--space-24);
+  overflow-x: auto;
+}
+
+.projectTable {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.projectTableHeader {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.5fr 1.5fr 1.5fr 1fr;
+  gap: var(--space-16);
+  padding: var(--space-12);
+  background: var(--color-neutral-10);
+  border-radius: var(--border-radius-4);
+  align-items: center;
+}
+
+.projectTableRow {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.5fr 1.5fr 1.5fr 1fr;
+  gap: var(--space-16);
+  padding: var(--space-12);
+  align-items: center;
+  border-radius: var(--border-radius-4);
+  transition: var(--transition-property-background);
+}
+
+.projectTableRow:hover {
+  background: var(--theme-table-row-hover-background-color);
+}
+
+.projectName {
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-base);
+}
+
+.progressCell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.progressBar {
+  flex: 1;
+  min-width: 80px;
+}
+
+.progressText {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-muted);
+  min-width: 40px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-8);
+}
+
+/* Team Members */
+.teamList {
+  padding: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.teamMember {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-12);
+  border-radius: var(--border-radius-4);
+  transition: var(--transition-property-background);
+}
+
+.teamMember:hover {
+  background: var(--color-neutral-10);
+}
+
+.memberInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.avatar {
+  flex-shrink: 0;
+}
+
+.memberDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.memberName {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-base);
+}
+
+.memberRole {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-muted);
+}
+
+/* Recent Activity */
+.activityList {
+  padding: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.activityItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+  padding: var(--space-12);
+  border-radius: var(--border-radius-4);
+  transition: var(--transition-property-background);
+}
+
+.activityItem:hover {
+  background: var(--color-neutral-10);
+}
+
+.activityIcon {
+  flex-shrink: 0;
+}
+
+.activityContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.activityMain {
+  display: flex;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.activityUser {
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-text-base);
+}
+
+.activityAction {
+  color: var(--theme-text-muted);
+}
+
+.activityTime {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-60);
+}
+
+/* Quick Actions */
+.quickActions {
+  padding: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.actionButton {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+
+  .mainContent > * {
+    grid-column: 1 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: var(--space-16);
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .headerContent {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .headerActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .searchInput {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .title {
+    font-size: var(--font-size-h2);
+  }
+
+  .tableWrapper {
+    padding: var(--space-12);
+  }
+
+  .projectTableHeader,
+  .projectTableRow {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .progressCell {
+    min-width: 150px;
+  }
+}

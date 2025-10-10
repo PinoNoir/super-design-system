@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, FormSelect } from 'sds-ui';
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, FormSelect } from '@pinonoir/sds-ui';
 
 interface BankBalanceProps {
   data: [];

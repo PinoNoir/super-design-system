@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
-import { Card } from 'sds-ui';
+import { Card } from '@pinonoir/sds-ui';
 import { CSS } from '@dnd-kit/utilities';
 import { Icon } from '@iconify/react';
 import styles from './WidgetCard.module.css';
