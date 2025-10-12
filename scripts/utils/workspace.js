@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { execSync } from 'child_process';
 
-export const BUILD_ORDER = ['sds-tokens', 'sds-styles', 'sds-ui', 'mui-themes'];
+export const BUILD_ORDER = ['sds-tokens', 'sds-styles', 'sds-ui', 'mui-themes', 'sds-cli'];
 
 export const runInWorkspace = (command, workspace) => {
   const cmd = workspace ? `pnpm --filter ${workspace} ${command}` : `pnpm -r ${command}`;
