@@ -1,5 +1,13 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
 import type { StorybookConfig } from '@storybook/react-vite';
+import { createRequire } from 'module';
 import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+
+const require = createRequire(import.meta.url);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -18,19 +26,7 @@ const config: StorybookConfig = {
       config: {
         rules: [{ id: 'color-contrast', enabled: true }],
       },
-    },
-    {
-      name: getAbsolutePath('@storybook/addon-storysource'),
-      options: {
-        rule: {
-          test: [/\.stories\.tsx?$/],
-          include: [dirname(__dirname), '../src/components'],
-        },
-        loaderOptions: {
-          prettierConfig: { printWidth: 80, singleQuote: true },
-        },
-      },
-    },
+    }
   ],
 
   staticDirs: ['../src/public', './sb-theme-assets/icons', './sb-theme-assets/fonts', '../src/docs/assets'],

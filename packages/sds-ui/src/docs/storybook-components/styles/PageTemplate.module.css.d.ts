@@ -9,15 +9,18 @@
 const mainContainer: string;
 const content: string;
 const heading: string;
+const contentOnBackground: string;
 
 export {
 	mainContainer,
 	content,
-	heading
+	heading,
+	contentOnBackground
 };
 
 export default {
 	mainContainer,
 	content,
-	heading
+	heading,
+	contentOnBackground
 };

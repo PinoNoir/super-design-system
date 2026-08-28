@@ -16,7 +16,7 @@ export default defineConfig({
       external: ['react', 'react-dom'],
     },
   },
-  plugins: [react(), tsconfigPaths(), svgr(), patchCssModules({ generateSourceTypes: true })],
+  plugins: [react(), tsconfigPaths(), svgr(), patchCssModules()],
   resolve: {
     alias: {
       '@': '../src',

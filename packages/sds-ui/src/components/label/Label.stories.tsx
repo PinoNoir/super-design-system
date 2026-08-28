@@ -15,10 +15,8 @@ const meta: Meta<typeof Label> = {
         type: 'text',
       },
     },
-    hasIcon: {
-      control: {
-        type: 'boolean',
-      },
+    icon: {
+      control: false,
     },
   },
 };

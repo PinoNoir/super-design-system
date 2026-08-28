@@ -85,7 +85,7 @@ export const SearchWithCallback: Story = {
 export const FullyFeatured: Story = {
   render: function FullyFeatured(args: SearchProps) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const { handleSearch, handleClear, searchTerm } = useDataSearch([]);
+    const { handleSearch, handleClear, searchTerm } = useDataSearch();
 
     return (
       <Search

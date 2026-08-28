@@ -13,13 +13,13 @@ describe('Label Component', () => {
     expect(screen.getByText('Test Label')).toHaveClass('custom-class');
   });
 
-  it('does not render Box when hasIcon is true', () => {
-    const { container } = render(<Label hasIcon>Test Label</Label>);
+  it('does not render icon Box when no icon is provided', () => {
+    const { container } = render(<Label>Test Label</Label>);
     expect(container.querySelectorAll('div')).toHaveLength(1); // Only the outer Box
   });
 
-  it('renders Box when hasIcon is false', () => {
-    const { container } = render(<Label hasIcon={false}>Test Label</Label>);
+  it('renders icon Box when icon is provided', () => {
+    const { container } = render(<Label icon={<span>icon</span>}>Test Label</Label>);
     expect(container.querySelectorAll('div')).toHaveLength(2); // Outer Box and inner Box
   });
 

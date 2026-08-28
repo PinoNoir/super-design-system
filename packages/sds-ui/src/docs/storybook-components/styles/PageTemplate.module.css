@@ -15,7 +15,7 @@
 }
 
 .content {
-  color: var(--color-neutral-10) !important;
+  color: var(--color-neutral-100) !important;
   font-family: var(--font-family-body) !important;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
 .heading {
   font-size: var(--font-size-h1);
   font-weight: var(--font-weight-regular);
-  color: var(--color-neutral-10);
+  color: var(--color-neutral-100);
   margin-block-end: var(--space-8);
 }
 
@@ -34,7 +34,7 @@
 .content h1:not(.heading) {
   font-size: var(--font-size-h1);
   font-weight: var(--font-weight-light);
-  color: var(--color-neutral-20);
+  color: var(--color-neutral-90);
 }
 
 .content h1:not(.heading),
@@ -51,7 +51,7 @@
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-light);
   line-height: var(--font-line-height-body);
-  color: var(--color-neutral-20);
+  color: var(--color-neutral-90);
   margin-block-end: var(--space-8);
 }
 
@@ -62,19 +62,19 @@
   left: 0;
   right: 0;
   height: 1px;
-  background-color: var(--color-neutral-60);
+  background-color: var(--color-neutral-30);
 }
 
 .content h3 {
   font-weight: var(--font-weight-regular);
-  color: var(--color-teal-40);
+  color: var(--color-teal-70);
   margin-block-end: var(--space-8);
 }
 
 .content h4 {
   font-weight: var(--font-weight-regular);
   font-size: var(--font-size-body);
-  color: var(--color-neutral-40);
+  color: var(--color-neutral-60);
   letter-spacing: var(--space-4);
   text-transform: uppercase;
   margin-block-end: var(--space-8);
@@ -91,7 +91,7 @@
   position: relative;
   padding-left: var(--space-4);
   margin-block: var(--space-12);
-  color: var(--color-neutral-20);
+  color: var(--color-neutral-90);
 }
 
 .content * li:last-child {
@@ -101,6 +101,40 @@
 /* Global hr styling - applies to all hr elements */
 hr {
   border: none;
-  border-bottom: 1px solid var(--color-neutral-60);
+  border-bottom: 1px solid var(--color-neutral-30);
   margin-block: var(--space-16);
+}
+
+/* Modifier for pages that keep the decorative bg.png (Welcome, Why Use SDS?) -
+   restores the original light-on-dark palette so text stays readable over the image. */
+.contentOnBackground {
+  color: var(--color-neutral-10) !important;
+}
+
+.contentOnBackground .heading {
+  color: var(--color-neutral-10);
+}
+
+.contentOnBackground h1:not(.heading) {
+  color: var(--color-neutral-20);
+}
+
+.contentOnBackground h2 {
+  color: var(--color-neutral-20);
+}
+
+.contentOnBackground h2::before {
+  background-color: var(--color-neutral-60);
+}
+
+.contentOnBackground h3 {
+  color: var(--color-teal-40);
+}
+
+.contentOnBackground h4 {
+  color: var(--color-neutral-40);
+}
+
+.contentOnBackground * li {
+  color: var(--color-neutral-20);
 }
