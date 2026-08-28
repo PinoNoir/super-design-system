@@ -26,6 +26,14 @@
   "mdx": {
     "plugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-gfm"]
   },
+  // ts-node loads jest.config.ts by forcing module: "CommonJS", which is
+  // incompatible with moduleResolution: "bundler" above (TS5095). Scope a
+  // compatible resolution just for ts-node's config-file loading.
+  "ts-node": {
+    "compilerOptions": {
+      "moduleResolution": "node"
+    }
+  },
   "include": [
     "src/**/*",
     "src/vite-env-override.d.ts",
