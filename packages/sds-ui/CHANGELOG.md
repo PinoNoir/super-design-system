@@ -8,7 +8,7 @@
 
   Fix several component bugs uncovered while resolving a large ESLint cleanup:
   - `Sidebar`'s `headerClassName` prop is now applied to the header element (previously silently dropped)
-  - `EmptyState`'s default illustration now renders the correct icon
+  - `EmptyState`'s default illustration now renders the correct icon (note: if you rely on the default `illustration` value, the rendered icon for the `'empty-data'` case has visibly changed from `AlertIcon` to `EmptyInboxIcon`)
   - `Search` now forwards passthrough props to the underlying `<input>`
   - `Select` now respects a caller-supplied `id` instead of always generating its own
   - `Toast` now respects its `icon` override prop and applies a caller's `className` to its close button
