@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": ".",
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "Node",
@@ -18,12 +17,12 @@
     "noImplicitAny": false,
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "apps/react-sandbox/*": ["react-sandbox/src/*"],
-      "apps/gen-ai/": ["gen-ai/src/*"],
-      "packages/mui-themes/*": ["mui-themes/src/*"],
-      "packages/sds-ui/*": ["sds-ui/src/*"],
-      "packages/sds-tokens/*": ["sds-tokens/src/*"],
-      "packages/sds-styles/*": ["sds-styles/src/*"]
+      "apps/react-sandbox/*": ["./react-sandbox/src/*"],
+      "apps/gen-ai/": ["./gen-ai/src/*"],
+      "packages/mui-themes/*": ["./mui-themes/src/*"],
+      "packages/sds-ui/*": ["./sds-ui/src/*"],
+      "packages/sds-tokens/*": ["./sds-tokens/src/*"],
+      "packages/sds-styles/*": ["./sds-styles/src/*"]
     }
   }
 }
