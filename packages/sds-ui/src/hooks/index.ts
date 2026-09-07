@@ -1,5 +1,6 @@
 export { default as useRowSelection } from './useRowSelection';
 export { default as useRoveFocus } from './useRoveFocus';
+export { default as useFocusTrap } from './useFocusTrap';
 export { default as usePagination } from './usePagination';
 export { default as useAccordionItem } from './useAccordionItem';
 export { default as useAutofillSync } from './useAutofillSync';

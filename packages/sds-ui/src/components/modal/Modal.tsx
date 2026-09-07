@@ -5,7 +5,7 @@ import styles from './styles/Modal.module.css';
 import ModalBody from './ModalBody';
 import { Button } from '../button';
 import { ButtonProps } from '../button/Button';
-import { useRoveFocus } from '../../hooks';
+import { useFocusTrap } from '../../hooks';
 
 // Define more specific button types
 export type BaseButtonConfig = {
@@ -77,24 +77,18 @@ const Modal: React.FC<ModalProps> = ({
   ...props
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const getFocusableElements = () => {
-    if (!modalRef.current) return [];
-    return Array.from(
-      modalRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
-    );
-  };
-
-  const focusableElements = getFocusableElements();
-  const [currentFocus, setCurrentFocus] = useRoveFocus(focusableElements.length);
-
-  // Effect to focus the element when currentFocus changes
-  useEffect(() => {
-    if (open && focusableElements.length > 0 && focusableElements[currentFocus]) {
-      (focusableElements[currentFocus] as HTMLElement).focus();
-    }
-  }, [currentFocus, open, focusableElements]);
+  // Focus trap: computes focusable elements after mount (not during render),
+  // moves initial focus in on open, restores it to whatever was focused
+  // before the modal opened, and cycles Tab/Shift+Tab within the modal.
+  // Arrow keys are left alone so native widgets inside the modal (a
+  // <textarea>, <select>, or text <input>) keep their own arrow-key behavior.
+  useFocusTrap({
+    rootElement: modalRef,
+    isActive: !!open,
+    initialFocusElement: initialFocus,
+    enableArrowKeyNavigation: false,
+  });
 
   // Handle body overflow
   useEffect(() => {
@@ -111,16 +105,6 @@ const Modal: React.FC<ModalProps> = ({
       document.body.removeAttribute('data-modal-open');
     };
   }, [open]);
-
-  // Set initial focus when modal opens
-  useEffect(() => {
-    if (open) {
-      const elementToFocus = initialFocus?.current || closeButtonRef.current;
-      setTimeout(() => {
-        elementToFocus?.focus();
-      }, 0);
-    }
-  }, [open, initialFocus]);
 
   // A method that always closes
   const handleClose = useCallback(() => {
@@ -140,29 +124,15 @@ const Modal: React.FC<ModalProps> = ({
     }
   }, [disableClose, handleRequestClose]);
 
-  // This handler doesn't need the conditional check
-  const handleTabKey = useCallback(
-    (event: React.KeyboardEvent) => {
-      event.preventDefault();
-      if (event.shiftKey) {
-        setCurrentFocus(currentFocus === 0 ? focusableElements.length - 1 : currentFocus - 1);
-      } else {
-        setCurrentFocus(currentFocus === focusableElements.length - 1 ? 0 : currentFocus + 1);
-      }
-    },
-    [currentFocus, focusableElements.length, setCurrentFocus],
-  );
-
-  // Main keydown handler that delegates to the appropriate specialized handler
+  // Tab cycling is handled by useFocusTrap (attached directly to modalRef);
+  // this only needs to handle Escape.
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       if (event.key === 'Escape') {
         handleEscapeKey();
-      } else if (event.key === 'Tab') {
-        handleTabKey(event);
       }
     },
-    [handleEscapeKey, handleTabKey],
+    [handleEscapeKey],
   );
 
   const handleOverlayClick = useCallback(
@@ -215,7 +185,7 @@ const Modal: React.FC<ModalProps> = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        aria-describedby="modal-description"
+        aria-describedby="modal-body"
         className={modalClasses}
         ref={modalRef}
         {...props}
@@ -224,7 +194,6 @@ const Modal: React.FC<ModalProps> = ({
           className={styles.modalClose}
           onClick={handleRequestClose}
           aria-label="Close modal"
-          ref={closeButtonRef}
           disabled={disableClose}
         >
           <Icon icon="mdi:close" />

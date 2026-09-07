@@ -97,7 +97,7 @@ describe('Dialog Component', () => {
 
     const dialog = screen.getByRole('dialog');
     expect(dialog).toHaveAttribute('aria-modal', 'true');
-    expect(dialog).toHaveAttribute('aria-labelledby', 'dialog');
+    expect(dialog).toHaveAttribute('aria-labelledby', 'dialog-title');
   });
 
   it('applies automation-id when provided', () => {
@@ -195,26 +195,7 @@ describe('Dialog Component', () => {
     addEventListenerSpy.mockRestore();
   });
 
-  it('attempts to focus the first focusable element when opened', () => {
-    // Since we can't directly test the ref-based focus in JSDOM,
-    // we'll test the implementation by mocking useRef
-
-    // Create a mock implementation of useRef
-    const mockRef = { current: { focus: jest.fn() } };
-    const originalUseRef = React.useRef;
-
-    // Mock React.useRef to return our controlled ref for firstFocusableElement
-    let callCount = 0;
-    jest.spyOn(React, 'useRef').mockImplementation((initialValue) => {
-      callCount++;
-      // Only mock the first call to useRef (firstFocusableElement)
-      // Let the second call (dialogRef) use the original implementation
-      if (callCount === 1) {
-        return mockRef;
-      }
-      return originalUseRef(initialValue);
-    });
-
+  it('focuses the first focusable element when opened', () => {
     render(
       <Dialog open={true} onClose={mockOnClose}>
         <button automation-id="button-1">First button</button>
@@ -222,12 +203,7 @@ describe('Dialog Component', () => {
       </Dialog>,
     );
 
-    // We only need to verify the useEffect logic exists that attempts to focus
-    // We don't need to actually test if focus was set since that depends on the DOM
-    expect(React.useRef).toHaveBeenCalled();
-
-    // Restore the original React.useRef
-    (React.useRef as jest.Mock).mockRestore();
+    expect(screen.getByTestId('button-1')).toHaveFocus();
   });
 
   it('does not call onClose for other key presses', () => {
