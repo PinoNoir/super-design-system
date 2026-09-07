@@ -52,7 +52,9 @@ const config: StorybookConfig = {
   typescript: {
     reactDocgen: 'react-docgen-typescript',
     reactDocgenTypescriptOptions: {
-      exclude: [/\.storybook/],
+      // Note: this plugin also feeds `exclude` into the `glob` package to
+      // resolve TS project files, which requires glob strings (not RegExp).
+      exclude: ['**/*.stories.tsx', '**/.storybook/**'],
     },
   },
 };
