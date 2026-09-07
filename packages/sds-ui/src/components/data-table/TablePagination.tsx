@@ -4,6 +4,7 @@ import { clsx } from 'clsx';
 import styles from './styles/DataTablePagination.module.css';
 import { MenuItem, Select } from '../select';
 import { useId } from '../../utilities/use-id';
+import { SelectValue } from '../../global-types/select-value';
 
 export interface PaginationProps {
   pageSize: number;
@@ -91,9 +92,10 @@ const Pagination = ({
     await onPageChange(event, page);
   };
 
-  const handlePageSizeChange = async (event: { target: { value: string } }) => {
-    const newSize = Number(event.target.value);
-    if (newSize < 1 || isLoading) return;
+  const handlePageSizeChange = async (event: { target: { name?: string; value: SelectValue } }) => {
+    const { value } = event.target;
+    const newSize = typeof value === 'number' ? value : Number(value);
+    if (!Number.isFinite(newSize) || newSize < 1 || isLoading) return;
     await onPageSizeChange(newSize);
   };
 
