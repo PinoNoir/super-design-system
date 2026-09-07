@@ -214,7 +214,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     [controlledFiles, onFilesChange],
   );
 
-  const localMarkFileAsUploaded = useCallback((file: File) => {
+  const localMarkFileAsUploaded = useCallback((_file: File) => {
     // If no context, this is handled by updateFileStatus
   }, []);
 

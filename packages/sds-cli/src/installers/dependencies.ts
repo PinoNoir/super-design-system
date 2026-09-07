@@ -3,10 +3,7 @@ import ora from 'ora';
 import type { PackageManager } from '../types.js';
 import { logger } from '../utils/logger.js';
 
-export async function installDependencies(
-  projectPath: string,
-  packageManager: PackageManager
-): Promise<void> {
+export async function installDependencies(projectPath: string, packageManager: PackageManager): Promise<void> {
   const spinner = ora('Installing dependencies...').start();
 
   try {
@@ -14,7 +11,7 @@ export async function installDependencies(
 
     await execa(installCommand.command, installCommand.args, {
       cwd: projectPath,
-      stdio: 'pipe'
+      stdio: 'pipe',
     });
 
     spinner.succeed('Dependencies installed successfully');
@@ -60,11 +57,11 @@ export async function initializeGit(projectPath: string): Promise<void> {
     await execa('git', ['init'], { cwd: projectPath });
     await execa('git', ['add', '-A'], { cwd: projectPath });
     await execa('git', ['commit', '-m', 'Initial commit from @pinonoir/sds-cli'], {
-      cwd: projectPath
+      cwd: projectPath,
     });
 
     spinner.succeed('Git repository initialized');
-  } catch (error) {
+  } catch {
     spinner.fail('Failed to initialize git repository');
     logger.warning('You can manually initialize git later with: git init');
   }

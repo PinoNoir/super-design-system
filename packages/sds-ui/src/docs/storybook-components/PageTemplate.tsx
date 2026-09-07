@@ -21,9 +21,7 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ children, background = fals
           : undefined
       }
     >
-      <div className={background ? `${styles.content} ${styles.contentOnBackground}` : styles.content}>
-        {children}
-      </div>
+      <div className={background ? `${styles.content} ${styles.contentOnBackground}` : styles.content}>{children}</div>
     </div>
   );
 };

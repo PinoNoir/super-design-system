@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import WorkflowModal from '../WorkflowModal';
@@ -9,7 +10,13 @@ jest.mock('framer-motion', () => {
     ...actual,
     AnimatePresence: ({ children }) => <>{children}</>,
     motion: {
-      div: ({ children, ...props }) => <div {...props}>{children}</div>,
+      // Forward the ref like the real motion.div does, so callers (e.g. a
+      // focus trap) can actually access the underlying DOM node in tests.
+      div: React.forwardRef(({ children, ...props }: any, ref: React.Ref<HTMLDivElement>) => (
+        <div ref={ref} {...props}>
+          {children}
+        </div>
+      )),
     },
   };
 });
@@ -52,6 +59,22 @@ describe('WorkflowModal', () => {
     if (portalRoot) {
       document.body.removeChild(portalRoot);
     }
+  });
+
+  test('exposes dialog semantics and labels the panel with its title', () => {
+    render(<WorkflowModal {...defaultProps} />);
+
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    const labelledBy = dialog.getAttribute('aria-labelledby');
+    expect(labelledBy).toBeTruthy();
+    expect(document.getElementById(labelledBy as string)).toHaveTextContent('Test Modal');
+  });
+
+  test('focuses the first focusable element when opened', () => {
+    render(<WorkflowModal {...defaultProps} />);
+
+    expect(screen.getByLabelText('Close panel')).toHaveFocus();
   });
 
   test('renders correctly when open', () => {

@@ -4,7 +4,7 @@ import path from 'path';
 export async function copyTemplate(
   templatePath: string,
   targetPath: string,
-  replacements: Record<string, string> = {}
+  replacements: Record<string, string> = {},
 ): Promise<void> {
   await fs.ensureDir(targetPath);
   await fs.copy(templatePath, targetPath);
@@ -15,10 +15,7 @@ export async function copyTemplate(
   }
 }
 
-async function processTemplateFiles(
-  dir: string,
-  replacements: Record<string, string>
-): Promise<void> {
+async function processTemplateFiles(dir: string, replacements: Record<string, string>): Promise<void> {
   const files = await fs.readdir(dir);
 
   for (const file of files) {
@@ -43,18 +40,24 @@ async function processTemplateFiles(
 
 function shouldProcessFile(fileName: string): boolean {
   const processableExtensions = [
-    '.js', '.jsx', '.ts', '.tsx',
-    '.json', '.md', '.html', '.css',
-    '.scss', '.sass', '.yml', '.yaml'
+    '.js',
+    '.jsx',
+    '.ts',
+    '.tsx',
+    '.json',
+    '.md',
+    '.html',
+    '.css',
+    '.scss',
+    '.sass',
+    '.yml',
+    '.yaml',
   ];
 
-  return processableExtensions.some(ext => fileName.endsWith(ext));
+  return processableExtensions.some((ext) => fileName.endsWith(ext));
 }
 
-export async function writeJsonFile(
-  filePath: string,
-  data: object
-): Promise<void> {
+export async function writeJsonFile(filePath: string, data: object): Promise<void> {
   await fs.writeJson(filePath, data, { spaces: 2 });
 }
 

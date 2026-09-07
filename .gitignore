@@ -16,6 +16,7 @@ chromatic.log
 # testing
 coverage/
 test_reports/
+test-report.xml
 target
 .jest-cache
 

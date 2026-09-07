@@ -31,5 +31,5 @@ export const logger = {
     console.log();
     console.log(chalk.cyan('Happy coding! 🚀'));
     console.log();
-  }
+  },
 };

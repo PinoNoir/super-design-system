@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Formatting + ESLint across the workspace.
+      - name: Lint
+        run: pnpm lint
+
+      # Runs each package's own `test` script (currently sds-ui and sds-cli).
+      - name: Test
+        run: pnpm test
+
+      # Builds sds-tokens -> sds-styles -> sds-ui -> mui-themes -> sds-cli in
+      # dependency order. sds-ui's build runs through rollup-plugin-typescript2,
+      # and sds-cli/mui-themes build via `tsc` directly, so this step is also
+      # the type-check gate for the whole packages/ build order - no separate
+      # tsc --noEmit step is needed.
+      - name: Build
+        run: pnpm build
+
+      - name: Upload sds-ui coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sds-ui-coverage
+          path: packages/sds-ui/coverage
+          retention-days: 14
+          if-no-files-found: ignore

@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { mockApi } from '../../../api/mockApi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import styles from './caseList.module.css';
+import styles from './CaseList.module.css';
 import { Autocomplete, TextField } from '@mui/material';
 import { useState, useMemo } from 'react';
 

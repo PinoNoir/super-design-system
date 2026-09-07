@@ -50,7 +50,7 @@ const exampleSections = [
 
 export const SidebarExample: React.FC = () => {
   const sidebarRef = useRef<SidebarRef>(null);
-  const { mobileProps, isMobile, toggleMobile } = useSidebar();
+  const { mobileProps } = useSidebar();
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>

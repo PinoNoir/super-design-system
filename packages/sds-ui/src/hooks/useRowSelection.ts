@@ -76,7 +76,7 @@ function useRowSelection<T>(options: UseRowSelectionOptions<T> = {}) {
         return !hasDisabled || !(row as any).disabled;
       });
 
-      const selectableIds = selectableRows.map((row, index) => rowIdExtractor(row, data.indexOf(row)));
+      const selectableIds = selectableRows.map((row) => rowIdExtractor(row, data.indexOf(row)));
 
       if (shouldSelectAll) {
         if (multipleSelect) {
@@ -182,7 +182,7 @@ function useRowSelection<T>(options: UseRowSelectionOptions<T> = {}) {
           return !hasDisabled || !(row as any).disabled;
         });
 
-        const selectableIds = selectableRows.map((row, index) => rowIdExtractor(row, rows.indexOf(row)));
+        const selectableIds = selectableRows.map((row) => rowIdExtractor(row, rows.indexOf(row)));
         selectionUtils.selectRows(selectableIds);
       },
 

@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-// Generic test factory for icon components
+// Generic test factory for icon components, imported by icon test suites (e.g. SvgIcons.test.tsx).
+// eslint-disable-next-line jest/no-export -- this file is a shared factory, not a test file itself
 export function createIconTests(IconComponent, componentName) {
   describe(`${componentName} Icon`, () => {
     test('renders without crashing', () => {

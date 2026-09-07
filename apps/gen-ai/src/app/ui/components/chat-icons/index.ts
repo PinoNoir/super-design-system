@@ -1,1 +1,1 @@
-export { default } from './logo-icon'
+export { default } from './logo-icon';

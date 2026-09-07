@@ -4,9 +4,23 @@ interface UseFocusTrapOptions {
   rootElement: React.RefObject<HTMLElement>;
   isActive: boolean;
   initialFocusElement?: React.RefObject<HTMLElement>;
+  /**
+   * Also move focus on ArrowUp/Down/Left/Right, in addition to Tab/Shift+Tab.
+   * Useful for roving-tabindex widgets (toolbars, radio groups). Defaults to
+   * true for backward compatibility, but modal/dialog traps should pass
+   * `false` - arrow keys bubbling up from a focused `<textarea>`, `<select>`,
+   * or text `<input>` inside the trap are native interactions, not requests
+   * to move focus elsewhere.
+   */
+  enableArrowKeyNavigation?: boolean;
 }
 
-function useFocusTrap({ rootElement, isActive, initialFocusElement }: UseFocusTrapOptions) {
+function useFocusTrap({
+  rootElement,
+  isActive,
+  initialFocusElement,
+  enableArrowKeyNavigation = true,
+}: UseFocusTrapOptions) {
   const [focusableElements, setFocusableElements] = useState<HTMLElement[]>([]);
   const [currentFocus, setCurrentFocus] = useState(0);
   const previousActiveElement = useRef<HTMLElement | null>(null);
@@ -69,17 +83,19 @@ function useFocusTrap({ rootElement, isActive, initialFocusElement }: UseFocusTr
           break;
         case 'ArrowDown':
         case 'ArrowRight':
+          if (!enableArrowKeyNavigation) return;
           event.preventDefault();
           setCurrentFocus(currentFocus === focusableElements.length - 1 ? 0 : currentFocus + 1);
           break;
         case 'ArrowUp':
         case 'ArrowLeft':
+          if (!enableArrowKeyNavigation) return;
           event.preventDefault();
           setCurrentFocus(currentFocus === 0 ? focusableElements.length - 1 : currentFocus - 1);
           break;
       }
     },
-    [isActive, focusableElements, currentFocus],
+    [isActive, focusableElements, currentFocus, enableArrowKeyNavigation],
   );
 
   // Set up and clean up event listeners

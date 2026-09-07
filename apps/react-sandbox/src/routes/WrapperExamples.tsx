@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Wrapper, Column } from '../components';
 import { Card, Container } from '@pinonoir/sds-ui';
-import styles from './styles/layout.module.css';
+import styles from './styles/Layout.module.css';
 
 const RouteComponent = () => {
   return <WrapperExamples />;

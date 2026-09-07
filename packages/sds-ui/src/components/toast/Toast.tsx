@@ -117,7 +117,9 @@ ToastViewport.displayName = RadixToast.Viewport.displayName;
 const ToastClose = React.forwardRef<
   React.ElementRef<typeof RadixToast.Close>,
   React.ComponentPropsWithoutRef<typeof RadixToast.Close>
->(({ className, ...props }, ref) => <RadixToast.Close ref={ref} toast-close="" {...props}></RadixToast.Close>);
+>(({ className, ...props }, ref) => (
+  <RadixToast.Close ref={ref} toast-close="" className={className} {...props}></RadixToast.Close>
+));
 ToastClose.displayName = RadixToast.Close.displayName;
 
 const Toast: React.FC<CustomToastProps> = ({
@@ -165,7 +167,7 @@ const Toast: React.FC<CustomToastProps> = ({
       <RadixToast.Root className={styles.toastRoot} open={open} onOpenChange={onClose} automation-id="toast">
         <div className={toastClasses}>
           <div className={styles.iconContainer}>
-            {getAlertIcon(variant)}
+            {icon ?? getAlertIcon(variant)}
             <span className={styles.toastTitle}>{getHeaderText()}</span>
             <small>{props.content}</small>
           </div>

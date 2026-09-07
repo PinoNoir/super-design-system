@@ -4,7 +4,7 @@ import type { SDSVersions } from '../utils/version.js';
 export function generatePackageJson(
   config: ProjectConfig,
   templateConfig: TemplateConfig,
-  sdsVersions?: SDSVersions
+  sdsVersions?: SDSVersions,
 ): object {
   const { projectName, useTypeScript } = config;
 
@@ -14,15 +14,15 @@ export function generatePackageJson(
     private: true,
     type: 'module',
     scripts: {
-      ...templateConfig.scripts
+      ...templateConfig.scripts,
     },
     dependencies: {
       ...getSDSDependencies(config, sdsVersions),
-      ...templateConfig.dependencies
+      ...templateConfig.dependencies,
     },
     devDependencies: {
-      ...templateConfig.devDependencies
-    }
+      ...templateConfig.devDependencies,
+    },
   };
 
   if (useTypeScript) {
@@ -31,17 +31,14 @@ export function generatePackageJson(
       '@types/node': '^22.17.0',
       '@types/react': '^18.3.20',
       '@types/react-dom': '^18.3.6',
-      'typescript': '^5.8.3'
+      typescript: '^5.8.3',
     };
   }
 
   return basePackageJson;
 }
 
-function getSDSDependencies(
-  config: ProjectConfig,
-  sdsVersions?: SDSVersions
-): Record<string, string> {
+function getSDSDependencies(config: ProjectConfig, sdsVersions?: SDSVersions): Record<string, string> {
   const { installationType, customPackages } = config;
 
   const dependencies: Record<string, string> = {};

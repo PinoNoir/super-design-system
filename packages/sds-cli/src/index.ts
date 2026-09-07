@@ -9,10 +9,7 @@ import type { ProjectConfig } from './types.js';
 
 const program = new Command();
 
-program
-  .name('sds')
-  .description('CLI tool for creating Super Design System projects')
-  .version('1.0.0');
+program.name('sds').description('CLI tool for creating Super Design System projects').version('1.0.0');
 
 program
   .command('create [project-name]')
@@ -64,10 +61,7 @@ program
 
 program.parse();
 
-async function buildConfig(
-  projectName: string | undefined,
-  options: any
-): Promise<ProjectConfig> {
+async function buildConfig(projectName: string | undefined, options: any): Promise<ProjectConfig> {
   // If we have all required options, build config directly
   if (projectName && options.template && hasInstallationType(options)) {
     const targetPath = path.join(process.cwd(), projectName);
@@ -80,7 +74,7 @@ async function buildConfig(
       installationType: getInstallationType(options),
       useTypeScript: !options.javascript,
       skipInstall: options.skipInstall || false,
-      skipGit: options.skipGit || false
+      skipGit: options.skipGit || false,
     };
   }
 

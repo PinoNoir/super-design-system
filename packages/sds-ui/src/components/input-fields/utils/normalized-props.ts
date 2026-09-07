@@ -12,6 +12,10 @@ const helperProps = (helperId: string) => ({
   'aria-describedby': helperId,
 });
 
+const requiredProps = () => ({
+  'aria-required': true,
+});
+
 /**
  * @param {{sharedTextInputProps: object, required?: boolean, invalid?: boolean, invalidId?: string, warn?: boolean, warnId?: string, success: boolean, successId: string, hasHelper?: boolean, helperId?: string}} config
  * @returns {object}
@@ -41,4 +45,5 @@ export const textInputProps = ({
   ...(invalid ? invalidProps(invalidId) : {}),
   ...(warn ? warnProps(warnId) : {}),
   ...(hasHelper ? helperProps(helperId) : {}),
+  ...(required ? requiredProps() : {}),
 });

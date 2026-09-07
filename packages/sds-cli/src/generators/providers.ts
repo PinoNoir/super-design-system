@@ -1,15 +1,15 @@
-export function generateProvidersComponent(
-  useTypeScript: boolean,
-  theme?: string,
-  productType?: string
-): string {
+export function generateProvidersComponent(useTypeScript: boolean, theme?: string, productType?: string): string {
   const typeAnnotation = useTypeScript ? ': React.ReactNode' : '';
   const defaultTheme = theme || 'tsc-light';
-  const productName = productType ?
-    productType.toUpperCase() === 'BCC' ? 'BCC' :
-    productType.toUpperCase() === 'TSC' ? 'TSC' :
-    productType.toUpperCase() === 'CORE' ? 'CORE' :
-    'SDS' : 'SDS';
+  const productName = productType
+    ? productType.toUpperCase() === 'BCC'
+      ? 'BCC'
+      : productType.toUpperCase() === 'TSC'
+        ? 'TSC'
+        : productType.toUpperCase() === 'CORE'
+          ? 'CORE'
+          : 'SDS'
+    : 'SDS';
 
   return `import { ThemeProvider } from '@pinonoir/sds-ui';
 import '@pinonoir/sds-ui/component-styles';

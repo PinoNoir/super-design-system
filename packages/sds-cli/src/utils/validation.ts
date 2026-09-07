@@ -8,10 +8,7 @@ export function validateProjectName(name: string): { valid: boolean; problems?: 
   if (!validation.validForNewPackages) {
     return {
       valid: false,
-      problems: [
-        ...(validation.errors || []),
-        ...(validation.warnings || [])
-      ]
+      problems: [...(validation.errors || []), ...(validation.warnings || [])],
     };
   }
 
@@ -25,7 +22,7 @@ export function validateProjectPath(targetPath: string): { valid: boolean; error
     if (files.length > 0) {
       return {
         valid: false,
-        error: `Directory ${path.basename(targetPath)} already exists and is not empty.`
+        error: `Directory ${path.basename(targetPath)} already exists and is not empty.`,
       };
     }
   }

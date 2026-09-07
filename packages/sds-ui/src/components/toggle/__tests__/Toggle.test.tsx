@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import ButtonToggle from '../Toggle';
-import styles from './styles/Toggle.module.css';
+import styles from '../styles/Toggle.module.css';
 
 describe('ButtonToggle', () => {
   const defaultProps = {

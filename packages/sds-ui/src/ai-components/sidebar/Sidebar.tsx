@@ -335,7 +335,9 @@ const Sidebar = forwardRef<SidebarRef, SidebarProps>(
           {...props}
         >
           {!hideHeader && (
-            <div className={styles.sidebarHeader}>{renderHeader ? renderHeader(defaultHeader) : defaultHeader}</div>
+            <div className={clsx(styles.sidebarHeader, headerClassName)}>
+              {renderHeader ? renderHeader(defaultHeader) : defaultHeader}
+            </div>
           )}
           <div className={clsx(styles.sidebarContent, contentClassName)}>
             <div className={clsx(styles.sidebarNav, navClassName, { [styles.withHeaderHidden]: hideHeader })}>

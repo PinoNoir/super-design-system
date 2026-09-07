@@ -962,9 +962,7 @@ export const DraggableRows: Story = {
         />
 
         <Box mt="16">
-          <Text as="p">
-            Selected: {tableState.getSelectedRows(tableData)[0]?.caseNumber || 'None'}
-          </Text>
+          <Text as="p">Selected: {tableState.getSelectedRows(tableData)[0]?.caseNumber || 'None'}</Text>
         </Box>
       </Panel>
     );
