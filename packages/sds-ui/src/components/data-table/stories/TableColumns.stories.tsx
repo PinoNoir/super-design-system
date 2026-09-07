@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DATABASE, TableRowData, clientToTableFormat } from '../../../database/mockDatabase';
+import { DATABASE, TableRowData, clientToTableFormat } from '../../../mock-db/mockDatabase';
 import { RenderContext, TableSelectionCallback } from '../types/data-table-generics';
 import { useDataSearch, useDataSort, useRowSelection } from '../../../hooks';
 import TableCheckbox from '../TableCheckbox';

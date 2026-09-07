@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import useDebounce from './useDebounce';
 
 // Simple fuzzy search scoring function
 function fuzzyScore(query: string, target: string): number {
@@ -60,18 +61,8 @@ const useDataSearch = (options: UseDataSearchOptions = {}) => {
   } = options;
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  const debouncedSearchTerm = useDebounce(searchTerm, debounceDelay);
   const [showSuggestions, setShowSuggestions] = useState(false);
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, debounceDelay);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [searchTerm, debounceDelay]);
 
   // Get searchable text from an object
   const getSearchableText = useCallback(

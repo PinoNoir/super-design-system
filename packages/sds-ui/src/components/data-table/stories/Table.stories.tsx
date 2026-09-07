@@ -4,7 +4,7 @@ import { Table, TableButton, TableCheckbox } from '..';
 import Box from '../../box/Box';
 import Search from '../../search-input/Search';
 import Panel from '../../panel/Panel';
-import { DATABASE, TableRowData, clientToTableFormat } from '../../../database/mockDatabase';
+import { DATABASE, TableRowData, clientToTableFormat } from '../../../mock-db/mockDatabase';
 import { useDataSearch, useDataSort, useRowSelection } from '../../../hooks';
 import { RenderContext, TableSelectionCallback } from '../types/data-table-generics';
 

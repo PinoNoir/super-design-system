@@ -5,7 +5,7 @@ import Box from '../../box/Box';
 import Search from '../../search-input/Search';
 import Panel from '../../panel/Panel';
 import Button from '../../button/Button';
-import { ChapterType, DATABASE, TableRowData, clientToTableFormat } from '../../../database/mockDatabase';
+import { ChapterType, DATABASE, TableRowData, clientToTableFormat } from '../../../mock-db/mockDatabase';
 import { useDataSearch, useDataSort, useRowSelection } from '../../../hooks';
 import { RenderContext, TableSelectionCallback } from '../types/data-table-generics';
 

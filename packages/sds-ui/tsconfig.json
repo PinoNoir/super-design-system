@@ -13,7 +13,7 @@
     "allowJs": true,
     "checkJs": true,
     "moduleDetection": "force",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     // TODO: Turn back on once stricter typings for internal utitlies are complete
     "noImplicitAny": false,
     "skipLibCheck": true,
@@ -26,6 +26,14 @@
   "mdx": {
     "plugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-gfm"]
   },
+  // ts-node loads jest.config.ts by forcing module: "CommonJS", which is
+  // incompatible with moduleResolution: "bundler" above (TS5095). Scope a
+  // compatible resolution just for ts-node's config-file loading.
+  "ts-node": {
+    "compilerOptions": {
+      "moduleResolution": "node"
+    }
+  },
   "include": [
     "src/**/*",
     "src/vite-env-override.d.ts",
@@ -33,5 +41,5 @@
     "src/setup-tests.ts",
     "src/**/*stories.tsx"
   ],
-  "exclude": ["lib", "node_modules", "src/docs", "src/mocks", "src/public"]
+  "exclude": ["lib", "node_modules", "src/mocks", "src/public"]
 }

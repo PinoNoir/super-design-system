@@ -6,7 +6,7 @@ import Box from '../../box/Box';
 import Button from '../../button/Button';
 import Search from '../../search-input/Search';
 import { useDataSearch, useDataSort, useRowSelection } from '../../../hooks';
-import { clientToTableFormat, DATABASE, generateLargeDataset, TableRowData } from '../../../database/mockDatabase';
+import { clientToTableFormat, DATABASE, generateLargeDataset, TableRowData } from '../../../mock-db/mockDatabase';
 import { RenderContext } from '../types/data-table-generics';
 
 // Generate datasets at module level
@@ -303,7 +303,7 @@ export const ClientSidePagination: Story = {
     // All data is stored in client state
     const [tableData] = useState<TableRowData[]>(LARGE_DATASET);
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState<10 | 25 | 50 | 100>(10);
+    const [pageSize, setPageSize] = useState(10);
 
     // Client-side search and sort hooks
     const { searchTerm, filterData, handleSearch, handleClear } = useDataSearch();
@@ -333,7 +333,7 @@ export const ClientSidePagination: Story = {
       setCurrentPage(page);
     };
 
-    const handlePageSizeChange = (size: 10 | 25 | 50 | 100) => {
+    const handlePageSizeChange = (size: number) => {
       setPageSize(size);
       setCurrentPage(1); // Reset to first page when changing page size
     };

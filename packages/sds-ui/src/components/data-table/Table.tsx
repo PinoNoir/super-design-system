@@ -103,8 +103,8 @@ interface DefaultRowProps<T> {
   onSelectionChange?: TableSelectionCallback<T>;
   onClick?: () => void;
   isDraggable: boolean;
-  onDragStart?: (event: React.DragEvent) => void;
-  onDragOver?: (event: React.DragEvent) => void;
+  onDragStart?: (event: React.DragEvent<HTMLElement>) => void;
+  onDragOver?: (event: React.DragEvent<HTMLElement>) => void;
   onDragEnd?: () => void;
   className: string;
   rowHeight?: 'base' | 'condensed';

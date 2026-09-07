@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import Label from '../Label';
+import styles from '../styles/Label.module.css';
 
 describe('Label Component', () => {
   it('renders with children', () => {
@@ -13,13 +14,13 @@ describe('Label Component', () => {
     expect(screen.getByText('Test Label')).toHaveClass('custom-class');
   });
 
-  it('does not render Box when hasIcon is true', () => {
-    const { container } = render(<Label hasIcon>Test Label</Label>);
+  it('does not render icon Box when no icon is provided', () => {
+    const { container } = render(<Label>Test Label</Label>);
     expect(container.querySelectorAll('div')).toHaveLength(1); // Only the outer Box
   });
 
-  it('renders Box when hasIcon is false', () => {
-    const { container } = render(<Label hasIcon={false}>Test Label</Label>);
+  it('renders icon Box when icon is provided', () => {
+    const { container } = render(<Label icon={<span>icon</span>}>Test Label</Label>);
     expect(container.querySelectorAll('div')).toHaveLength(2); // Outer Box and inner Box
   });
 
@@ -36,6 +37,10 @@ describe('Label Component', () => {
   it('renders with correct display flex', () => {
     const { container } = render(<Label>Test Label</Label>);
     const outerBox = container.firstChild;
-    expect(outerBox).toHaveStyle('display: flex');
+    // jsdom never loads the actual CSS module stylesheet (moduleNameMapper
+    // stubs it with identity-obj-proxy), so `display: flex` can't be
+    // observed via computed style. Assert the module class that applies
+    // it instead, matching the pattern used elsewhere for CSS-module styles.
+    expect(outerBox).toHaveClass(styles.wrapper);
   });
 });

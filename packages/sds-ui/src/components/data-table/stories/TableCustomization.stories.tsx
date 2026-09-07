@@ -10,7 +10,7 @@ import TableCheckbox from '../TableCheckbox';
 import { useDataSearch, useDataSort, useRowSelection } from '../../../hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
-import { clientToTableFormat, DATABASE, TableRowData } from '../../../database/mockDatabase';
+import { clientToTableFormat, DATABASE, TableRowData } from '../../../mock-db/mockDatabase';
 import { SuggestionList } from '../../search-input';
 
 const meta: Meta<typeof Table> = {
@@ -583,7 +583,7 @@ export const BackwardCompatibility: Story = {
 export const SimpleCustomRows: Story = {
   render: function SimpleCustomRows() {
     const tableData = MOCK_TABLE_DATA;
-    const tableState = useRowSelection({ multipleSelect: true });
+    const tableState = useRowSelection<TableRowData>({ multipleSelect: true });
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
     const { sortedData, handleSort, sortKey, sortDirection } = useDataSort('name');
     const [currentPage, setCurrentPage] = useState(1);
@@ -633,6 +633,12 @@ export const SimpleCustomRows: Story = {
       setCurrentPage(1);
     }, [debouncedSearchTerm]);
 
+    // Reset the highlighted suggestion whenever the candidate list changes, so a
+    // stale index (from a previous, longer list) can't be used against a shorter one.
+    useEffect(() => {
+      setHighlightedIndex(null);
+    }, [suggestions]);
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!showSuggestions || suggestions.length === 0) return;
 
@@ -644,12 +650,14 @@ export const SimpleCustomRows: Story = {
         setHighlightedIndex((prev) => (prev === null || prev === 0 ? suggestions.length - 1 : prev - 1));
       } else if (e.key === 'Enter' && highlightedIndex !== null) {
         e.preventDefault();
-        handleSuggestionSelect(suggestions[highlightedIndex]);
+        const selected = suggestions[highlightedIndex];
+        if (selected !== undefined) {
+          handleSuggestionSelect(selected);
+        }
       }
     };
 
-    // Your existing columns and customRowRenderer code stays exactly the same...
-    const simpleColumns = [
+    const simpleColumns: TableColumnProps<TableRowData>[] = [
       {
         key: 'checkbox',
         header: '',
@@ -662,25 +670,25 @@ export const SimpleCustomRows: Story = {
         header: 'Case Information',
         width: 300,
         isSortable: true,
-        render: (data: any) => data.caseNumber,
+        render: (data: TableRowData) => data.caseNumber,
       },
       {
         key: 'caseFiledDate',
         header: 'Date Filed',
         width: 150,
         isSortable: true,
-        render: (data: any) => data.caseFiledDate,
+        render: (data: TableRowData) => data.caseFiledDate,
       },
       {
         key: 'chapter',
         header: 'Chapter',
         width: 100,
         isSortable: true,
-        render: (data: any) => data.chapter,
+        render: (data: TableRowData) => data.chapter,
       },
     ];
 
-    const customRowRenderer: RowRenderer<any> = (rowData, index, { rowId, isSelected, isDisabled }) => {
+    const customRowRenderer: RowRenderer<TableRowData> = (rowData, _index, { rowId, isSelected, isDisabled }) => {
       const handleRowClick = (e: React.MouseEvent) => {
         if (
           (e.target as HTMLElement).closest('input[type="checkbox"]') ||
@@ -797,7 +805,7 @@ export const SimpleCustomRows: Story = {
                 <Text as="p" className="font-size-sm text-muted mb-4">
                   Try these suggestions:
                 </Text>
-                {suggestions.map((suggestion, index) => (
+                {suggestions.map((suggestion) => (
                   <Text
                     key={suggestion}
                     as="span"
@@ -857,7 +865,7 @@ export const SimpleCustomRows: Story = {
             Selected:{' '}
             {tableState
               .getSelectedRows(tableData)
-              .map((row: any) => row.caseNumber)
+              .map((row) => row.caseNumber)
               .join(', ') ?? 'None'}
           </Text>
           {suggestions.length > 0 && (
@@ -875,7 +883,7 @@ export const SimpleCustomRows: Story = {
 export const DraggableRows: Story = {
   render: function DraggableRows() {
     const [tableData, setTableData] = useState(MOCK_TABLE_DATA);
-    const tableState = useRowSelection({ multipleSelect: false }); // Single select for drag demo
+    const tableState = useRowSelection<TableRowData>({ multipleSelect: false }); // Single select for drag demo
     const { handleSearch, handleClear, searchTerm, filterData } = useDataSearch();
     const { sortedData } = useDataSort();
 
@@ -889,39 +897,40 @@ export const DraggableRows: Story = {
     const handleDragEnd = (oldIndex: number, newIndex: number) => {
       const newData = [...tableData];
       const [draggedItem] = newData.splice(oldIndex, 1);
+      if (!draggedItem) return;
       newData.splice(newIndex, 0, draggedItem);
       setTableData(newData);
     };
 
     // Simple columns definition
-    const simpleColumns = [
+    const simpleColumns: TableColumnProps<TableRowData>[] = [
       {
         key: 'caseNumber',
         header: 'Case Number',
         width: 150,
         isSortable: true,
-        render: (data: any) => data.caseNumber,
+        render: (data: TableRowData) => data.caseNumber,
       },
       {
         key: 'debtor',
         header: 'Debtor',
         width: 200,
         isSortable: true,
-        render: (data: any) => data.debtor,
+        render: (data: TableRowData) => data.debtor,
       },
       {
         key: 'caseFiledDate',
         header: 'Date Filed',
         width: 150,
         isSortable: true,
-        render: (data: any) => data.caseFiledDate,
+        render: (data: TableRowData) => data.caseFiledDate,
       },
       {
         key: 'chapter',
         header: 'Chapter',
         width: 100,
         isSortable: true,
-        render: (data: any) => data.chapter,
+        render: (data: TableRowData) => data.chapter,
       },
     ];
 
@@ -954,7 +963,7 @@ export const DraggableRows: Story = {
 
         <Box mt="16">
           <Text as="p">
-            Selected: {(tableState.getSelectedRows(tableData)[0] as TableRowData)?.caseNumber || 'None'}
+            Selected: {tableState.getSelectedRows(tableData)[0]?.caseNumber || 'None'}
           </Text>
         </Box>
       </Panel>

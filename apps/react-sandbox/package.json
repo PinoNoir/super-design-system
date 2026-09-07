@@ -16,13 +16,13 @@
     "@types/node": "^20.6.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^4.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.469.0",
     "postcss": "^8.5.3",
     "postcss-modules": "^6.0.1",
-    "vite": "^6.2.6",
-    "vite-plugin-svg-sprite": "^0.6.1"
+    "vite": "^6.4.3",
+    "vite-plugin-svg-sprite": "^0.6.3"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
