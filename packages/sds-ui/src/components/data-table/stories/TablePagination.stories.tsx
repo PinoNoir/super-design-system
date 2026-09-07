@@ -6,7 +6,7 @@ import Box from '../../box/Box';
 import Button from '../../button/Button';
 import Search from '../../search-input/Search';
 import { useDataSearch, useDataSort, useRowSelection } from '../../../hooks';
-import { clientToTableFormat, DATABASE, generateLargeDataset, TableRowData } from '../../../database/mockDatabase';
+import { clientToTableFormat, DATABASE, generateLargeDataset, TableRowData } from '../../../mock-db/mockDatabase';
 import { RenderContext } from '../types/data-table-generics';
 
 // Generate datasets at module level

@@ -10,7 +10,7 @@ import TableCheckbox from '../TableCheckbox';
 import { useDataSearch, useDataSort, useRowSelection } from '../../../hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
-import { clientToTableFormat, DATABASE, TableRowData } from '../../../database/mockDatabase';
+import { clientToTableFormat, DATABASE, TableRowData } from '../../../mock-db/mockDatabase';
 import { SuggestionList } from '../../search-input';
 
 const meta: Meta<typeof Table> = {
