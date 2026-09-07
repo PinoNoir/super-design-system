@@ -292,9 +292,7 @@ export const formatDateTimeWithFormat = (
 
   // Preserve the original time if provided
   const timeToFormat = timePart || '';
-  const formattedTime = timeToFormat
-    ? formatTimeWithFormat(timeToFormat, true) // Force 24-hour format
-    : '';
+  const formattedTime = timeToFormat ? formatTimeWithFormat(timeToFormat, format24Hour) : '';
 
   return formattedDate + (formattedTime ? ` ${formattedTime}` : '');
 };

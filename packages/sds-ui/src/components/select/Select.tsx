@@ -63,7 +63,8 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
 
     const triggerRef = useRef<HTMLButtonElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
-    const selectId = useId('select');
+    const generatedId = useId('select');
+    const selectId = id || generatedId;
     const labelId = `${selectId}-label`;
     const listboxId = `${selectId}-listbox`;
 

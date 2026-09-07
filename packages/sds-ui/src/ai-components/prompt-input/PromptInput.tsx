@@ -106,6 +106,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
               placeholder={placeholder}
               aria-label={ariaLabel}
               rows={rows}
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- opt-in via the `autoFocus` prop; consumer chooses this, it isn't hardcoded on
               autoFocus={autoFocus}
               onFocus={handleFocus}
               onBlur={handleBlur}

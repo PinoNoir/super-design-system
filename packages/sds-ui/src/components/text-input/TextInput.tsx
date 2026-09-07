@@ -162,8 +162,10 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
 const TextInput = React.forwardRef(function TextInput(
   {
     className,
-    register,
-    rules,
+    // register/rules are reserved for a planned react-hook-form integration
+    // that isn't wired up yet - not dead code, just not consumed here yet.
+    register: _register,
+    rules: _rules,
     name,
     disabled = false,
     helperText,
@@ -186,8 +188,11 @@ const TextInput = React.forwardRef(function TextInput(
     enableCounter = false,
     maxCount,
     required,
-    formatType,
-    customFormat,
+    // formatType/customFormat are documented and typed but this standalone
+    // TextInput doesn't implement the formatting logic its BaseInput sibling
+    // does - reserved for parity, not wired up yet.
+    formatType: _formatType,
+    customFormat: _customFormat,
     ...props
   }: TextInputProps,
   ref,

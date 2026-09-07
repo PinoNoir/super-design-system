@@ -53,6 +53,7 @@ sds create
 ```
 
 Launches an interactive wizard that prompts for:
+
 - Project name
 - Framework choice (React + Vite, Next.js, CRA)
 - Installation type (Full, Minimal, Components, Custom)
@@ -84,6 +85,7 @@ Supports all options via CLI flags for CI/CD and automation.
 ### 5. Auto-Configuration
 
 The CLI automatically generates:
+
 - `package.json` with correct dependencies and scripts
 - `tsconfig.json` with optimal TypeScript settings
 - Provider components with theme setup
@@ -254,6 +256,7 @@ sds create my-app
 ### CLI Not Found After Install
 
 Ensure the bin file is executable:
+
 ```bash
 chmod +x packages/sds-cli/bin/index.js
 ```
@@ -261,6 +264,7 @@ chmod +x packages/sds-cli/bin/index.js
 ### TypeScript Compilation Errors
 
 Clean and rebuild:
+
 ```bash
 pnpm --filter sds-cli clean
 pnpm --filter sds-cli build
@@ -269,6 +273,7 @@ pnpm --filter sds-cli build
 ### Dependencies Not Installing
 
 Check package manager is installed and accessible:
+
 ```bash
 which pnpm
 which npm

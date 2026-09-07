@@ -8,4 +8,3 @@ export const Route = createFileRoute('/dashboard')({
 function DashboardRoute() {
   return <Dashboard />;
 }
-

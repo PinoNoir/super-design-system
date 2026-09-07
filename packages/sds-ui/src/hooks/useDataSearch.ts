@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import useDebounce from './useDebounce';
 
 // Simple fuzzy search scoring function

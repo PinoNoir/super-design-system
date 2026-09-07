@@ -65,6 +65,7 @@ Add it to a test project's package.json:
 ```
 
 Then run:
+
 ```bash
 pnpm install
 pnpm sds create my-app
@@ -113,30 +114,35 @@ sds create
 ## Testing Specific Scenarios
 
 ### Test BCC with Dark Theme
+
 ```bash
 sds create bcc-test-app
 # Select: React + Vite → Full → BCC → Dark → pnpm → Yes → Yes
 ```
 
 ### Test TSC with Light Theme
+
 ```bash
 sds create tsc-test-app
 # Select: Next.js → Full → TSC → Light → pnpm → Yes → Yes
 ```
 
 ### Test CORE with Custom Theme
+
 ```bash
 sds create core-test-app
 # Select: React + Vite → Full → CORE → Light → pnpm → Yes → Yes
 ```
 
 ### Test Custom Theme
+
 ```bash
 sds create custom-test-app
 # Select: React + Vite → Full → Custom → Enter "my-custom-theme" → pnpm → Yes → Yes
 ```
 
 ### Test Minimal Installation
+
 ```bash
 sds create minimal-test-app
 # Select: React + Vite → Minimal → pnpm → Yes → Yes
@@ -148,11 +154,13 @@ sds create minimal-test-app
 After creating a test project, verify:
 
 1. **Theme is correctly set** in `src/Providers.tsx`:
+
    ```tsx
    <ThemeProvider defaultTheme="tsc-light">
    ```
 
 2. **Correct packages installed** in `package.json`:
+
    ```json
    "dependencies": {
      "@pinonoir/sds-ui": "^2.0.0",
@@ -173,11 +181,13 @@ After creating a test project, verify:
 ## Cleanup After Testing
 
 Remove test projects:
+
 ```bash
 rm -rf test-app bcc-test-app tsc-test-app core-test-app custom-test-app minimal-test-app
 ```
 
 Unlink the CLI:
+
 ```bash
 pnpm unlink --global @pinonoir/sds-cli
 ```
@@ -189,13 +199,16 @@ pnpm unlink --global @pinonoir/sds-cli
 **Problem**: When testing locally with npm as the package manager, you'll get this error because the SDS packages haven't been published yet and contain `workspace:` protocol dependencies.
 
 **Solution** (choose one):
+
 1. **Use pnpm** instead of npm (pnpm understands workspace: protocol):
+
    ```bash
    pnpm test-create my-app
    # Select pnpm as package manager
    ```
 
 2. **Use --skip-install** flag and install manually with pnpm:
+
    ```bash
    pnpm test-create my-app -- --skip-install
    cd my-app
@@ -207,10 +220,13 @@ pnpm unlink --global @pinonoir/sds-cli
 **Why this happens**: The `sds-styles` package depends on `sds-tokens` using `workspace:^` protocol, which is a pnpm feature for monorepos. npm doesn't understand this until packages are published.
 
 ### Issue: Command not found after linking
+
 **Solution**: Make sure you built the CLI first with `pnpm build`
 
 ### Issue: Old version of CLI is running
+
 **Solution**:
+
 ```bash
 pnpm unlink --global
 pnpm build
@@ -218,9 +234,11 @@ pnpm link --global
 ```
 
 ### Issue: Changes not reflected
+
 **Solution**: Always rebuild after making changes, or use watch mode (`pnpm dev`)
 
 ### Issue: Version detection not working
+
 **Solution**: Make sure you're running from the monorepo and all packages have valid package.json files
 
 ## Publishing to NPM (When Ready)
@@ -228,16 +246,19 @@ pnpm link --global
 Once you've tested thoroughly:
 
 1. **Create a changeset**:
+
    ```bash
    pnpm changeset
    ```
 
 2. **Version the packages**:
+
    ```bash
    pnpm version-packages
    ```
 
 3. **Build all packages**:
+
    ```bash
    pnpm build
    ```
@@ -248,6 +269,7 @@ Once you've tested thoroughly:
    ```
 
 After publishing, users can run:
+
 ```bash
 npx @pinonoir/sds-cli create my-app
 # or

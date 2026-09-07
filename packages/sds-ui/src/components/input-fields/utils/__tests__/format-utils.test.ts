@@ -95,11 +95,11 @@ describe('Input Utility Functions', () => {
       (formatDate as jest.Mock).mockClear();
     });
 
-    it('should format date and time with default format', () => {
+    it('should format date and time with default format (12-hour by default)', () => {
       (formatDate as jest.Mock).mockReturnValue('05/15/2023');
 
       const result = formatDateTimeWithFormat('2023-05-15 14:30');
-      expect(result).toBe('05/15/2023 14:30');
+      expect(result).toBe('05/15/2023 2:30');
 
       expect(formatDate).toHaveBeenCalledWith(expect.any(Date), 'MM/DD/YYYY');
     });
@@ -108,9 +108,16 @@ describe('Input Utility Functions', () => {
       (formatDate as jest.Mock).mockReturnValue('15/05/2023');
 
       const result = formatDateTimeWithFormat('2023-05-15 14:30', 'DD/MM/YYYY');
-      expect(result).toBe('15/05/2023 14:30');
+      expect(result).toBe('15/05/2023 2:30');
 
       expect(formatDate).toHaveBeenCalledWith(expect.any(Date), 'DD/MM/YYYY');
+    });
+
+    it('should forward format24Hour to the time formatter', () => {
+      (formatDate as jest.Mock).mockReturnValue('05/15/2023');
+
+      const result = formatDateTimeWithFormat('2023-05-15 14:30', 'MM/DD/YYYY', true);
+      expect(result).toBe('05/15/2023 14:30');
     });
   });
 

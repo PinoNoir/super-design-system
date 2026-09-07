@@ -233,6 +233,7 @@ const Search = React.forwardRef<HTMLInputElement, SearchProps>(function Search(
           <SearchIcon />
         </div>
         <input
+          {...props}
           autoComplete={autoComplete}
           className={clsx(styles.searchInput, className)}
           defaultValue={defaultValue}

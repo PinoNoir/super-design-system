@@ -18,7 +18,6 @@ export interface FileCardProps extends ComponentPropsWithRef<'div'> {
   onDelete?: () => void;
   onDownload?: () => void;
   onRetryUpload?: (file: File) => void;
-  onUploadProgress?: (file: File, progress: number) => void;
   ['automation-id']?: string;
 }
 
@@ -28,7 +27,6 @@ const FileCard: React.FC<FileCardProps> = ({
   onEdit,
   onDelete,
   onDownload,
-  onUploadProgress,
   onRetryUpload,
   file,
   ...props

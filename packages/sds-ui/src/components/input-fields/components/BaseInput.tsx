@@ -168,9 +168,11 @@ export interface BaseInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
 const BaseInput = React.forwardRef(function TextInput(
   {
     className,
-    register,
-    rules,
-    name,
+    // register/rules/name are reserved for a planned react-hook-form integration
+    // that isn't wired up yet - not dead code, just not consumed here yet.
+    register: _register,
+    rules: _rules,
+    name: _name,
     disabled = false,
     helperText,
     hideLabel,
@@ -404,6 +406,7 @@ const BaseInput = React.forwardRef(function TextInput(
         warnId: normalizedProps.warnId,
         success: normalizedProps.success,
         successId: normalizedProps.successId,
+        required: normalizedProps.required,
       })}
       aria-labelledby={`${inputId}-label`}
       aria-label={hideLabel ? props.ariaLabel || label : undefined}

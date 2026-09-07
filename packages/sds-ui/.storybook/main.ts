@@ -26,7 +26,7 @@ const config: StorybookConfig = {
       config: {
         rules: [{ id: 'color-contrast', enabled: true }],
       },
-    }
+    },
   ],
 
   staticDirs: ['../src/public', './sb-theme-assets/icons', './sb-theme-assets/fonts', '../src/docs/assets'],

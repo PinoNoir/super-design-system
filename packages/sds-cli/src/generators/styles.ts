@@ -27,9 +27,10 @@ export function generateGlobalCss(productType?: ProductType, hasComponents?: boo
   // Add component styles if components are included
   const componentImport = hasComponents ? "\n@import '@pinonoir/sds-ui/component-styles';" : '';
 
-  const productComment = productType && productType !== 'custom'
-    ? `/* ${productType.toUpperCase()} Product Styles */\n`
-    : '/* Super Design System Styles */\n';
+  const productComment =
+    productType && productType !== 'custom'
+      ? `/* ${productType.toUpperCase()} Product Styles */\n`
+      : '/* Super Design System Styles */\n';
 
   return `${productComment}${stylesImport}${componentImport}
 `;

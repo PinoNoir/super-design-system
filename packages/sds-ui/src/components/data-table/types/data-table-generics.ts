@@ -33,7 +33,7 @@ export interface SelectionContext {
 /**
  * Standardized selection callback - works with any data type
  */
-export type TableSelectionCallback<T> = (rowId: string, newSelectionState: boolean, context: SelectionContext) => void;
+export type TableSelectionCallback<_T> = (rowId: string, newSelectionState: boolean, context: SelectionContext) => void;
 
 /**
  * Selection state helpers - no longer tied to TableRowBase

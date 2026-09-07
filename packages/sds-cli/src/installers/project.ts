@@ -7,7 +7,7 @@ import { generatePackageJson } from '../generators/package-json.js';
 import { generateTsConfig, generateTsConfigNode } from '../generators/tsconfig.js';
 import { generateProvidersComponent, generateAppComponent } from '../generators/providers.js';
 import { generateGlobalCss } from '../generators/styles.js';
-import { detectSDSVersions, type SDSVersions } from '../utils/version.js';
+import { detectSDSVersions } from '../utils/version.js';
 
 export async function createProject(config: ProjectConfig): Promise<void> {
   const spinner = ora('Creating project structure...').start();
@@ -71,15 +71,8 @@ async function createFrameworkFiles(config: ProjectConfig, srcPath: string): Pro
   await fs.writeFile(path.join(srcPath, 'global.css'), globalCssContent);
 
   // Create providers component with theme configuration
-  const providersContent = generateProvidersComponent(
-    config.useTypeScript,
-    config.theme,
-    config.productType
-  );
-  await fs.writeFile(
-    path.join(srcPath, `Providers.${ext}`),
-    providersContent
-  );
+  const providersContent = generateProvidersComponent(config.useTypeScript, config.theme, config.productType);
+  await fs.writeFile(path.join(srcPath, `Providers.${ext}`), providersContent);
 
   if (config.framework === 'react-vite') {
     // Create Vite config
@@ -108,11 +101,11 @@ async function createFrameworkFiles(config: ProjectConfig, srcPath: string): Pro
 function getTemplateConfig(framework: string): TemplateConfig {
   const baseConfig: TemplateConfig = {
     dependencies: {
-      'react': '^18.3.1',
-      'react-dom': '^18.3.1'
+      react: '^18.3.1',
+      'react-dom': '^18.3.1',
     },
     devDependencies: {},
-    scripts: {}
+    scripts: {},
   };
 
   if (framework === 'react-vite') {
@@ -121,14 +114,14 @@ function getTemplateConfig(framework: string): TemplateConfig {
       devDependencies: {
         ...baseConfig.devDependencies,
         '@vitejs/plugin-react': '^4.3.4',
-        'vite': '^6.2.6',
-        'vite-tsconfig-paths': '^5.1.4'
+        vite: '^6.2.6',
+        'vite-tsconfig-paths': '^5.1.4',
       },
       scripts: {
-        'dev': 'vite',
-        'build': 'vite build',
-        'preview': 'vite preview'
-      }
+        dev: 'vite',
+        build: 'vite build',
+        preview: 'vite preview',
+      },
     };
   }
 
@@ -136,15 +129,15 @@ function getTemplateConfig(framework: string): TemplateConfig {
     return {
       dependencies: {
         ...baseConfig.dependencies,
-        'next': '^15.1.4'
+        next: '^15.1.4',
       },
       devDependencies: {},
       scripts: {
-        'dev': 'next dev',
-        'build': 'next build',
-        'start': 'next start',
-        'lint': 'next lint'
-      }
+        dev: 'next dev',
+        build: 'next build',
+        start: 'next start',
+        lint: 'next lint',
+      },
     };
   }
 

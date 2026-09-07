@@ -36,7 +36,7 @@ export async function detectSDSVersions(): Promise<SDSVersions> {
         // Fallback to default version
         versions[pkg as keyof SDSVersions] = '^2.0.0';
       }
-    } catch (error) {
+    } catch {
       // Use default version if detection fails
       versions[pkg as keyof SDSVersions] = '^2.0.0';
     }
@@ -53,7 +53,7 @@ export async function getCLIVersion(): Promise<string> {
     const cliPackageJsonPath = path.resolve(__dirname, '../../package.json');
     const cliPackageJson = await fs.readJson(cliPackageJsonPath);
     return cliPackageJson.version;
-  } catch (error) {
+  } catch {
     return '1.0.0';
   }
 }

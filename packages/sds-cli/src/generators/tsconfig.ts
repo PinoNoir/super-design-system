@@ -19,11 +19,11 @@ export function generateTsConfig(framework: Framework): object {
       noUnusedParameters: true,
       noFallthroughCasesInSwitch: true,
       paths: {
-        '@/*': ['./src/*']
-      }
+        '@/*': ['./src/*'],
+      },
     },
     include: ['src'],
-    references: [{ path: './tsconfig.node.json' }]
+    references: [{ path: './tsconfig.node.json' }],
   };
 
   // Adjust for Next.js
@@ -42,11 +42,11 @@ export function generateTsConfig(framework: Framework): object {
         jsx: 'preserve',
         plugins: [{ name: 'next' }],
         paths: {
-          '@/*': ['./src/*']
-        }
+          '@/*': ['./src/*'],
+        },
       },
       include: ['next-env.d.ts', '**/*.ts', '**/*.tsx', '.next/types/**/*.ts'],
-      exclude: ['node_modules']
+      exclude: ['node_modules'],
     };
   }
 
@@ -60,8 +60,8 @@ export function generateTsConfigNode(): object {
       skipLibCheck: true,
       module: 'ESNext',
       moduleResolution: 'bundler',
-      allowSyntheticDefaultImports: true
+      allowSyntheticDefaultImports: true,
     },
-    include: ['vite.config.ts']
+    include: ['vite.config.ts'],
   };
 }

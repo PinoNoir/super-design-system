@@ -30,6 +30,7 @@ export default [
       'packages/*/config/',
       'packages/*/coverage/',
       'packages/*/lib/',
+      'packages/*/dist/',
       'packages/*/public/',
       'packages/*/node_modules/',
       'packages/sds-styles/src',
@@ -72,6 +73,14 @@ export default [
     rules: {
       'no-console': 'warn',
       'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
       '@typescript-eslint/explicit-function-return-type': 0,
       '@typescript-eslint/no-explicit-any': 'off',
       'no-empty': 'warn',
