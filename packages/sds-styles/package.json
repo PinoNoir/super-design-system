@@ -7,6 +7,15 @@
     "email": "nickpino.designs@gmail.com"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PinoNoir/super-design-system.git",
+    "directory": "packages/sds-styles"
+  },
+  "homepage": "https://github.com/PinoNoir/super-design-system/tree/main/packages/sds-styles#readme",
+  "bugs": {
+    "url": "https://github.com/PinoNoir/super-design-system/issues"
+  },
   "keywords": [
     "css",
     "library",

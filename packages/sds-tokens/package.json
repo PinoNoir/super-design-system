@@ -7,6 +7,15 @@
     "email": "nickpino.designs@gmail.com"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PinoNoir/super-design-system.git",
+    "directory": "packages/sds-tokens"
+  },
+  "homepage": "https://github.com/PinoNoir/super-design-system/tree/main/packages/sds-tokens#readme",
+  "bugs": {
+    "url": "https://github.com/PinoNoir/super-design-system/issues"
+  },
   "type": "module",
   "exports": {
     ".": "./lib/css/base.css",
