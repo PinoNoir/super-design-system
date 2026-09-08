@@ -33,10 +33,13 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: pnpm
 
-      # npm trusted publishing (OIDC) needs npm >=11.5.1. The npm version
-      # bundled with a given Node release can lag behind that requirement.
+      # npm trusted publishing (OIDC) needs npm >=11.5.1, which can lag
+      # behind whatever a given Node release bundles. Pinned to the 11.x
+      # line rather than `latest`: npm 12 made a breaking config-schema
+      # change (verified locally) that broke both this repo's own .npmrc
+      # settings and a --no-git-checks flag @changesets/cli relies on.
       - name: Ensure npm is new enough for trusted publishing
-        run: npm install -g npm@latest
+        run: npm install -g npm@^11
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
