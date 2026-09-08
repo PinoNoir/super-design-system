@@ -1,14 +1,12 @@
+import React, { useState } from 'react';
 import { clsx } from 'clsx';
-import React from 'react';
-import { useAnnouncer } from '../../utilities/use-announcer';
 import styles from './styles/TextInput.module.css';
 import { ValidationMessage } from '../validation-message';
 import { HelperText } from '../helper-text';
 import { useId } from '../../utilities/use-id';
-import { FormatType } from '../input-fields/constants/input-constants';
-import { useNormalizedInputProps } from '../input-fields/utils/use-normalized-input-props';
-import { textInputProps } from '../input-fields/utils/normalized-props';
-import { FieldError, FieldErrors, RegisterOptions, UseFormRegister } from 'react-hook-form';
+import { useAnnouncer } from '../../utilities/use-announcer';
+import { useFieldStatus, FieldStatus } from '../../hooks';
+import { FieldError, FieldErrors } from 'react-hook-form';
 
 type ExcludedAttributes = 'defaultValue' | 'id' | 'value';
 
@@ -24,10 +22,6 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
   defaultValue?: string | number;
 
   name?: string;
-
-  register?: UseFormRegister<any>;
-
-  rules?: RegisterOptions;
 
   /**
    * Specify whether the `<input>` should be disabled
@@ -105,12 +99,6 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
   readOnly?: boolean;
 
   /**
-   * Specify whether the control has a path to a form
-   * (e.g. `path="user.name"`)
-   */
-  path?: string;
-
-  /**
    * Specify the type of the `<input>`
    */
   type?: string;
@@ -141,237 +129,215 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
   successText?: string;
 
   /**
-   * Optionally specify a format type for the input (e.g. phone number, currency, etc.)
-   */
-  formatType?: FormatType;
-
-  /**
-   * Optionally specify a custom format for the input
-   */
-  customFormat?: string;
-
-  /**
    * Optionally specify an automation id for testing purposes.
    */
   ['automation-id']?: string;
 }
 
+const STATUS_ICON_CLASSNAMES: Record<Exclude<FieldStatus, null>, string> = {
+  invalid: styles.errorIcon,
+  warn: styles.warningIcon,
+  success: styles.successIcon,
+};
+
 /** Text fields allow users to input, edit, and select text or numeric values.
  * Text fields can also validate input, provide suggestions, and help users fix errors.
  */
-const TextInput = React.forwardRef(function TextInput(
-  {
-    className,
-    // register/rules are reserved for a planned react-hook-form integration
-    // that isn't wired up yet - not dead code, just not consumed here yet.
-    register: _register,
-    rules: _rules,
-    name,
-    disabled = false,
-    helperText,
-    hideLabel,
-    id,
-    inline = false,
-    invalid = false,
-    invalidText,
-    label,
-    onChange: customOnChange = () => {},
-    onClick = () => {},
-    placeholder,
-    readOnly,
-    type = 'text',
-    warn = false,
-    warnText,
-    success = false,
-    successText,
-    path,
-    enableCounter = false,
-    maxCount,
-    required,
-    // formatType/customFormat are documented and typed but this standalone
-    // TextInput doesn't implement the formatting logic its BaseInput sibling
-    // does - reserved for parity, not wired up yet.
-    formatType: _formatType,
-    customFormat: _customFormat,
-    ...props
-  }: TextInputProps,
-  ref,
-) {
-  const { defaultValue, value } = props;
-  const isControlled = 'value' in props;
-  const [textCount, setTextCount] = React.useState(defaultValue?.toString().length || value?.toString().length || 0);
-  const [exceedsMaxCount, setExceedsMaxCount] = React.useState(false);
-  const uniqueId = useId();
-  const inputId = `${uniqueId}-input`;
+const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
+  (
+    {
+      className,
+      name,
+      disabled = false,
+      helperText,
+      hideLabel,
+      id,
+      inline = false,
+      invalid = false,
+      invalidText,
+      label,
+      onChange: customOnChange,
+      onClick,
+      placeholder,
+      readOnly,
+      type = 'text',
+      warn = false,
+      warnText,
+      success = false,
+      successText,
+      enableCounter = false,
+      maxCount,
+      required,
+      defaultValue,
+      value,
+      ariaLabel,
+      ...props
+    },
+    ref,
+  ) => {
+    const isControlled = value !== undefined;
+    const [uncontrolledCount, setUncontrolledCount] = useState(() => String(defaultValue ?? '').length);
+    const textCount = isControlled ? String(value ?? '').length : uncontrolledCount;
+    const exceedsMaxCount = maxCount !== undefined && textCount > maxCount;
 
-  const normalizedProps = useNormalizedInputProps({
-    id,
-    readOnly,
-    disabled,
-    invalid,
-    invalidText,
-    warn,
-    warnText,
-    success,
-    successText,
-    required,
-  });
+    const uniqueId = useId();
+    const inputId = `${uniqueId}-input`;
 
-  const validationMessageProps = {
-    readOnly,
-    invalid: normalizedProps.invalid,
-    invalidText,
-    warn: normalizedProps.warn,
-    warnText,
-    success: normalizedProps.success,
-    successText,
-  };
+    const fieldStatus = useFieldStatus({ id, disabled, readOnly, required, invalid, warn, success });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (normalizedProps.disabled) return; // Update character count if enabled
+    const validationMessageProps = {
+      readOnly,
+      invalid: fieldStatus.invalid,
+      invalidText,
+      warn: fieldStatus.warn,
+      warnText,
+      success: fieldStatus.success,
+      successText,
+    };
 
-    if (enableCounter) {
-      const newLength = event.target.value?.length || 0;
-      setTextCount(newLength);
-      if (maxCount !== undefined) {
-        setExceedsMaxCount(newLength > maxCount);
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (fieldStatus.disabled) return;
+
+      if (!isControlled) {
+        setUncontrolledCount(event.target.value.length);
       }
-    } // Call RHF's onChange (from Controller)
 
-    customOnChange(event);
-  };
+      customOnChange?.(event);
+    };
 
-  const handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    if (!normalizedProps.disabled) {
-      onClick(event);
-    }
-  };
+    const handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      if (!fieldStatus.disabled) {
+        onClick?.(event);
+      }
+    };
 
-  const renderCounter = () => {
-    if (!enableCounter || maxCount === undefined) return null;
+    const renderCounter = () => {
+      if (!enableCounter || maxCount === undefined) return null;
 
-    const counterClasses = clsx(styles.label, styles.textInputLabelCounter, {
-      [styles.labelDisabled]: disabled,
-      [styles.textInputFieldWrapperInvalid]: exceedsMaxCount,
+      const counterClasses = clsx(styles.label, styles.textInputLabelCounter, {
+        [styles.labelDisabled]: disabled,
+        [styles.textInputFieldWrapperInvalid]: exceedsMaxCount,
+      });
+
+      return <div className={counterClasses}>{`${textCount}/${maxCount}`}</div>;
+    };
+
+    const labelClasses = clsx(styles.label, {
+      [styles.visuallyHidden]: hideLabel,
+      [styles.labelInline]: inline,
+      [styles.requiredLabel]: fieldStatus.required,
     });
 
-    return <div className={counterClasses}>{`${textCount}/${maxCount}`}</div>;
-  };
+    const inputWrapperClasses = clsx(className, styles.formItem, styles.textInputWrapper, {
+      [styles.textInputWrapperInline]: inline,
+      [styles.textInputWrapperInlineInvalid]: inline && fieldStatus.invalid,
+    });
 
-  const labelClasses = clsx(styles.label, {
-    [styles.visuallyHidden]: hideLabel,
-    [styles.labelInline]: inline,
-    [styles.requiredLabel]: normalizedProps.required,
-  });
+    const fieldWrapperClasses = clsx(styles.textInputFieldWrapper, {
+      [styles.textInputFieldWrapperWarning]: fieldStatus.warn,
+      [styles.textInputFieldWrapperInvalid]: fieldStatus.invalid,
+      [styles.textInputFieldWrapperSuccess]: fieldStatus.success,
+    });
 
-  const inputWrapperClasses = clsx(className, styles.formItem, styles.textInputWrapper, {
-    [styles.textInputWrapperInline]: inline,
-    [styles.textInputWrapperInlineInvalid]: inline && normalizedProps.invalid,
-  });
+    // Associate the input with whichever status message and/or helper text
+    // is actually rendered, so screen reader users hear it too - not just
+    // see it. Both can be present at once (aria-describedby accepts a
+    // space-separated list of ids).
+    const describedBy =
+      [fieldStatus.status ? fieldStatus[`${fieldStatus.status}Id`] : null, helperText ? fieldStatus.helperId : null]
+        .filter(Boolean)
+        .join(' ') || undefined;
 
-  const fieldWrapperClasses = clsx(styles.textInputFieldWrapper, {
-    [styles.textInputFieldWrapperWarning]: normalizedProps.warn,
-    [styles.textInputFieldWrapperInvalid]: normalizedProps.invalid,
-    [styles.textInputFieldWrapperSuccess]: normalizedProps.success,
-  });
-
-  const labelElement = (
-    <label
-      id={`${inputId}-label`}
-      htmlFor={inputId}
-      className={labelClasses}
-      data-required={normalizedProps.required ? 'true' : 'false'}
-    >
-      {label}
-    </label>
-  );
-
-  const inputElement = (
-    <input
-      {...textInputProps({
-        sharedTextInputProps: {
-          id: inputId,
-          name,
-          onChange: handleChange,
-          onClick: handleClick,
-          placeholder,
-          type,
-          ref,
-          className: clsx(styles.textInput, {
-            [styles.textInputInvalid]: normalizedProps.invalid,
-            [styles.textInputWarning]: normalizedProps.warn,
-            [styles.textInputSuccess]: normalizedProps.success,
-          }),
-          defaultValue,
-          value,
-          path,
-          title: placeholder,
-          disabled: normalizedProps.disabled,
-          readOnly,
-          required: normalizedProps.required,
-          ['aria-describedby']: helperText && normalizedProps.helperId,
-          ...(enableCounter && { maxLength: maxCount }),
-
-          ...props,
-        },
-        invalid: normalizedProps.invalid,
-        invalidId: normalizedProps.invalidId,
-        warn: normalizedProps.warn,
-        warnId: normalizedProps.warnId,
-        success: normalizedProps.success,
-        successId: normalizedProps.successId,
-      })}
-      aria-labelledby={`${inputId}-label`}
-      aria-label={hideLabel ? props.ariaLabel || label : undefined}
-      {...(isControlled ? { value: value ?? '' } : { defaultValue })}
-    />
-  );
-
-  const ariaAnnouncement = useAnnouncer(textCount, maxCount);
-  const Icon = normalizedProps.icon as React.ReactElement | null;
-
-  return (
-    <div className={inputWrapperClasses}>
-      {inline ? (
-        <div className={styles.textInputLabelHelperWrapper}>
-          {!hideLabel && (
-            <div className={styles.textInputLabelWrapper}>
-              {labelElement}
-              {renderCounter()}
-            </div>
-          )}
-          <ValidationMessage {...validationMessageProps} />
-          {helperText && <HelperText helperText={helperText} helperId={normalizedProps.helperId} />}
-        </div>
-      ) : (
-        <div className={styles.textInputLabelWrapper}>
-          {labelElement}
-          {renderCounter()}
-        </div>
-      )}
-      <div
-        className={clsx(styles.textInputFieldOuterWrapper, {
-          [styles.textInputFieldOuterWrapperInline]: inline,
-        })}
+    const labelElement = (
+      <label
+        id={`${inputId}-label`}
+        htmlFor={inputId}
+        className={labelClasses}
+        data-required={fieldStatus.required ? 'true' : 'false'}
       >
-        <div className={fieldWrapperClasses} data-invalid={normalizedProps.invalid ?? null}>
-          {Icon}
-          {inputElement}
-          <span className={styles.textInputCounterAlert} role="alert">
-            {ariaAnnouncement}
-          </span>
-          {inline && <ValidationMessage {...validationMessageProps} />}
-        </div>
-        {!inline && (
-          <>
+        {label}
+      </label>
+    );
+
+    const inputElement = (
+      <input
+        {...props}
+        id={inputId}
+        name={name}
+        ref={ref}
+        type={type}
+        placeholder={placeholder}
+        disabled={fieldStatus.disabled}
+        readOnly={readOnly}
+        required={fieldStatus.required}
+        className={clsx(styles.textInput, {
+          [styles.textInputInvalid]: fieldStatus.invalid,
+          [styles.textInputWarning]: fieldStatus.warn,
+          [styles.textInputSuccess]: fieldStatus.success,
+        })}
+        onChange={handleChange}
+        onClick={handleClick}
+        aria-labelledby={`${inputId}-label`}
+        aria-label={hideLabel ? ariaLabel || label : undefined}
+        aria-describedby={describedBy}
+        aria-invalid={fieldStatus.invalid || undefined}
+        {...(isControlled ? { value: value ?? '' } : { defaultValue })}
+        {...(enableCounter && maxCount !== undefined ? { maxLength: maxCount } : {})}
+      />
+    );
+
+    const ariaAnnouncement = useAnnouncer(textCount, maxCount);
+    const StatusIcon = fieldStatus.StatusIcon;
+
+    return (
+      <div className={inputWrapperClasses}>
+        {inline ? (
+          <div className={styles.textInputLabelHelperWrapper}>
+            {!hideLabel && (
+              <div className={styles.textInputLabelWrapper}>
+                {labelElement}
+                {renderCounter()}
+              </div>
+            )}
             <ValidationMessage {...validationMessageProps} />
-            {helperText && <HelperText helperText={helperText} helperId={normalizedProps.helperId} />}
-          </>
+            {helperText && <HelperText helperText={helperText} helperId={fieldStatus.helperId} />}
+          </div>
+        ) : (
+          <div className={styles.textInputLabelWrapper}>
+            {labelElement}
+            {renderCounter()}
+          </div>
         )}
+        <div
+          className={clsx(styles.textInputFieldOuterWrapper, {
+            [styles.textInputFieldOuterWrapperInline]: inline,
+          })}
+        >
+          <div className={fieldWrapperClasses} data-invalid={fieldStatus.invalid ?? null}>
+            {StatusIcon && (
+              <StatusIcon
+                className={fieldStatus.status ? STATUS_ICON_CLASSNAMES[fieldStatus.status] : undefined}
+                focusable="false"
+                aria-hidden="true"
+              />
+            )}
+            {inputElement}
+            <span className={styles.textInputCounterAlert} role="alert">
+              {ariaAnnouncement}
+            </span>
+            {inline && <ValidationMessage {...validationMessageProps} />}
+          </div>
+          {!inline && (
+            <>
+              <ValidationMessage {...validationMessageProps} />
+              {helperText && <HelperText helperText={helperText} helperId={fieldStatus.helperId} />}
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
 
 TextInput.displayName = 'TextInput';
 
