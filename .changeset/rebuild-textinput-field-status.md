@@ -1,5 +1,5 @@
 ---
-"@pinonoir/sds-ui": minor
+'@pinonoir/sds-ui': minor
 ---
 
 Rebuild `TextInput` on a new, typed `useFieldStatus` hook, replacing the untyped `useNormalizedInputProps` + `textInputProps` indirection it previously depended on.
