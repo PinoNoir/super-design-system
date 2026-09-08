@@ -53,16 +53,20 @@ jobs:
       # If there are pending changesets on main, this opens/updates a
       # "Version Packages" PR (version bump + changelogs, no publish yet).
       # If that PR has just been merged (no pending changesets, versions
-      # ahead of what's on npm), this runs publish-script instead, which
+      # ahead of what's on npm), this runs `publish` instead, which
       # publishes via npm's trusted publishing (OIDC) - no NPM_TOKEN needed,
       # as long as each package's Trusted Publisher on npmjs.com is
       # configured to trust this exact workflow file.
+      #
+      # Pinned to the v1 line (input names: publish/version/commit/title,
+      # not the kebab-case publish-script/version-script/etc.) because this
+      # repo's @changesets/cli is v2.x; changesets/action@v2 requires CLI v3.
       - name: Create Release PR or publish to npm
         uses: changesets/action@v1
         with:
-          version-script: pnpm changeset version
-          publish-script: pnpm release
-          commit-message: 'chore: version packages'
-          pr-title: 'chore: version packages'
+          version: pnpm changeset version
+          publish: pnpm release
+          commit: 'chore: version packages'
+          title: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
