@@ -43,14 +43,10 @@ const meta: Meta = {
       },
     },
     onSubmit: {
-      control: {
-        type: null,
-      },
+      control: false,
     },
     onReset: {
-      control: {
-        type: null,
-      },
+      control: false,
     },
     className: {
       control: {
