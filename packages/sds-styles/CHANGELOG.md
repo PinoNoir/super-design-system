@@ -1,5 +1,11 @@
 # sds-styles
 
+## 2.1.0
+
+### Patch Changes
+
+- @pinonoir/sds-tokens@2.1.0
+
 ## 2.0.1
 
 ### Patch Changes
