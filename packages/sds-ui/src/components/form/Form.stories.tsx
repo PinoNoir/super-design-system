@@ -8,10 +8,7 @@ import { Button } from '../button';
 import { FormBlock } from '../form-block';
 import FormFooter from './FormFooter';
 import { Box } from '../box';
-import EmailInput from '../input-fields/components/EmailInput';
-import SSNInput from '../input-fields/components/SSNInput';
 import TextInput from '../text-input/TextInput';
-import PhoneInput from '../input-fields/components/PhoneInput';
 import { Toast, ToastProvider } from '../toast';
 import FormWrapper from '../form-block/FormWrapper';
 import FormSelect from './FormSelect';
@@ -46,14 +43,10 @@ const meta: Meta = {
       },
     },
     onSubmit: {
-      control: {
-        type: null,
-      },
+      control: false,
     },
     onReset: {
-      control: {
-        type: null,
-      },
+      control: false,
     },
     className: {
       control: {
@@ -296,10 +289,12 @@ export const WithZodValidation: Story = {
                   control={control}
                   name="Phone"
                   render={({ field }) => (
-                    <PhoneInput
+                    <TextInput
                       {...field}
                       id="phone"
                       label="Phone"
+                      type="tel"
+                      placeholder="(xxx) xxx-xxxx"
                       required
                       invalid={!!errors.Phone}
                       invalidText={errors.Phone?.message}
@@ -310,10 +305,11 @@ export const WithZodValidation: Story = {
                   name="SSN"
                   control={control}
                   render={({ field }) => (
-                    <SSNInput
+                    <TextInput
                       {...field}
                       id="ssn"
                       label="SSN"
+                      placeholder="xxx-xx-xxxx"
                       required
                       invalid={!!errors.SSN}
                       invalidText={errors.SSN?.message}
@@ -324,10 +320,12 @@ export const WithZodValidation: Story = {
                   name="Email"
                   control={control}
                   render={({ field }) => (
-                    <EmailInput
+                    <TextInput
                       {...field}
                       id="email"
                       label="Email"
+                      type="email"
+                      placeholder="example@domain.com"
                       required
                       invalid={!!errors.Email}
                       invalidText={errors.Email?.message}
